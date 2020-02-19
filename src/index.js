@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Home from "./Home";
+import Astrology from "./Astrology";
 import * as serviceWorker from "./serviceWorker";
 import 'semantic-ui-css/semantic.min.css';
 import "./styles.scss";
 
-ReactDOM.render(<Home />, document.getElementById("root"));
+ReactDOM.render(<Astrology />, document.getElementById("root"));
 
 serviceWorker.unregister();
