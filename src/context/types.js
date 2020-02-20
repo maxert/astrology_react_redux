@@ -1,0 +1,2 @@
+export const HIDE_ELEMENT = 'HIDE_ELEMENT'
+export const SHOW_ELEMENT = 'SHOW_ELEMENT'

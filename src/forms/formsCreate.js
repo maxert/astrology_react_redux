@@ -1,12 +1,14 @@
 import React from "react";
-import { Icon, Input, Checkbox, Button } from "semantic-ui-react";
-import SelectLocation from "../addElement/SelectLocation";
+import { Icon, Input, Checkbox, Button,Form } from "semantic-ui-react";
+import {SelectLocation} from "../addElement/SelectLocation";
+
+
 const InputExampleIconChild = () => (
   <form className="forms_create">
     <div className="input_all">
-      <Input icon placeholder="дд . мм . гггг">
+      <DateTimeForm></DateTimeForm>
+      <Input icon  placeholder="дд . мм . гггг">
         <label>Дата</label>
-        <input className="data" />
         <Icon className="icon_date" />
       </Input>
     </div>

@@ -2,7 +2,7 @@ import _ from "lodash";
 import faker from "faker";
 import React, { Component } from "react";
 import { Search, Grid } from "semantic-ui-react";
-import Select from "./Select.js";
+import {SelectExample} from "./Select.js";
 
 const initialState = { isLoading: false, results: [], value: "" };
 
@@ -41,7 +41,7 @@ export default class SearchExampleStandard extends Component {
     return (
       <Grid>
         <Grid.Column width={6}>
-          <Select></Select>
+          <SelectExample></SelectExample>
           <Search
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
