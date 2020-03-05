@@ -33,79 +33,79 @@ export const TableList = () => {
         <div className="table_right">
           <div className="table_head">Без айнамши</div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10
           </div>
           <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius 1.svg">
+            <SvgLoader path="./img/Aquarius1.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             2:22:10

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink
-} from "react-router-dom";
+import { Switch, Route, NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
 import Company from "./ListPage/Company";
@@ -15,154 +10,148 @@ import Events from "./ListPage/Events";
 import Favorite from "./ListPage/Favorite";
 import Forms from "./forms/formsOpen";
 
-
 function Astrology() {
   return (
     <div className="container_home">
-   
-        <Router>
-          <div className="container_center">
-            <div className="container_left">
-              <div className="menu_head">
-                <div className="elipse">A</div>
-                <div className="text_name">АстроТаро</div>
-              </div>
-              <ul className="menu_list">
-                <li>
-                  <NavLink to="/" exact={true} activeClassName="active">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
+      <div className="container_center">
+        <div className="menu_fix">
+          <div className="container_left">
+            <div className="menu_head">
+              <div className="elipse">A</div>
+              <div className="text_name">АстроСофт</div>
+            </div>
+            <ul className="menu_list">
+              <li>
+                <NavLink to="/" exact={true} activeClassName="active">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#cod" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/Home.svg">
+                      <SvgProxy selector="#cos" />
                     </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/Home.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Главная</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/persons">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/Persons.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Персоны</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/company">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/company.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Компании</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/сountries">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/сountries.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Страны</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/сurrencies">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/currency.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Валюты</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/events">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/Calendar.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">События</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/favorite">
-                    <SvgLoader path="./img/Union.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="img_list">
-                      <SvgLoader path="./img/favorites.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </div>
-                    <div className="text_list">Избранное</div>
-                  </NavLink>
-                </li>
-                <li>
-                  <div className="footer_menu">
-                    <NavLink to="/exit">
-                      <SvgLoader path="./img/logout.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                      <div className="footer_menu_text">
-                        Сменить аккаунт/Выйти
-                      </div>
-                    </NavLink>
                   </div>
-                </li>
-              </ul>
-            </div>
-            <div className="container_right">
-              <Switch>
-                <Route exact path="/">
-                  <Home></Home>
-                </Route>
-                <Route path="/persons">
-                  <Persons></Persons>
-                </Route>
-                <Route path="/company">
-                  <Company></Company>
-                </Route>
-                <Route path="/сountries">
-                  <Countries></Countries>
-                </Route>
-                <Route path="/сurrencies">
-                  <Currencies></Currencies>
-                </Route>
-                <Route path="/events">
-                  <Events></Events>
-                </Route>
-                <Route path="/favorite">
-                  <Favorite></Favorite>
-                </Route>
-                <Route path="/ASD">
-                  <Favorite></Favorite>
-                </Route>
-              </Switch>
-            </div>
+                  <div className="text_list">Главная</div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/persons">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#cot" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/Persons.svg">
+                      <SvgProxy selector="#cr" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    Персоны <div className="block_number">5</div>
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/company">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#ce" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/company.svg">
+                      <SvgProxy selector="#cw" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    Компании<div className="block_number">5</div>
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/сountries">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#cl" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/сountries.svg">
+                      <SvgProxy selector="#ck" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    Страны<div className="block_number">5</div>
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/сurrencies">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#cj" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/currency.svg">
+                      <SvgProxy selector="#cjo" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    Валюты <div className="block_number">5</div>
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/events">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#ch" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/Calendar.svg">
+                      <SvgProxy selector="#cg" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    События <div className="block_number">5</div>
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/favorite">
+                  <SvgLoader path="../img/Union.svg">
+                    <SvgProxy selector="#cf" />
+                  </SvgLoader>
+                  <div className="img_list">
+                    <SvgLoader path="../img/favorites.svg">
+                      <SvgProxy selector="#cs" />
+                    </SvgLoader>
+                  </div>
+                  <div className="text_list">
+                    Избранное <div className="block_number">5</div>{" "}
+                  </div>
+                </NavLink>
+              </li>
+              <li>
+                <div className="footer_menu">
+                  <NavLink to="/exit">
+                    <SvgLoader path="../img/logout.svg">
+                      <SvgProxy selector="#ca" />
+                    </SvgLoader>
+                    <div className="footer_menu_text">
+                      Сменить аккаунт/Выйти
+                    </div>
+                  </NavLink>
+                </div>
+              </li>
+            </ul>
           </div>
-        </Router>
+        </div>
+        <div className="container_right">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/persons" component={Persons} />
+            <Route path="/company" component={Company} />
+            <Route path="/сountries" component={Countries} />
+            <Route path="/сurrencies" component={Currencies} />
+            <Route path="/events" component={Events} />
+            <Route path="/favorite" component={Favorite} />
+            <Route path="/ASD" component={Favorite} />
+          </Switch>
+        </div>
+      </div>
 
       <div className="modal_open">
         <Forms></Forms>

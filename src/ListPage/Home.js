@@ -9,7 +9,6 @@ export default class Home extends Component {
     return (
     
       <div className="container_list">
-
         <div className="search_container">
           <Search />
         </div>
