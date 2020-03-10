@@ -7,6 +7,9 @@ import DropdownSlider from "./dropdownslider";
 import { Modal, Form, Button } from "semantic-ui-react";
 import Search from "../addElement/search";
 
+
+//Блок с слайдером
+
 class ModalExampleSize extends Component {
   render() {
     return (

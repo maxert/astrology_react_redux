@@ -3,6 +3,7 @@ import EditDrop from "../addElement/editDropDown";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import ModalExampleDimmer from "./ModalCard";
 
+//Блок натальной карты связи
 function NotalCommunity() {
   return (
     <div className="notal_card_community">

@@ -4,6 +4,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import { SelectLocation } from "../addElement/SelectLocation";
 
+//Страница добавления валют
 function CurrenciesAdd() {
   return (
     <div className="container_add">

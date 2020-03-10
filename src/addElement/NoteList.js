@@ -1,6 +1,8 @@
 import React from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import EditDrop from "../addElement/editDropDown";
+
+//Блок Заметок
 function NoteList() {
   return (
     <div className="note_list">

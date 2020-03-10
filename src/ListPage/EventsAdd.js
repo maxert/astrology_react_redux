@@ -3,6 +3,11 @@ import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import { SelectLocation } from "../addElement/SelectLocation";
+
+
+//Страница Добавления Событий 
+
+
 function EventsAdd() {
   return (
     <div className="container_add">

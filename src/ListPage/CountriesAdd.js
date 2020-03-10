@@ -4,6 +4,9 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import { SelectLocation } from "../addElement/SelectLocation";
 
+
+
+//Страница добавления стран
 function CompanyAdd() {
   return (
     <div className="container_add">

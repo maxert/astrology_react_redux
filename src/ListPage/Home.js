@@ -3,11 +3,10 @@ import Search from "../addElement/search";
 import FormsCreate from "../forms/formsCreate";
 import { FormsPosition } from "../forms/formsPosition";
 import { History } from "../addElement/History";
+//Блок Главной страниццыА
+function Home(){
 
-export default class Home extends Component {
-  render() {
     return (
-    
       <div className="container_list">
         <div className="search_container">
           <Search />
@@ -30,5 +29,6 @@ export default class Home extends Component {
         </div>
       </div>
     );
-  }
-}
+    }
+
+export default Home;

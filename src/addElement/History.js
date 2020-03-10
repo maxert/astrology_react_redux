@@ -1,6 +1,8 @@
 import React from "react";
 import { List } from "semantic-ui-react";
 
+
+//Блок историй
 export const History = () => {
   return (
     <div className="histotry_container">

@@ -9,6 +9,8 @@ import CountriesAdd from "../ListPage/CountriesAdd";
 import { ReduceContext } from "../context/reducerContext";
 import CountriesEdit from "./CountriesEdit";
 
+
+//Страница список стран
 function CountriesHome() {
   const { hide, none, show } = useContext(ReduceContext);
   let { url } = useRouteMatch();

@@ -4,6 +4,10 @@ import React, { Component } from "react";
 import { Search, Grid } from "semantic-ui-react";
 import {SelectExample} from "./Select.js";
 
+
+//Блок плашки поиска
+
+
 const initialState = { isLoading: false, results: [], value: "" };
 
 const source = _.times(5, () => ({

@@ -3,6 +3,8 @@ import { Modal } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 import EditDrop from "./editDropDown";
+
+//Модальной окно натальной карты
 function ModalExampleDimmer() {
   return (
     <Modal trigger={<div className="modal_click"></div>}>

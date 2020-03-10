@@ -2,6 +2,8 @@ import React,{useContext} from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import {ReduceContext} from "../context/reducerContext"
 
+
+//Блок с таблицами
 export const TableList = () => {
 
 

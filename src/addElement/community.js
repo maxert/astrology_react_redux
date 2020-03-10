@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "../addElement/Slider"
 
-
+//Блок связи с слайдером
 function Community() {
 
   return (

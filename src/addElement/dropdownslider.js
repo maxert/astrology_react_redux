@@ -4,6 +4,7 @@ import React from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { Button, Popup } from "semantic-ui-react";
 
+//Выпадающий список слайдера
 function DropdownSlider() {
   let { url } = useRouteMatch();
   return (

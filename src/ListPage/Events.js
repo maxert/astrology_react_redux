@@ -9,15 +9,20 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import EventsAdd from "./EventsAdd";
 import EventsList from "./EventsList";
 import EventsEdit from "./EventsEdit";
+
+//Локализация календаря
 moment.locale("ru");
-// import axios from "axios";
+
+
+
+//Страница списка Событий 
 function EventsHome() {
+
   let { url } = useRouteMatch();
   function onPanelChange(value, mode) {
     console.log(value, mode);
   }
-// axios.get("...")
-// .then(data=>console.log(data));
+
   return (
     <div className="container_list">
       <div className="search_container">
@@ -30,12 +35,7 @@ function EventsHome() {
         </NavLink>
         <div className="calendar_container">
           <div className="calendar_container_left">
-            <Calendar
-              
-
-              fullscreen={false}
-              onPanelChange={onPanelChange}
-            />
+            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
           </div>
           <div className="calendar_container_right">
             <div className="date_items">
@@ -101,7 +101,7 @@ function EventsHome() {
                     </div>
                     <NavLink
                       className="text_link d_flex_center"
-                      to="/events/all"
+                      to={`${url}/all`}
                     >
                       Перейти{" "}
                       <SvgLoader path="../img/Arrow_21.svg">
@@ -154,7 +154,7 @@ function EventsHome() {
                     </div>
                     <NavLink
                       className="text_link d_flex_center"
-                      to="/events/all"
+                      to={`${url}/all`}
                     >
                       Перейти{" "}
                       <SvgLoader path="../img/Arrow_21.svg">

@@ -1,6 +1,8 @@
 import React from "react";
 import { Form, Button } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
+
+//Создание заметки
 function CreateNote() {
   return (
     <div className="create_note">

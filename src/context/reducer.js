@@ -1,5 +1,15 @@
-import { SHOW_ELEMENT, HIDE_ELEMENT } from "./types";
+import { SHOW_ELEMENT, HIDE_ELEMENT, LOG_IN, LOG_OUT } from "./types";
 const handlers = {
+  [LOG_IN]: (state, { token }) => ({
+    ...state,
+    isLogin: true,
+    token: token
+  }),
+  [LOG_OUT]: (state, { payload }) => ({
+    ...payload,
+    isLogin: false,
+    token: null
+  }),
   [SHOW_ELEMENT]: (state, { payload }) => ({
     ...payload,
     visible: false

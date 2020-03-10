@@ -9,6 +9,8 @@ import CompanyAdd from "../ListPage/CompanyAdd";
 import { ReduceContext } from "../context/reducerContext";
 import CompanyEdit from "./CompanyEdit";
 
+
+//Страница списка компаний 
 function CompanyHome() {
   const { hide, none, show } = useContext(ReduceContext);
   let { url } = useRouteMatch();

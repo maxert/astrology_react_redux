@@ -4,7 +4,9 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import { SelectLocation } from "../addElement/SelectLocation";
 
-function CompanyEdit() {
+
+//Страница редактирования стран
+function CountriesEdit() {
   return (
     <div className="container_add">
       <div className="button_header">
@@ -111,5 +113,5 @@ function CompanyEdit() {
   );
 }
 
-export default CompanyEdit;
+export default CountriesEdit;
  

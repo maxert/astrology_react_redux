@@ -1,6 +1,9 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
 
+
+//Функциональный Блок изменений карточки 
+
 const friendOptions = [
   {
     key: "0",
