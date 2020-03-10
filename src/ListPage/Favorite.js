@@ -28,15 +28,7 @@ function Favorite() {
               </button>
             </div>
 
-            <NavLink
-              className="text_head_persons favorites"
-              to="/persons/favorite"
-            >
-              <SvgLoader path="../img/favorites.svg">
-                <SvgProxy selector="#co" />
-              </SvgLoader>
-              Избранные
-            </NavLink>
+            
             <div className="row_and_column">
               <SvgLoader
                 path="../img/Group3.svg"
@@ -95,7 +87,7 @@ function Favorite() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -139,7 +131,7 @@ function Favorite() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -183,7 +175,7 @@ function Favorite() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -227,7 +219,7 @@ function Favorite() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -271,7 +263,7 @@ function Favorite() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -349,7 +341,7 @@ function Favorite() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">
@@ -406,7 +398,7 @@ function Favorite() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">

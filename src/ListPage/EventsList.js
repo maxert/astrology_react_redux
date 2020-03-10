@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { NavLink } from "react-router-dom";
+import { NavLink, useRouteMatch } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
@@ -9,6 +9,7 @@ import ResultCardEvents from "../addElement/resultcardevents";
 
 function EventsList() {
   const { hide, none, show } = useContext(ReduceContext);
+  const {url} = useRouteMatch;
   return (
     <div className="container_list">
       <div className="button_header">
@@ -27,7 +28,7 @@ function EventsList() {
           <div className="text_big_all name_profile">
             Ещё одно название события
           </div>
-          <NavLink to="/events/edit">
+          <NavLink to={`${url}/edit`}>
           <div className="edit_profile">Изменить</div>
           </NavLink>
         </div>

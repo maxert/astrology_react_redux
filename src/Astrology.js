@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
@@ -9,8 +9,11 @@ import Currencies from "./ListPage/Currencies";
 import Events from "./ListPage/Events";
 import Favorite from "./ListPage/Favorite";
 import Forms from "./forms/formsOpen";
+import { ReduceContext } from "./context/reducerContext";
 
 function Astrology() {
+
+  const { none } = useContext(ReduceContext);
   return (
     <div className="container_home">
       <div className="container_center">
@@ -70,7 +73,7 @@ function Astrology() {
                     <SvgProxy selector="#cl" />
                   </SvgLoader>
                   <div className="img_list">
-                    <SvgLoader path="../img/сountries.svg">
+                    <SvgLoader src="../img/country 1.svg">
                       <SvgProxy selector="#ck" />
                     </SvgLoader>
                   </div>
@@ -153,9 +156,11 @@ function Astrology() {
         </div>
       </div>
 
-      <div className="modal_open">
-        <Forms></Forms>
-      </div>
+      {(none.isLogin === false) && (
+        <div className="modal_open">
+          <Forms></Forms>
+        </div>
+      )}
     </div>
   );
 }

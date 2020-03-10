@@ -236,6 +236,7 @@ body {
   font-size: 14px;
   line-height: 16px;
 }
+
 .modal_open {
   height: 100vh;
   width: 100vw;
@@ -282,9 +283,7 @@ body {
     margin-top: 57px;
   }
 }
-.modal_open {
-  display: none;
-}
+
 .ui.button {
   background: linear-gradient(180deg, #7558ff 0%, #6544e9 100%);
   border-radius: 24px;
@@ -299,6 +298,11 @@ body {
   text-transform: uppercase;
   width: max-content;
   color: #ffffff;
+}
+.ui.form input {
+  &.active {
+    border: 1px solid red !important;
+  }
 }
 .ui.form.forms_element input {
   background: #f8f7fb;
@@ -2407,27 +2411,31 @@ label {
     box-sizing: border-box;
     border-radius: 4px;
   }
-  .ui.button{
+  .ui.button {
     margin-top: 30px;
   }
 }
-.close_popup{
+.close_popup {
   position: absolute;
   right: 20px;
   top: 20px;
   cursor: pointer;
   z-index: 1;
 }
+
 .modal_slider i.close {
-  &::before{
+  &::before {
     display: none;
   }
-  top: 20px!important;
-  right: 20px!important;
-  background-image: url("/img/Cross 1.svg")!important;
-  width: 12px!important;
-  height: 12px!important;
-  background-repeat: no-repeat!important;
-  background-position: center!important;
-  background-size: 100%!important;
+  top: 20px !important;
+  right: 20px !important;
+  background-image: url("/img/Cross 1.svg") !important;
+  width: 12px !important;
+  height: 12px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% !important;
+}
+.container_info_persons .ui.dropdown .menu > div:nth-last-child(2) {
+  color: rgba(0, 0, 0, 0.87);
 }

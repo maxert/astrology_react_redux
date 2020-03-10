@@ -89,7 +89,7 @@ function CurrenciesAll() {
                 <div className="persons_text_right">Украина</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -171,7 +171,7 @@ function CurrenciesAll() {
         {none.visible === true && (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
-              <div className="header_persons_list_name">Название компании</div>
+              <div className="header_persons_list_name">Название валюты</div>
               <div className="header_persons_list_date">Дата основания</div>
               <div className="header_persons_list_city">Страна</div>
             </div>
@@ -188,7 +188,7 @@ function CurrenciesAll() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">
@@ -235,7 +235,7 @@ function CurrenciesAll() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">

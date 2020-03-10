@@ -19,7 +19,7 @@ function PersonsHome() {
       <h2>Персоны</h2>
       <div className="container_persons">
         <div className="container_persons_head">
-          <NavLink to="/persons/add">
+          <NavLink  to={`${url}/add`}>
             <Button>Создать новую персону</Button>
           </NavLink>
           <div className="container_persons_head_right">
@@ -34,7 +34,7 @@ function PersonsHome() {
 
             <NavLink
               className="text_head_persons favorites"
-              to="/persons/favorite"
+              to={`${url}/favorite`}
             >
               <SvgLoader path="../img/favorites.svg">
                 <SvgProxy selector="#co" />
@@ -86,7 +86,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -129,7 +129,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -172,7 +172,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -215,7 +215,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -258,7 +258,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -301,7 +301,7 @@ function PersonsHome() {
                 <div className="persons_text_right">Зеленодольск</div>
               </div>
               <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to="/persons/123">
+                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
                   <SvgLoader path="../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
@@ -379,7 +379,7 @@ function PersonsHome() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">
@@ -436,7 +436,7 @@ function PersonsHome() {
                       </div>
                       <NavLink
                         className="text_link d_flex_center"
-                        to="/persons/123"
+                        to={`${url}/all`}
                       >
                         Перейти{" "}
                         <SvgLoader path="../img/Arrow_21.svg">
