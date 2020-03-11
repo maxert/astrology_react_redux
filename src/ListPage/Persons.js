@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Search from "../addElement/search";
 import { Button } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
@@ -8,10 +8,16 @@ import PersonsUnit from "../ListPage/PersonsUnit";
 import PersonsAdd from "../ListPage/PersonsAdd";
 import { ReduceContext } from "../context/reducerContext";
 import PersonsEdit from "./PersonsEdit";
-
 //Cтраница списка персон
 function PersonsHome() {
-  const { hide, none, show } = useContext(ReduceContext);
+  const { hide, none, show,Fetch_data_persons } = useContext(ReduceContext);
+
+
+  useEffect(()=>{
+    Fetch_data_persons();
+  },[])
+  
+
   let { url } = useRouteMatch();
   return (
     <div className="container_list">
@@ -21,7 +27,7 @@ function PersonsHome() {
       <h2>Персоны</h2>
       <div className="container_persons">
         <div className="container_persons_head">
-          <NavLink  to={`${url}/add`}>
+          <NavLink to={`${url}/add`}>
             <Button>Создать новую персону</Button>
           </NavLink>
           <div className="container_persons_head_right">
@@ -44,320 +50,70 @@ function PersonsHome() {
               Избранные
             </NavLink>
             <div className="row_and_column">
-              <SvgLoader path="../img/Group3.svg" className={none.visible ? " " : "active"} onClick={none.visible ? show : show}>
+              <SvgLoader
+                path="../img/Group3.svg"
+                className={none.visible ? " " : "active"}
+                onClick={none.visible ? show : show}
+              >
                 <SvgProxy selector="#co" />
-              </SvgLoader> 
+              </SvgLoader>
 
-              <SvgLoader path="../img/Group4.svg" className={none.visible ? "active" : " "} onClick={none.visible ? hide : hide}>
+              <SvgLoader
+                path="../img/Group4.svg"
+                className={none.visible ? "active" : " "}
+                onClick={none.visible ? hide : hide}
+              >
                 <SvgProxy selector="#co" />
               </SvgLoader>
             </div>
           </div>
         </div>
 
-    {
-          none.visible===false &&
+        {none.visible === false && (
           <div className="persons_list_grid">
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
+            {none.data_persons !== undefined &&
+              none.data_persons.map((person,i) => (
+                <div className="persons_items" key={i}>
+                  <div className="persons_items_head d_flex_center">
+                    <div className="container_info_persons d_flex_center">
+                      <div className="icon_image">
+                        {person.firstname[0]}
+                      </div>
+                      <div className="container_info_persons_name">
+                        {person.firstname+" "+person.lastname}
+                      </div>
+                    </div>
+                    <div className="persons_edit">
+                      <EditDrop></EditDrop>
+                      <SvgLoader path="../img/Group5.svg">
+                        <SvgProxy selector="#co" />
+                      </SvgLoader>
+                    </div>
                   </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
+                  <div className="d_flex_center date_persons">
+                    <div className="persons_text_left">День рождения:</div>
+              <div className="persons_text_right">{person.birth_date}</div>
                   </div>
-                </div>
-                <div className="persons_edit">
-                  <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
+                  <div className="d_flex_center adress_persons">
+                    <div className="persons_text_left">Город:</div>
+                    <div className="persons_text_right">{person.city}</div>
+                  </div>
+                  <div className="d_flex_center page_persons">
+                    <NavLink
+                      className="text_link d_flex_center"
+                      to={`${url}/${person.id}`}
                     >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
-                  </div>
-                </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
+                      Перейти{" "}
+                      <SvgLoader path="../img/Arrow_21.svg">
+                        <SvgProxy selector="#co" />
+                      </SvgLoader>
+                    </NavLink>
                   </div>
                 </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
-                  </div>
-                </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
-                  </div>
-                </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
-                  </div>
-                </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
-            <div className="persons_items">
-              <div className="persons_items_head d_flex_center">
-                <div className="container_info_persons d_flex_center">
-                  <div className="icon_image active">
-                    <img
-                      className="icon_image_size"
-                      src="/img/Ellipse 11.png"
-                      alt=""
-                    />
-                    <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                  </div>
-                  <div className="container_info_persons_name">
-                    Ростислав Кардашевский
-                  </div>
-                </div>
-                <div className="persons_edit">
-                  <SvgLoader path="../img/Group5.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </div>
-              </div>
-              <div className="d_flex_center date_persons">
-                <div className="persons_text_left">День рождения:</div>
-                <div className="persons_text_right">20.06.2006</div>
-              </div>
-              <div className="d_flex_center adress_persons">
-                <div className="persons_text_left">Город:</div>
-                <div className="persons_text_right">Зеленодольск</div>
-              </div>
-              <div className="d_flex_center page_persons">
-                <NavLink className="text_link d_flex_center" to={`${url}/all`}>
-                  Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </NavLink>
-              </div>
-            </div>
+              ))}
           </div>
-        }
-        {
-          none.visible===true &&
+        )}
+        {none.visible === true && (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
               <div className="header_persons_list_name">Имя</div>
@@ -425,12 +181,12 @@ function PersonsHome() {
                         src="/img/Ellipse 11.png"
                         alt=""
                       />
-                       <SvgLoader
-                      className="favorite_svg"
-                      path="../img/favorites_21.svg"
-                    >
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
+                      <SvgLoader
+                        className="favorite_svg"
+                        path="../img/favorites_21.svg"
+                      >
+                        <SvgProxy selector="#co" />
+                      </SvgLoader>
                     </div>
                     <div className="container_info_persons_column">
                       <div className="container_info_persons_name">
@@ -475,7 +231,7 @@ function PersonsHome() {
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     </div>
   );

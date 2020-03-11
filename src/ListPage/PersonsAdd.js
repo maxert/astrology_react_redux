@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
-import { SelectLocation } from "../addElement/SelectLocation";
+import SelectLocation  from "../addElement/SelectLocation";
 import NumberFormat from "react-number-format";
+import { ReduceContext } from "../context/reducerContext";
+import Axios from "axios";
 //Блок Добавление Персоны
 function PersonsAdd() {
   const { handleSubmit, register, errors } = useForm();
-  const onSubmit = values => {
-    console.log(values);
+  const {none,Add_persons} = useContext(ReduceContext);
+  const onSubmit = (values) => {
+    values["timezone"] = none.option_value;
+    Add_persons(values);
   };
   return (
     <div className="container_add">
@@ -34,31 +38,31 @@ function PersonsAdd() {
                   <label>Имя</label>
                   <input
                     type="text"
-                    name="text"
+                    name="firstname"
                     placeholder="Введите имя"
-                    className={"" + (errors.text ? "active" : "")}
+                    className={"" + (errors.firstname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern:/^([а-яё]+|[a-z]+){3,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+){3,16}$/i
                     })}
                   />
-                  {errors.text && errors.text.message}
+                  {errors.firstname && errors.firstname.message}
                 </Form.Field>
 
                 <Form.Field>
                   <label>Фамилия</label>
                   <input
                     type="text"
-                    name="textTwo"
+                    name="lastname"
                     label="Фамилия"
                     placeholder="Введите фамилию"
-                    className={"" + (errors.textTwo ? "active" : "")}
+                    className={"" + (errors.lastname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern:/^([а-яё]+|[a-z]+){3,24}$/i
+                      pattern: /^([а-яё]+|[a-z]+){3,24}$/i
                     })}
                   />
-                  {errors.textTwo && errors.textTwo.message}
+                  {errors.lastname && errors.lastname.message}
                 </Form.Field>
               </div>
 
@@ -81,69 +85,112 @@ function PersonsAdd() {
                   <label>Телефон</label>
                   <NumberFormat
                     type="tel"
-                    name="tel"
+                    name="telephone"
                     format="+38 (###)-###-##-##"
                     mask="_"
                     className={"" + (errors.email ? "active" : "")}
                     placeholder="+38 (000)-000-00-00"
                     getInputRef={register({
                       required: true,
-                     pattern:/\+[0-9]{2}[ .-](\([0-9]{3})\)([ .-]?)([0-9]{3})\2([0-9]{2})\2([0-9]{2})/g
+                      pattern: /\+[0-9]{2}[ .-](\([0-9]{3})\)([ .-]?)([0-9]{3})\2([0-9]{2})\2([0-9]{2})/g
                     })}
                     allowEmptyFormatting
                   />
-                  {errors.tel && errors.tel.message}
+                  {errors.telephone && errors.telephone.message}
                 </Form.Field>
               </div>
               <Button>Сохранить</Button>
             </div>
             <div className="personal_date all_box">
               <div className="text_all">Место и время рождения</div>
-              <Form.Group widths="equal" className="grid_column center_grid">
+              <div className="grid_column center_grid">
                 <div className="input_all">
-                  <Input placeholder="дд . мм . гггг">
-                    <label>Дата</label>
-                    <Icon className="icon_date" />
-                    <input className="date" />
-                  </Input>
+                  <Form.Field>
+                    <Input placeholder="дд . мм . гггг">
+                      <label>Дата</label>
+                      <Icon className="icon_date" />
+                      <input
+                        type="text"
+                        name="birth_date"
+                        placeholder="дд . мм . гггг"
+                        className={
+                          "" + (errors.birth_date ? "date active" : "")
+                        }
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.birth_date && errors.birth_date.message}
+                    </Input>
+                  </Form.Field>
                 </div>
-                <Form.Input
-                  fluid
-                  label="Время рождения"
-                  placeholder="пример: 21:34"
-                />
-              </Form.Group>
-              <Form.Group
-                widths="equal"
-                className="grid_column center_grid location_input_top"
-              >
-                <Form.Input
-                  fluid
-                  label="Место рождения"
-                  placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
-                />
+                <Form.Field>
+                  <label>Время рождения</label>
+                  <input
+                    type="text"
+                    name="time"
+                    placeholder="пример: 21:34"
+                    className={"" + (errors.birth_time ? "active" : "")}
+                    ref={register({
+                      required: true,
+                      pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                    })}
+                  />
+                  {errors.birth_time && errors.birth_time.message}
+                </Form.Field>
+              </div>
+              <div className="grid_column center_grid location_input_top">
+                <Form.Field>
+                  <label>Место рождения</label>
+                  <input
+                    type="text"
+                    name="city"
+                    placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
+                    className={"" + (errors.city ? "active" : "")}
+                    ref={register({
+                      required: true,
+                      pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                    })}
+                  />
+                  {errors.city && errors.city.message}
+                </Form.Field>
                 <div className="input_all location_input">
                   <div className="text_localisation">Часовой пояс:</div>
                   <SelectLocation></SelectLocation>
                 </div>
-              </Form.Group>
+              </div>
               <Checkbox
                 label="Летнее время"
                 className="time_location"
               ></Checkbox>
-              <div className="grid_column">
-                <div className="input_all">
-                  <Input>
-                    <label>Долгота:</label>
-                    <input className="longitude" />
-                  </Input>
-                </div>
-                <div className="input_all">
-                  <Input>
-                    <label>Широта:</label>
-                    <input className="latitude" />
-                  </Input>
-                </div>
+              <div className="grid_column grid_small">
+                <Form.Field>
+                  <label>Долгота:</label>
+                  <input
+                    type="text"
+                    name="longitude"
+                    className={"" + (errors.longitude ? "active" : "")}
+                    ref={register({
+                      required: true,
+                      pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                    })}
+                  />
+                  {errors.longitude && errors.longitude.message}
+                </Form.Field>
+                <Form.Field>
+                  <label>Широта:</label>
+                  <input
+                    type="text"
+                    name="latitude"
+                    className={"" + (errors.latitude ? "active" : "")}
+                    ref={register({
+                      required: true,
+                      pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                    })}
+                  />
+                  {errors.latitude && errors.latitude.message}
+                </Form.Field>
               </div>
               <Button>Сохранить</Button>
             </div>

@@ -298,10 +298,20 @@ body {
   width: max-content;
   color: #ffffff;
 }
+.personal_date {
 .ui.checkbox.time_location {
-  margin: auto 0px;
+  margin: 24px 0px;
   label {
     margin: 0px !important;
+  }
+}
+}
+.create_notal_card {
+  .ui.checkbox.time_location {
+    margin: auto 0px;
+    label {
+      margin: 0px !important;
+    }
   }
 }
 .ui.form input {
@@ -1871,7 +1881,7 @@ body ::-webkit-scrollbar-thumb {
   margin-bottom: 24px;
 }
 
-.ui.form.create_persons .field:last-child{
+.ui.form.create_persons .field:last-child {
   margin: 0 0 1em;
 }
 .ui.form.create_persons input[type="tel"]:focus,
@@ -2103,6 +2113,9 @@ label {
 }
 .location_input_top {
   grid-template-columns: 1fr max-content;
+  .field {
+    margin: 0px !important;
+  }
 }
 .location_input {
   .ui.selection.dropdown {
@@ -2489,4 +2502,7 @@ label {
 }
 .container_info_persons .ui.dropdown .menu > div:nth-last-child(2) {
   color: rgba(0, 0, 0, 0.87);
+}
+.grid_small{
+  grid-template-columns: 138px 138px;
 }

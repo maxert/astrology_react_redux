@@ -6,6 +6,7 @@ module.exports = function(app) {
     '/api',
     createProxyMiddleware({
       target: 'http://1690550.masgroup.web.hosting-test.net',
+      secure:false,
       changeOrigin: true,
     })
   );

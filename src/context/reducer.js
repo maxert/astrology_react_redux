@@ -1,4 +1,4 @@
-import { SHOW_ELEMENT, HIDE_ELEMENT, LOG_IN, LOG_OUT } from "./types";
+import { SHOW_ELEMENT, HIDE_ELEMENT, LOG_IN, LOG_OUT, SELECT_LOCATION, FETCH_DATA_PERSONS,ADD_PERSONS } from "./types";
 const handlers = {
   //Залогиненый пользователь
   [LOG_IN]: (state, { token }) => ({
@@ -21,6 +21,19 @@ const handlers = {
   [HIDE_ELEMENT]: state => ({
     ...state,
     visible: true
+  }),
+
+  [SELECT_LOCATION]: state => ({
+    ...state,
+    option_value: ""
+  }),
+  [FETCH_DATA_PERSONS]: (state, { payload }) => ({
+    ...state,
+    data_persons: payload
+  }),
+  [ADD_PERSONS]: state => ({
+    ...state,
+    add_persons_json: []
   }),
   DEFAULT: state => state
 };
