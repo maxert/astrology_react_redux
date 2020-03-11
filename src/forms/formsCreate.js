@@ -3,6 +3,7 @@ import { Icon, Input, Checkbox, Button } from "semantic-ui-react";
 import { SelectLocation } from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
 
+//Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
  

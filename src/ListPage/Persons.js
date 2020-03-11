@@ -8,6 +8,8 @@ import PersonsUnit from "../ListPage/PersonsUnit";
 import PersonsAdd from "../ListPage/PersonsAdd";
 import { ReduceContext } from "../context/reducerContext";
 import PersonsEdit from "./PersonsEdit";
+
+//Cтраница списка персон
 function PersonsHome() {
   const { hide, none, show } = useContext(ReduceContext);
   let { url } = useRouteMatch();

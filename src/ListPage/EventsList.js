@@ -7,6 +7,9 @@ import NotalCommunity from "../addElement/notal_community";
 import { ReduceContext } from "../context/reducerContext";
 import ResultCardEvents from "../addElement/resultcardevents";
 
+
+
+//Страница Событий 
 function EventsList() {
   const { hide, none, show } = useContext(ReduceContext);
   const {url} = useRouteMatch;

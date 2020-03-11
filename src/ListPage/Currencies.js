@@ -8,6 +8,11 @@ import CurrenciesNumber from "../ListPage/CurrenciesNumber";
 import CurrenciesAdd from "../ListPage/CurrenciesAdd";
 import { ReduceContext } from "../context/reducerContext";
 import CurrenciesEdit from "./CurrenciesEdit";
+
+
+
+//Страница списка валют
+
 function CurrenciesAll() {
   const { hide, none, show } = useContext(ReduceContext);
   let { url } = useRouteMatch();

@@ -1,25 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
-// import axios from "axios";
 import { ReduceContext } from "../context/reducerContext";
-import axios from "axios";
 
+
+
+//Блок авторизации
 function FormExampleForm() {
   const { handleSubmit, register, errors } = useForm();
-  const { LogIn,none } = useContext(ReduceContext);
- 
+  const { LogIn} = useContext(ReduceContext);
+
   const onSubmit = values => {
     LogIn(values);
-     
   };
-  useEffect(()=>{
-    axios.post("/api/login", {
-      headers: {
-        'Authorization': `Basic ${none.token}`
-      }
-    })
-  })
   return (
     <Form className="forms_element" onSubmit={handleSubmit(onSubmit)}>
       <div className="head_form">Вход</div>

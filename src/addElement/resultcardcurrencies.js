@@ -7,6 +7,8 @@ import NoteList from "./NoteList";
 import { ReduceContext } from "../context/reducerContext";
 import { SelectCurrentry } from "./SelectCurrentry";
 
+
+//Блок скрытой натальной карты валюты
 function NotalCommunity() {
   const { none } = useContext(ReduceContext);
   if (!none.visible) {

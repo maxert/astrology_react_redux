@@ -6,6 +6,8 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { TableList } from "../addElement/Table";
 import { ReduceContext } from "../context/reducerContext";
 
+
+//Форма натальной карты на главной странице
 export const FormsPosition = () => {
   const { hide, none, show } = useContext(ReduceContext);
 

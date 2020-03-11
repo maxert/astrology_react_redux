@@ -18,6 +18,7 @@
     "react-dom": "latest",
     "react-hook-form": "^4.10.1",
     "react-inlinesvg": "^1.2.0",
+    "react-number-format": "^4.4.1",
     "react-redux": "^7.2.0",
     "react-router": "latest",
     "react-router-dom": "latest",

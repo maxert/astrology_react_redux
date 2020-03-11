@@ -7,6 +7,9 @@ import NotalCommunity from "../addElement/notal_community";
 import ResultCardPersons from "../addElement/resultcardpersons";
 import { ReduceContext } from "../context/reducerContext";
 
+
+
+//Страница Персоны
 function PersonsUnit() {
   const {url} = useRouteMatch();
   const { hide, none, show } = useContext(ReduceContext);

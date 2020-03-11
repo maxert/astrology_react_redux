@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-
+//Связь по API с сервером для получения данных
 module.exports = function(app) {
   app.use(
     '/api',

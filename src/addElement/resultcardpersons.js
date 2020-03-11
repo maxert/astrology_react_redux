@@ -6,6 +6,8 @@ import CreateNote from "./createNote";
 import NoteList from "./NoteList";
 import { ReduceContext } from "../context/reducerContext";
 
+
+//Блок скрытой натальной карты персоны
 function ResultCardPersons() {
   const { none } = useContext(ReduceContext);
   if (!none.visible) {

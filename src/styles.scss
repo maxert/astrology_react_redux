@@ -25,7 +25,7 @@ body {
   padding: 0px;
   padding-top: 65px;
   max-width: 234px;
-  height: 600px;
+  height: 89vh;
   background: linear-gradient(180deg, #7558ff 0%, #6544e9 100%);
   border-radius: 0px 0px 16px 0px;
   a.active {
@@ -210,24 +210,23 @@ body {
 .footer_menu {
   position: absolute;
   bottom: 28px;
-  a.active {
-    background: transparent;
-    color: white;
+  display: flex;
+  background: transparent;
+  color: white;
+  padding-left: 28px;
+  cursor: pointer;
+  svg {
+    position: relative !important;
+    z-index: 0 !important;
+    width: 16px !important;
+    margin-right: 8px;
   }
-  a {
-    svg {
-      position: relative !important;
-      z-index: 0 !important;
-      width: 16px !important;
-      margin-right: 8px;
-    }
-    height: auto !important;
-    margin-top: 117px;
-    font-style: normal !important;
-    font-weight: normal !important;
-    font-size: 14px !important;
-    line-height: 16px !important;
-  }
+  height: auto !important;
+  margin-top: 117px;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
 }
 .footer_menu_text {
   font-family: Source Sans Pro;
@@ -298,6 +297,12 @@ body {
   text-transform: uppercase;
   width: max-content;
   color: #ffffff;
+}
+.ui.checkbox.time_location {
+  margin: auto 0px;
+  label {
+    margin: 0px !important;
+  }
 }
 .ui.form input {
   &.active {
@@ -1865,6 +1870,20 @@ body ::-webkit-scrollbar-thumb {
 .personal_date .text_all {
   margin-bottom: 24px;
 }
+
+.ui.form.create_persons .field:last-child{
+  margin: 0 0 1em;
+}
+.ui.form.create_persons input[type="tel"]:focus,
+.ui.form.create_persons input[type="tel"],
+.ui.form.create_persons input[type="email"]:focus,
+.ui.form.create_persons input[type="email"],
+.ui.form.create_persons input[type="text"]:focus,
+.ui.form.create_persons input[type="text"] {
+  background: #f8f7fb;
+  border: 1px solid #b3b3be;
+}
+
 .note_list_container {
   height: 460px;
   overflow-y: scroll;
@@ -2366,6 +2385,38 @@ label {
 .ui.page.dimmer .ui.modal.modal_slider {
   width: 500px;
 }
+.header_close_modal {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+  /* identical to box height, or 100% */
+
+  text-align: center;
+
+  /* 1F222E */
+
+  color: #1f222e;
+  margin-bottom: 40px;
+}
+.close_modal {
+  padding: 60px;
+  background: #ffffff;
+  /* 2 */
+
+  box-shadow: 8px 16px 60px rgba(31, 34, 46, 0.2);
+  border-radius: 16px;
+  .ui.button.reset {
+    border: 2px solid #3f3356;
+    color: #3f3356;
+    background: transparent;
+    /* 2 */
+    margin-left: 16px;
+
+    box-shadow: 8px 16px 60px rgba(31, 34, 46, 0.2);
+    border-radius: 24px;
+  }
+}
 .modal_slider_form {
   padding: 60px;
   .text_all {
@@ -2422,7 +2473,7 @@ label {
   cursor: pointer;
   z-index: 1;
 }
-
+.close_modal i.close,
 .modal_slider i.close {
   &::before {
     display: none;

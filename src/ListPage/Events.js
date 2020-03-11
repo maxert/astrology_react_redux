@@ -10,8 +10,12 @@ import EventsAdd from "./EventsAdd";
 import EventsList from "./EventsList";
 import EventsEdit from "./EventsEdit";
 
+//Локализация календаря
 moment.locale("ru");
 
+
+
+//Страница списка Событий 
 function EventsHome() {
 
   let { url } = useRouteMatch();

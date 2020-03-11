@@ -5,10 +5,11 @@ import { SHOW_ELEMENT, HIDE_ELEMENT, LOG_OUT, LOG_IN } from "./types";
 import Axios from "axios";
 
 export const ReducerState = ({ children }) => {
+  console.log(localStorage.getItem("users"));
   const initialState = {
     visible: false,
-    isLogin: false,
-    token:null
+    isLogin: localStorage.getItem("users") !== "null" ? true : false,
+    token: localStorage.getItem("users")
   };
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
@@ -28,13 +29,22 @@ export const ReducerState = ({ children }) => {
       email: values.email,
       password: values.password
     });
+    localStorage.setItem("users", res.data.data.api_token);
     dispatch({
       type: LOG_IN,
-      token:res.data.data.api_token
+      token: res.data.data.api_token
     });
   };
 
-  const LogOut = () => dispatch({ type: LOG_OUT });
+  const LogOut = async () => {
+    // const res = await Axios.get("/api/logout");
+    // console.log(res)
+    localStorage.setItem("users", null);
+    dispatch({
+      type: LOG_OUT,
+      token: null
+    });
+  };
   return (
     <ReduceContext.Provider
       value={{

@@ -16,7 +16,7 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 const store = createStore(AlertReducer,composeWithDevTools(applyMiddleware(logger)));
-
+//Основной блок где рендерится все елементы в указанный класс root
 ReactDOM.render(
   <Provider store={store}>
     <ConfigProvider locale={ru}>

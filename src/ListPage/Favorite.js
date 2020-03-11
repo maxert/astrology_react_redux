@@ -5,6 +5,10 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
 import { SelectExample } from "../addElement/Select";
 import EditDrop from "../addElement/editDropDown";
+
+
+
+//Страница Избранные 
 function Favorite() {
   const { hide, none, show } = useContext(ReduceContext);
   let { url } = useRouteMatch();
