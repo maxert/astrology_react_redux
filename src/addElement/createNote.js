@@ -19,7 +19,7 @@ function CreateNote() {
               <div className="checkbox_list">
                 <input type="checkbox" id="bold" />
                 <label htmlFor="bold">
-                  <SvgLoader path="../img/В.svg">
+                  <SvgLoader path="../../img/В.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </label>
@@ -27,7 +27,7 @@ function CreateNote() {
               <div className="checkbox_list">
                 <input type="checkbox" id="italic" />
                 <label htmlFor="italic">
-                  <SvgLoader path="../img/І.svg">
+                  <SvgLoader path="../../img/І.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </label>
@@ -35,7 +35,7 @@ function CreateNote() {
               <div className="checkbox_list">
                 <input type="checkbox" id="underline" />
                 <label htmlFor="underline">
-                  <SvgLoader path="../img/U.svg">
+                  <SvgLoader path="../../img/U.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </label>
@@ -43,7 +43,7 @@ function CreateNote() {
               <div className="checkbox_list">
                 <input type="checkbox" id="createImg" />
                 <label htmlFor="createImg">
-                  <SvgLoader path="../img/picture 2.svg">
+                  <SvgLoader path="../../img/picture 2.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </label>

@@ -25,7 +25,7 @@ body {
   padding: 0px;
   padding-top: 65px;
   max-width: 234px;
-  height: 89vh;
+  height: calc(100vh - 80px);
   background: linear-gradient(180deg, #7558ff 0%, #6544e9 100%);
   border-radius: 0px 0px 16px 0px;
   a.active {
@@ -299,12 +299,12 @@ body {
   color: #ffffff;
 }
 .personal_date {
-.ui.checkbox.time_location {
-  margin: 24px 0px;
-  label {
-    margin: 0px !important;
+  .ui.checkbox.time_location {
+    margin: 24px 0px;
+    label {
+      margin: 0px !important;
+    }
   }
-}
 }
 .create_notal_card {
   .ui.checkbox.time_location {
@@ -794,6 +794,10 @@ i.icon.search:before {
     }
   }
 }
+.location_input_top input {
+  width: 100%;
+  max-width: 100% !important;
+}
 .text_color {
   background: #ff6b8f;
   width: 48px;
@@ -868,6 +872,10 @@ body ::-webkit-scrollbar-thumb {
   max-width: 540px;
 }
 .container_persons_head {
+  .ui.dropdown .menu > div:last-child{
+    color: black!important;
+  }
+
   margin-bottom: 28px;
   display: flex;
   align-items: center;
@@ -959,6 +967,7 @@ body ::-webkit-scrollbar-thumb {
 }
 .container_info_persons {
   .icon_image {
+    text-transform: uppercase;
     img {
       width: 100%;
       height: auto;
@@ -1046,6 +1055,9 @@ body ::-webkit-scrollbar-thumb {
     }
   }
 }
+.edit_drop {
+  display: none;
+}
 .ui.inline.dropdown.edit_drop .dropdown.icon,
 .ui.inline.dropdown.edit_drop > .text {
   display: none !important;
@@ -1060,6 +1072,14 @@ body ::-webkit-scrollbar-thumb {
   position: absolute;
   height: 20px;
   width: 100%;
+}
+.ui.dropdown.edit_drop {
+  svg {
+    margin-right: 8px;
+  }
+  a {
+    color: rgba(0, 0, 0, 0.87);
+  }
 }
 .ui.dropdown.edit_drop .menu > .item > .image {
   width: 16px;
@@ -1390,6 +1410,9 @@ body ::-webkit-scrollbar-thumb {
   .ui.dropdown .menu {
     right: 0;
     left: auto;
+  }
+  .text {
+    color: black;
   }
 }
 .edit_profile {
@@ -2046,6 +2069,9 @@ label {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 28px;
+  .persons_items_head {
+    margin-bottom: 0px;
+  }
   .persons_items {
     display: grid;
     grid-template-columns: 340px 138px 189px 1fr 1fr 1fr;
@@ -2312,6 +2338,12 @@ label {
   }
 }
 .container_favorites {
+  .persons_list_column {
+    .persons_items {
+      display: grid;
+      grid-template-columns: 340px 138px 189px 1fr 1fr;
+    }
+  }
   .ui.selection.dropdown {
     background: #ffffff;
     /* F2F0F5 */
@@ -2503,6 +2535,12 @@ label {
 .container_info_persons .ui.dropdown .menu > div:nth-last-child(2) {
   color: rgba(0, 0, 0, 0.87);
 }
-.grid_small{
+.grid_small {
   grid-template-columns: 138px 138px;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
 }

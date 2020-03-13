@@ -4,7 +4,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 import CreateNote from "./createNote";
 import NoteList from "./NoteList";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 
 
 //Блок скрытой натальной карты персоны
@@ -30,14 +30,14 @@ function ResultCardPersons() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>
             </div>
             <div className="notal_table_persons">
             <div className="d_flex_center image_notal notalPersons_left">
-                <SvgLoader path="../img/Натальная карта.svg">
+                <SvgLoader path="../../img/Натальная карта.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
                 <div className="block_numbers">
@@ -246,7 +246,7 @@ function ResultCardPersons() {
                     <div className="table_text table_text_small">Эклиптика</div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -254,7 +254,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -262,7 +262,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -270,7 +270,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -278,7 +278,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -286,7 +286,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -294,7 +294,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -302,7 +302,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -310,7 +310,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -318,7 +318,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -326,7 +326,7 @@ function ResultCardPersons() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>

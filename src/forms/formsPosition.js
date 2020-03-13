@@ -4,7 +4,7 @@ import { SelectWeeks } from "../addElement/SelectWeeks";
 import { SelectNew } from "../addElement/SelectNew";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { TableList } from "../addElement/Table";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 
 
 //Форма натальной карты на главной странице

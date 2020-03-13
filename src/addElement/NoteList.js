@@ -18,7 +18,7 @@ function NoteList() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>
@@ -39,7 +39,7 @@ function NoteList() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>
@@ -60,7 +60,7 @@ function NoteList() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>
@@ -81,7 +81,7 @@ function NoteList() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>

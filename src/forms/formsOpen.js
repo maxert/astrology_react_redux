@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 
 
 

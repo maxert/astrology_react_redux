@@ -6,7 +6,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import EditDrop from "../addElement/editDropDown";
 import CountriesList from "../ListPage/CountriesList";
 import CountriesAdd from "../ListPage/CountriesAdd";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 import CountriesEdit from "./CountriesEdit";
 
 
@@ -39,14 +39,14 @@ function CountriesHome() {
               className="text_head_persons favorites"
               to={`${url}/favorite`}
             >
-              <SvgLoader path="../img/favorites.svg">
+              <SvgLoader path="../../img/favorites.svg">
                 <SvgProxy selector="#co" />
               </SvgLoader>
               Избранные
             </NavLink>
             <div className="row_and_column">
               <SvgLoader
-                path="../img/Group3.svg"
+                path="../../img/Group3.svg"
                 className={none.visible ? " " : "active"}
                 onClick={none.visible ? show : show}
               >
@@ -54,7 +54,7 @@ function CountriesHome() {
               </SvgLoader>
 
               <SvgLoader
-                path="../img/Group4.svg"
+                path="../../img/Group4.svg"
                 className={none.visible ? "active" : " "}
                 onClick={none.visible ? hide : hide}
               >
@@ -74,7 +74,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -90,7 +90,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -104,7 +104,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -120,7 +120,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -134,7 +134,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -150,7 +150,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -164,7 +164,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -180,7 +180,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -194,7 +194,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -210,7 +210,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -224,7 +224,7 @@ function CountriesHome() {
                 </div>
                 <div className="persons_edit">
                   <EditDrop></EditDrop>
-                  <SvgLoader path="../img/Group5.svg">
+                  <SvgLoader path="../../img/Group5.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </div>
@@ -240,7 +240,7 @@ function CountriesHome() {
               <div className="d_flex_center page_persons">
                 <NavLink className="text_link d_flex_center" to={`${url}/all`}>
                   Перейти{" "}
-                  <SvgLoader path="../img/Arrow_21.svg">
+                  <SvgLoader path="../../img/Arrow_21.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                 </NavLink>
@@ -269,7 +269,7 @@ function CountriesHome() {
                         to={`${url}/all`}
                       >
                         Перейти{" "}
-                        <SvgLoader path="../img/Arrow_21.svg">
+                        <SvgLoader path="../../img/Arrow_21.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                       </NavLink>
@@ -283,19 +283,19 @@ function CountriesHome() {
                   <div className="persons_text_right">Владимир Зеленский</div>
                 </div>
                 <div className="d_flex_center favorite_persons">
-                  <SvgLoader path="../img/favorites.svg">
+                  <SvgLoader path="../../img/favorites.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">В избранные</div>
                 </div>
                 <div className="d_flex_center edit_persons">
-                  <SvgLoader path="../img/Edit1.svg">
+                  <SvgLoader path="../../img/Edit1.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">Редактировать</div>
                 </div>
                 <div className="d_flex_center delete_persons">
-                  <SvgLoader path="../img/Delete1.svg">
+                  <SvgLoader path="../../img/Delete1.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">Удалить</div>
@@ -308,7 +308,7 @@ function CountriesHome() {
                       T
                       <SvgLoader
                         className="favorite_svg"
-                        path="../img/favorites_21.svg"
+                        path="../../img/favorites_21.svg"
                       >
                         <SvgProxy selector="#co" />
                       </SvgLoader>
@@ -322,7 +322,7 @@ function CountriesHome() {
                         to={`${url}/all`}
                       >
                         Перейти{" "}
-                        <SvgLoader path="../img/Arrow_21.svg">
+                        <SvgLoader path="../../img/Arrow_21.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                       </NavLink>
@@ -336,19 +336,19 @@ function CountriesHome() {
                   <div className="persons_text_right">Владимир Зеленский </div>
                 </div>
                 <div className="d_flex_center favorite_persons">
-                  <SvgLoader path="../img/favorites.svg">
+                  <SvgLoader path="../../img/favorites.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">В избранные</div>
                 </div>
                 <div className="d_flex_center edit_persons">
-                  <SvgLoader path="../img/Edit1.svg">
+                  <SvgLoader path="../../img/Edit1.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">Редактировать</div>
                 </div>
                 <div className="d_flex_center delete_persons">
-                  <SvgLoader path="../img/Delete1.svg">
+                  <SvgLoader path="../../img/Delete1.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
                   <div className="persons_text_right">Удалить</div>

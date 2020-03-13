@@ -16,7 +16,7 @@ class ModalExampleSize extends Component {
       <Modal
         trigger={
           <div className="communication_slider_add" >
-            <SvgLoader path="../img/Group 15.svg">
+            <SvgLoader path="../../img/Group 15.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
           </div>
@@ -55,62 +55,62 @@ function SimpleSlider() {
       <Slider {...settings}>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
         </div>
         <div className="items_slider">
           <div className="icon_elipse">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="icon_text">Название 1</div>
           <DropdownSlider></DropdownSlider>

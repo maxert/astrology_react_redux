@@ -4,7 +4,7 @@ import { NavLink, useRouteMatch } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 import ResultCardPersons from "../addElement/resultcardpersons";
 
 
@@ -17,7 +17,7 @@ function CompanyList() {
       <div className="button_header">
         <NavLink to={"/сountries"}>
           <div className="purple">
-            <SvgLoader path="../img/Arrow2.svg">
+            <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад

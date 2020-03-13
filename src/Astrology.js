@@ -29,11 +29,11 @@ function Astrology() {
               <ul className="menu_list">
                 <li>
                   <NavLink to="/" exact={true} activeClassName="active">
-                    <SvgLoader path="../img/Union.svg">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cod" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/Home.svg">
+                      <SvgLoader path="../../img/Home.svg">
                         <SvgProxy selector="#cos" />
                       </SvgLoader>
                     </div>
@@ -41,12 +41,12 @@ function Astrology() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/persons">
-                    <SvgLoader path="../img/Union.svg">
+                  <NavLink to="/person">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cot" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/Persons.svg">
+                      <SvgLoader path="../../img/Persons.svg">
                         <SvgProxy selector="#cr" />
                       </SvgLoader>
                     </div>
@@ -57,11 +57,11 @@ function Astrology() {
                 </li>
                 <li>
                   <NavLink to="/company">
-                    <SvgLoader path="../img/Union.svg">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#ce" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/company.svg">
+                      <SvgLoader path="../../img/company.svg">
                         <SvgProxy selector="#cw" />
                       </SvgLoader>
                     </div>
@@ -70,13 +70,13 @@ function Astrology() {
                     </div>
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink to="/сountries">
-                    <SvgLoader path="../img/Union.svg">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cl" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader src="../img/country 1.svg">
+                      <SvgLoader src="../../img/country 1.svg">
                         <SvgProxy selector="#ck" />
                       </SvgLoader>
                     </div>
@@ -87,11 +87,11 @@ function Astrology() {
                 </li>
                 <li>
                   <NavLink to="/сurrencies">
-                    <SvgLoader path="../img/Union.svg">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cj" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/currency.svg">
+                      <SvgLoader path="../../img/currency.svg">
                         <SvgProxy selector="#cjo" />
                       </SvgLoader>
                     </div>
@@ -99,14 +99,14 @@ function Astrology() {
                       Валюты <div className="block_number">5</div>
                     </div>
                   </NavLink>
-                </li>
+                </li> */}
                 <li>
-                  <NavLink to="/events">
-                    <SvgLoader path="../img/Union.svg">
+                  <NavLink to="/event">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#ch" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/Calendar.svg">
+                      <SvgLoader path="../../img/Calendar.svg">
                         <SvgProxy selector="#cg" />
                       </SvgLoader>
                     </div>
@@ -117,11 +117,11 @@ function Astrology() {
                 </li>
                 <li>
                   <NavLink to="/favorite">
-                    <SvgLoader path="../img/Union.svg">
+                    <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cf" />
                     </SvgLoader>
                     <div className="img_list">
-                      <SvgLoader path="../img/favorites.svg">
+                      <SvgLoader path="../../img/favorites.svg">
                         <SvgProxy selector="#cs" />
                       </SvgLoader>
                     </div>
@@ -139,11 +139,11 @@ function Astrology() {
           <div className="container_right">
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/persons" component={Persons} />
+              <Route path="/person" component={Persons} />
               <Route path="/company" component={Company} />
               <Route path="/сountries" component={Countries} />
               <Route path="/сurrencies" component={Currencies} />
-              <Route path="/events" component={Events} />
+              <Route path="/event" component={Events} />
               <Route path="/favorite" component={Favorite} />
               <Route path="/ASD" component={Favorite} />
             </Switch>

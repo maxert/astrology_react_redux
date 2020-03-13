@@ -11,7 +11,7 @@ function CurrenciesAdd() {
       <div className="button_header">
         <NavLink to="/сurrencies">
           <div className="purple">
-            <SvgLoader path="../img/Arrow2.svg">
+            <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
@@ -88,7 +88,7 @@ function CurrenciesAdd() {
                 У
               </div>
               <div className="button_add">
-              <SvgLoader path="../img/Photosm.svg">
+              <SvgLoader path="../../img/Photosm.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader> Добавить аватар
               </div>

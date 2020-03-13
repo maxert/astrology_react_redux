@@ -346,12 +346,12 @@
 			"response": []
 		},
 		{
-			"name": "/api/companies/{id} update",
+			"name": "/api/company/{id} update",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "/api/companies/{id}?name&telephone&email&birth_date&birth_time&timezone&latitude&longtitude&city&image&osnovatel=&cnt_workers=",
+					"raw": "/api/company/{id}?name&telephone&email&birth_date&birth_time&timezone&latitude&longtitude&city&image&osnovatel=&cnt_workers=",
 					"path": [
 						"api",
 						"companies",
@@ -478,12 +478,12 @@
 			"response": []
 		},
 		{
-			"name": "/api/companies/{id}",
+			"name": "/api/company/{id}",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "/api/companies/{id}",
+					"raw": "/api/company/{id}",
 					"path": [
 						"api",
 						"companies",
@@ -526,12 +526,12 @@
 			"response": []
 		},
 		{
-			"name": "/api/companies/{id} delete",
+			"name": "/api/company/{id} delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "/api/companies/{id}",
+					"raw": "/api/company/{id}",
 					"path": [
 						"api",
 						"companies",

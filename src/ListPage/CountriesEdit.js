@@ -12,7 +12,7 @@ function CountriesEdit() {
       <div className="button_header">
         <NavLink to="/сountries">
           <div className="purple">
-            <SvgLoader path="../img/Arrow2.svg">
+            <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
@@ -96,10 +96,10 @@ function CountriesEdit() {
           <div className="create_persons_right">
             <div className="block_image">
               <div className="image_contaner_perons">
-                <img src="../img/Photo 1.svg" alt=" " />
+                <img src="../../img/Photo 1.svg" alt=" " />
               </div>
               <div className="button_add">
-                <SvgLoader path="../img/Photosm.svg">
+                <SvgLoader path="../../img/Photosm.svg">
                   <SvgProxy selector="#cst" />
                 </SvgLoader>{" "}
                 Добавить аватар

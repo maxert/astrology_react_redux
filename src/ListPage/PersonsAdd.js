@@ -5,8 +5,8 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import SelectLocation  from "../addElement/SelectLocation";
 import NumberFormat from "react-number-format";
-import { ReduceContext } from "../context/reducerContext";
-import Axios from "axios";
+import {ReduceContext} from "../context/reducerContext";
+
 //Блок Добавление Персоны
 function PersonsAdd() {
   const { handleSubmit, register, errors } = useForm();
@@ -18,9 +18,9 @@ function PersonsAdd() {
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to="/persons">
+        <NavLink to="/person">
           <div className="purple">
-            <SvgLoader path="../img/Arrow2.svg">
+            <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
@@ -88,7 +88,7 @@ function PersonsAdd() {
                     name="telephone"
                     format="+38 (###)-###-##-##"
                     mask="_"
-                    className={"" + (errors.email ? "active" : "")}
+                    className={"" + (errors.telephone ? "active" : "")}
                     placeholder="+38 (000)-000-00-00"
                     getInputRef={register({
                       required: true,
@@ -198,10 +198,10 @@ function PersonsAdd() {
           <div className="create_persons_right">
             <div className="block_image">
               <div className="image_contaner_perons">
-                <img src="../img/Photo 1.svg" alt=" " />
+                <img src="../../img/Photo 1.svg" alt=" " />
               </div>
               <div className="button_add">
-                <SvgLoader path="../img/Photosm.svg">
+                <SvgLoader path="../../img/Photosm.svg">
                   <SvgProxy selector="#cst" />
                 </SvgLoader>{" "}
                 Добавить аватар

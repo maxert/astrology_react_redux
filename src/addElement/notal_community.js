@@ -18,7 +18,7 @@ function NotalCommunity() {
             </div>
             <div className="persons_edit">
               <EditDrop></EditDrop>
-              <SvgLoader path="../img/Group5.svg">
+              <SvgLoader path="../../img/Group5.svg">
                 <SvgProxy selector="#co" />
               </SvgLoader>
             </div>
@@ -33,7 +33,7 @@ function NotalCommunity() {
           </div>
           <div className="d_flex_center image_notal notalPersons_left">
             <ModalExampleDimmer></ModalExampleDimmer>
-            <SvgLoader path="../img/Натальная карта.svg">
+            <SvgLoader path="../../img/Натальная карта.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             <div className="block_numbers">
@@ -171,7 +171,7 @@ function NotalCommunity() {
             </div>
             <div className="persons_edit">
               <EditDrop></EditDrop>
-              <SvgLoader path="../img/Group5.svg">
+              <SvgLoader path="../../img/Group5.svg">
                 <SvgProxy selector="#co" />
               </SvgLoader>
             </div>
@@ -186,7 +186,7 @@ function NotalCommunity() {
           </div>
           <div className="d_flex_center image_notal notalPersons_left">
             <ModalExampleDimmer></ModalExampleDimmer>
-            <SvgLoader path="../img/Натальная карта.svg">
+            <SvgLoader path="../../img/Натальная карта.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             <div className="block_numbers">
@@ -324,7 +324,7 @@ function NotalCommunity() {
             </div>
             <div className="persons_edit">
               <EditDrop></EditDrop>
-              <SvgLoader path="../img/Group5.svg">
+              <SvgLoader path="../../img/Group5.svg">
                 <SvgProxy selector="#co" />
               </SvgLoader>
             </div>
@@ -339,7 +339,7 @@ function NotalCommunity() {
           </div>
           <div className="d_flex_center image_notal notalPersons_left">
             <ModalExampleDimmer></ModalExampleDimmer>
-            <SvgLoader path="../img/Натальная карта.svg">
+            <SvgLoader path="../../img/Натальная карта.svg">
               <SvgProxy selector="#co" />
             </SvgLoader>
             <div className="block_numbers">

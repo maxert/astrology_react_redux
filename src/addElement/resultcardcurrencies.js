@@ -4,7 +4,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "../addElement/SelectNew";
 import CreateNote from "./createNote";
 import NoteList from "./NoteList";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 import { SelectCurrentry } from "./SelectCurrentry";
 
 
@@ -35,14 +35,14 @@ function NotalCommunity() {
               </div>
               <div className="persons_edit">
                 <EditDrop></EditDrop>
-                <SvgLoader path="../img/Group5.svg">
+                <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
               </div>
             </div>
             <div className="notal_table_persons">
               <div className="d_flex_center image_notal notalPersons_left">
-                <SvgLoader path="../img/Натальная карта.svg">
+                <SvgLoader path="../../img/Натальная карта.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
                 <div className="block_numbers">
@@ -251,7 +251,7 @@ function NotalCommunity() {
                     <div className="table_text table_text_small">Эклиптика</div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -259,7 +259,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -267,7 +267,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -275,7 +275,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -283,7 +283,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -291,7 +291,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -299,7 +299,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -307,7 +307,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -315,7 +315,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -323,7 +323,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -331,7 +331,7 @@ function NotalCommunity() {
                     </div>
                     <div className="table_text">
                       <div className="center_table">
-                        <SvgLoader path="../img/Aquarius1.svg">
+                        <SvgLoader path="../../img/Aquarius1.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                         <div className="table_text_time">2:22:10</div>
@@ -345,7 +345,7 @@ function NotalCommunity() {
               <div className="container_comprasion_left">
                 <div className="text_all">Натальная карта Гривны</div>
                 <div className="d_flex_center image_notal notalPersons_left">
-                <SvgLoader path="../img/Натальная карта.svg">
+                <SvgLoader path="../../img/Натальная карта.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
                 <div className="block_numbers">
@@ -495,7 +495,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -503,7 +503,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -511,7 +511,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -519,7 +519,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -527,7 +527,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -535,7 +535,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -543,7 +543,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -551,7 +551,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -559,7 +559,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -567,7 +567,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -575,7 +575,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -675,7 +675,7 @@ function NotalCommunity() {
                   Натальная карта Английский фунт стерлингов
                 </div>
                 <div className="d_flex_center image_notal notalPersons_left">
-                  <SvgLoader path="../img/Натальная карта.svg">
+                  <SvgLoader path="../../img/Натальная карта.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
 
@@ -812,7 +812,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -820,7 +820,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -828,7 +828,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -836,7 +836,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -844,7 +844,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -852,7 +852,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -860,7 +860,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -868,7 +868,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -876,7 +876,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -884,7 +884,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>
@@ -892,7 +892,7 @@ function NotalCommunity() {
                       </div>
                       <div className="table_text">
                         <div className="center_table">
-                          <SvgLoader path="../img/Aquarius1.svg">
+                          <SvgLoader path="../../img/Aquarius1.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                           <div className="table_text_time">2:22:10</div>

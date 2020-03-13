@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 
 //Модальной окно ВЫХОДА
 function ModalExit() {
@@ -15,7 +15,7 @@ function ModalExit() {
   return (
     <div>
       <div className="footer_menu" onClick={()=>{setOpen(true)}}>
-        <SvgLoader path="../img/logout.svg">
+        <SvgLoader path="../../img/logout.svg">
           <SvgProxy selector="#ca" />
         </SvgLoader>
         <div className="footer_menu_text">Сменить аккаунт/Выйти</div>

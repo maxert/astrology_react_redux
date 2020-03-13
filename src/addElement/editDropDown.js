@@ -1,45 +1,54 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Dropdown } from "semantic-ui-react";
+import { ReduceContext } from "../context/reducerContext";
+import { NavLink, useRouteMatch } from "react-router-dom";
+import { SvgLoader, SvgProxy } from "react-svgmt";
+//Функциональный Блок изменений карточки
+function DropdownExampleInline({ Values, onClickData,onClickDataNew }) {
+  const { url } = useRouteMatch();
+  const { none } = useContext(ReduceContext);
 
-
-//Функциональный Блок изменений карточки 
-
-const friendOptions = [
-  {
-    key: "0",
-    text: "В избранные",
-    value: "В избранные",
-    image: { avatar: true, src: "../img/favorites.svg" }
-  },
-  {
-    key: "1",
-    text: "Редактировать",
-    value: "Редактировать",
-    image: { avatar: true, src: "../img/Edit1.svg" }
-  },
-  {
-    key: "2",
-    text: "Удалить",
-    value: "Удалить",
-    image: { avatar: true, src: "../img/Delete1.svg" }
-  },
-  {
-    key: "3",
-    text: "Удалить из избранного",
-    value: "Удалить из избранного",
-    image: { avatar: true, src: "../img/Delete1.svg" }
-  }
-];
-
-const DropdownExampleInline = () => (
-  <span>
+  
+  return (
     <Dropdown
-      className="edit_drop"
+      className={"edit_drop"}
       inline
-      options={friendOptions}
-      defaultValue={0}
-    />
-  </span>
-);
+      floating
+      labeled
+      button
+      onChange={(events, data) => Values(data, events)}
+      onClick={(events, data) => onClickData(events, data)}
+    >
+      <Dropdown.Menu onClick={(events, value) => onClickDataNew(events, value)}>
+        <Dropdown.Item data-index="0">
+          <SvgLoader path="../../img/favorites.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          В избранные
+        </Dropdown.Item>
+        <Dropdown.Item data-index="1">
+          <SvgLoader path="../../img/Edit1.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          <NavLink to={`${url==="/favorite"?none.number_all.match:url}/${none.number_all.numbers}/edit`}>
+            Редактировать
+          </NavLink>
+        </Dropdown.Item>
+        <Dropdown.Item data-index="2">
+          <SvgLoader path="../../img/Delete1.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          Удалить
+        </Dropdown.Item>
+        <Dropdown.Item data-index="3">
+          <SvgLoader path="../../img/Delete1.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          Удалить из избранного
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+}
 
 export default DropdownExampleInline;

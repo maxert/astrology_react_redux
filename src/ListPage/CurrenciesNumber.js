@@ -5,7 +5,7 @@ import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
 import ResultCardCurrencies from "../addElement/resultcardcurrencies";
-import { ReduceContext } from "../context/reducerContext";
+import {ReduceContext} from "../context/reducerContext";
 
 
 //Страница валюты
@@ -17,7 +17,7 @@ function CurrenciesNumber() {
       <div className="button_header">
         <NavLink to={"/сurrencies"}>
           <div className="purple">
-            <SvgLoader path="../img/Arrow2.svg">
+            <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
@@ -27,7 +27,7 @@ function CurrenciesNumber() {
       <div className="header_unite">
         <div className="unit_left">
           <div className="elipse_profiler">
-            <img src="../img/Rectangle 89.png" alt="Картинка" />
+            <img src="../../img/Rectangle 89.png" alt="Картинка" />
           </div>
           <div className="text_big_all name_profile">
           Гривна
