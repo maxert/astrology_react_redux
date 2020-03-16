@@ -1,29 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
+import { EventContext } from "../context/eventReducer/eventContext";
+import { DatePicker } from "antd";
+import NumberFormat from "react-number-format";
 
 //Страница Добавления Событий
 
 function EventsEdit() {
   const { handleSubmit, register, errors } = useForm();
   const { url } = useRouteMatch();
-  const { none, Update_events, Fetch_one_events } = useContext(ReduceContext);
+  const { none, Fetch_one_events } = useContext(ReduceContext);
+  const [count, setCount] = useState("");
+  const { Update_events } = useContext(EventContext);
   useEffect(() => {
     Fetch_one_events(url.replace(/\D+/g, ""));
-  });
+  }, []);
 
   const onSubmit = values => {
     values["timezone"] = none.option_value;
-    Update_events(values, none.one_events.id);
+    Update_events(values, none.one_event.id);
   };
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to={`/event/id/${none.one_events&&none.one_events.id}`}>
+        <NavLink to={`/event/id/${none.one_event && none.one_event.id}`}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
@@ -32,7 +37,7 @@ function EventsEdit() {
           </div>
         </NavLink>
       </div>
-      {none.one_events && (
+      {none.one_event && (
         <div className="container_list container_create">
           <h2>Создание события</h2>
           <Form
@@ -48,7 +53,7 @@ function EventsEdit() {
                     <input
                       type="text"
                       name="name"
-                      defaultValue={none.one_events.name}
+                      defaultValue={none.one_event.name}
                       className={"" + (errors.name ? "active" : "")}
                       ref={register({
                         required: true,
@@ -64,7 +69,7 @@ function EventsEdit() {
                     rows="6"
                     type="text"
                     name="description"
-                    defaultValue={none.one_events.description}
+                    defaultValue={none.one_event.description}
                     className={"" + (errors.description ? "active" : "")}
                     ref={register({
                       required: true,
@@ -83,16 +88,26 @@ function EventsEdit() {
                     <Form.Field>
                       <Input placeholder="дд . мм . гггг">
                         <label>Дата</label>
-                        <Icon className="icon_date" />
-                        <input
+                        <Icon className="icon_date">
+                          <DatePicker
+                            onChange={(data, dataString) =>
+                              setCount(dataString)
+                            }
+                          ></DatePicker>
+                        </Icon>
+                        <NumberFormat
                           type="text"
                           name="event_date"
                           placeholder="дд . мм . гггг"
-                          defaultValue={none.one_events.event_date}
+                          format="####-##-##"
+                          value={
+                            count === "" ? none.one_event.event_date : count
+                          }
+                          defaultValue={none.one_event.event_date}
                           className={
                             "" + (errors.event_date ? "date active" : "")
                           }
-                          ref={register({
+                          getInputRef={register({
                             required: true,
                             pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                           })}
@@ -103,13 +118,15 @@ function EventsEdit() {
                   </div>
                   <Form.Field>
                     <label>Время рождения</label>
-                    <input
+                    <NumberFormat
                       type="text"
                       name="event_time"
+                      mask="_"
+                      format="##:##"
                       placeholder="пример: 21:34"
-                      defaultValue={none.one_events.event_time}
+                      defaultValue={none.one_event.event_time}
                       className={"" + (errors.event_time ? "active" : "")}
-                      ref={register({
+                      getInputRef={register({
                         required: true,
                         pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                       })}
@@ -123,7 +140,7 @@ function EventsEdit() {
                     <input
                       type="text"
                       name="city"
-                      defaultValue={none.one_events.city}
+                      defaultValue={none.one_event.city}
                       placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
                       className={"" + (errors.city ? "active" : "")}
                       ref={register({
@@ -148,7 +165,7 @@ function EventsEdit() {
                     <input
                       type="text"
                       name="longitude"
-                      defaultValue={none.one_events.longtitude}
+                      defaultValue={none.one_event.longtitude}
                       className={"" + (errors.longitude ? "active" : "")}
                       ref={register({
                         required: true,
@@ -162,7 +179,7 @@ function EventsEdit() {
                     <input
                       type="text"
                       name="latitude"
-                      defaultValue={none.one_events.latitude}
+                      defaultValue={none.one_event.latitude}
                       className={"" + (errors.latitude ? "active" : "")}
                       ref={register({
                         required: true,

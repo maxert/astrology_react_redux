@@ -2,30 +2,23 @@ import React, { useReducer } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
 import {
-  SHOW_ELEMENT,
-  HIDE_ELEMENT,
   LOG_OUT,
   LOG_IN,
   SELECT_LOCATION,
-  FETCH_DATA_PERSONS,
-  FETCH_ONE_PERSONS,
-  ADD_PERSONS,
-  DELETE_PERSONS,
   NUMBER_ALL,
-  UPDATE_PERSONS,
-  ADD_COMPANY,
-  FETCH_DATA_COMPANY,
-  DELETE_COMPANY,
-  FETCH_ONE_COMPANY,
-  UPDATE_COMPANY,
-  ADD_EVENTS,
-  FETCH_DATA_EVENTS,
-  DELETE_EVENTS,
-  FETCH_ONE_EVENTS,
-  UPDATE_EVENTS,
   ADD_FAVORITE,
   FETCH_DATA_FAVORITE,
-  DELETE_FAVORITE
+  DELETE_FAVORITE,
+  SEARCH,
+  SEARCH_SELECT,
+  CREATE_LINKS,
+  FETCH_LINKS,
+  ADD_TYPE_LINKS,
+  FETCH_ONE_PERSONS,
+  FETCH_ONE_EVENTS,
+  FETCH_ONE_COMPANY,
+  DELETE_LINK,
+  FETCH_NOTAL_CARD
 } from "./types";
 import Axios from "axios";
 
@@ -35,23 +28,17 @@ export const ReducerState = ({ children }) => {
     isLogin: localStorage.getItem("users") !== "null" ? true : false,
     token: localStorage.getItem("users"),
     option_value: "GMT+2",
-    data_persons: null,
-    data_company: null,
-    data_events: null,
     data_favorite: null,
-    number_all: ""
+    data_fetch_links: null,
+    number_all: "",
+    data_value: {
+      value:[],
+      isSearch:false
+    },
+    data_link: "/api/companies"
   };
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
-  const show = (text, type = "warning") => {
-    dispatch({
-      type: SHOW_ELEMENT,
-      visible: true
-    });
-  };
-  const hide = () => {
-    dispatch({ type: HIDE_ELEMENT, visible: false });
-  };
   const LogIn = async values => {
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/login",
@@ -61,7 +48,6 @@ export const ReducerState = ({ children }) => {
       }
     );
 
-    console.log(res);
     localStorage.setItem("users", res.data.data.api_token);
     dispatch({
       type: LOG_IN,
@@ -71,7 +57,7 @@ export const ReducerState = ({ children }) => {
   const SelectLocation = async value => {
     dispatch({
       type: SELECT_LOCATION,
-      option_value: value
+      payload: value
     });
   };
 
@@ -86,117 +72,13 @@ export const ReducerState = ({ children }) => {
       }
     );
 
-    console.log(res.data);
     dispatch({
       type: FETCH_DATA_FAVORITE,
       payload: res.data
     });
   };
-  const Fetch_data_persons = async number => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/persons?page=${
-        number === undefined ? 1 : number
-      }`,
 
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_DATA_PERSONS,
-      payload: res.data
-    });
-  };
-  const Fetch_data_сompany = async number => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/companies?page=${
-        number === undefined ? 1 : number
-      }`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_DATA_COMPANY,
-      payload: res.data
-    });
-  };
-
-  const Fetch_data_events = async number => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
-        number === undefined ? 1 : number
-      }`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_DATA_EVENTS,
-      payload: res.data
-    });
-  };
-  const Fetch_one_persons = async id => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_ONE_PERSONS,
-      payload: res.data
-    });
-  };
-  const Fetch_one_events = async id => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/events/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_ONE_EVENTS,
-      payload: res.data
-    });
-  };
-  const Fetch_one_company = async id => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/companies/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    console.log(res.data);
-    dispatch({
-      type: FETCH_ONE_COMPANY,
-      payload: res.data
-    });
-  };
-  const delete_favorite = async (id,type) => {
+  const delete_favorite = async (id, type) => {
     const res = await Axios.delete(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${type}&obj_id=${id}`,
       {
@@ -205,117 +87,25 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    Fetch_data_persons();
-    console.log(res.data);
     Fetch_data_favorite();
     dispatch({
       type: DELETE_FAVORITE
     });
   };
-  const delete_persons = async id => {
-    await Axios.delete(
-      "http://1690550.masgroup.web.hosting-test.net/api/persons/" + id,
+  const delete_link = async (id, obj_type, obj_id) => {
+    const res = await Axios.delete(
+      `http://1690550.masgroup.web.hosting-test.net/api/links/${id}`,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
-    Fetch_data_persons();
-
+    Fetch_links(obj_type, obj_id);
     dispatch({
-      type: DELETE_PERSONS
+      type: DELETE_LINK
     });
   };
-  const delete_company = async id => {
-    await Axios.delete(
-      "http://1690550.masgroup.web.hosting-test.net/api/companies/" + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    Fetch_data_сompany();
-
-    dispatch({
-      type: DELETE_COMPANY
-    });
-  };
-
-  const delete_events = async id => {
-    await Axios.delete(
-      "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    Fetch_data_events();
-
-    dispatch({
-      type: DELETE_EVENTS
-    });
-  };
-  const Update_persons = async (values, id) => {
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/persons/${id}?firstname=&lastname=&telephone=&email=&birth_date=&birth_time=&timezone=&latitude=&longtitude=&city=&image=`,
-      {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city,
-        image: "asd"
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    dispatch({
-      type: UPDATE_PERSONS,
-      add_update_json: res.data
-    });
-    console.log(res);
-  };
-
-  const Add_persons = async values => {
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/persons/?firstname=&lastname=&telephone=&email=&birth_date=&birth_time=&timezone=&latitude=&longtitude=&city=&image=",
-      {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city,
-        image: "asd"
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    dispatch({
-      type: ADD_PERSONS,
-      add_persons_json: res.data
-    });
-    console.log(res);
-  };
-
   const Add_favorite = async (type, id) => {
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=&obj_id=",
@@ -333,108 +123,107 @@ export const ReducerState = ({ children }) => {
       type: ADD_FAVORITE,
       add_favortie_json: res.data
     });
-    console.log(res);
-  };
-  const Update_company = async (values, id) => {
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/companies/${id}?name&telephone&email&birth_date&birth_time&timezone&latitude&longtitude&city&image&osnovatel&cnt_workers`,
-      {
-        name: values.name,
-        osnovatel: values.osnovatel,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city,
-        cnt_workers: parseInt(values.cnt_workers.replace(/\D+/g, "")),
-        image: "asd"
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    dispatch({
-      type: UPDATE_COMPANY,
-      add_company_json: res.data
-    });
-    console.log(res);
-  };
-  const Update_events = async (values, id) => {
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/events/${id}?name&description&event_date&event_time&timezone&latitude&longtitude&city`,
-      {
-        name: values.name,
-        description: values.description,
-        email: values.email,
-        telephone: values.telephone,
-        event_date: values.event_date,
-        event_time: values.event_time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    dispatch({
-      type: UPDATE_EVENTS,
-      add_update_json: res.data
-    });
-    console.log(res);
-  };
-  const Add_events = async values => {
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/events?name&description&event_date&event_time&timezone&latitude&longtitude&city",
-      {
-        name: values.name,
-        description: values.description,
-        email: values.email,
-        telephone: values.telephone,
-        event_date: values.event_date,
-        event_time: values.event_time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    dispatch({
-      type: ADD_EVENTS,
-      add_events_json: res.data
-    });
-    console.log(res);
   };
 
-  const Add_company = async values => {
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/companies?name&telephone&email&birth_date&birth_time&timezone&latitude&longtitude&city&image&osnovatel&cnt_workers",
+  const search_data = async (type, value, url) => {
+    var bool = true;
+    if (value.length === 0 || value === " ") {
+      value = "a";
+      bool = false;
+    }
+
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
       {
-        name: values.name,
-        osnovatel: values.osnovatel,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.time,
-        timezone: parseInt(values.timezone.replace(/\D+/g, "")),
-        longtitude: parseInt(values.longitude.replace(/\D+/g, "")),
-        latitude: parseInt(values.latitude.replace(/\D+/g, "")),
-        city: values.city,
-        cnt_workers: parseInt(values.cnt_workers.replace(/\D+/g, "")),
-        image: "asd"
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    const payload = Object.keys(res.data.persons).map(key => {
+      return {
+        ...res.data.persons[key],
+        id: res.data.persons[key].id,
+        title:
+          res.data.persons[key].name === undefined
+            ? res.data.persons[key].firstname +
+              " " +
+              res.data.persons[key].lastname
+            : res.data.persons[key].name,
+        content: url,
+        type_id: res.data.persons[key].id
+      };
+    });
+
+    dispatch({
+      type: SEARCH,
+      payload:{
+        value: payload,
+        isSearch: bool
+      }
+      
+    });
+  };
+  const search_data_links = async (type, value, url) => {
+    if (value.length === 0 || value === " ") {
+      value = "a";
+    }
+    debugger;
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    const payload = Object.keys(res.data.persons).map(key => {
+      return {
+        id: res.data.persons[key].id,
+        title:
+          res.data.persons[key].name === undefined
+            ? res.data.persons[key].firstname +
+              " " +
+              res.data.persons[key].lastname
+            : res.data.persons[key].name
+      };
+    });
+
+    dispatch({
+      type: SEARCH,
+      payload
+    });
+  };
+
+  const add_type_links = async (type, id) => {
+    dispatch({
+      type: ADD_TYPE_LINKS,
+      payload: {
+        type_link: type,
+        type_id: id
+      }
+    });
+  };
+  const search_select = async (type, id) => {
+    dispatch({
+      type: SEARCH_SELECT,
+      payload: {
+        type_link: type,
+        type_id: id
+      }
+    });
+  };
+
+  const create_links = async value => {
+    debugger;
+    const res = await Axios.post(
+      `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type&obj_id&link_obj_type=&link_obj_id=&name=`,
+      {
+        obj_type: value.obj_type,
+        obj_id: value.obj_id,
+        link_obj_type: value.link_obj_type,
+        link_obj_id: value.link_obj_id,
+        name: value.name
       },
       {
         headers: {
@@ -442,11 +231,26 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    Fetch_links(value.obj_type, value.obj_id);
     dispatch({
-      type: ADD_COMPANY,
-      add_company_json: res.data
+      type: CREATE_LINKS,
+      create_links: res.data
     });
-    console.log(res);
+  };
+  const Fetch_links = async (type, id) => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+
+    dispatch({
+      type: FETCH_LINKS,
+      payload: res.data
+    });
   };
   const number_all = async (numbers, links) => {
     dispatch({
@@ -464,32 +268,95 @@ export const ReducerState = ({ children }) => {
       token: null
     });
   };
+  const Fetch_one_persons = async id => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    add_type_links(res.data.type, res.data.id);
+    Fetch_notal_card(res.data.type, res.data.id);
+    Fetch_links(res.data.type, res.data.id);
+    dispatch({
+      type: FETCH_ONE_PERSONS,
+      payload: res.data
+    });
+  };
+
+  const Fetch_one_events = async id => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/events/` + id,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    add_type_links(res.data.type, res.data.id);
+    Fetch_notal_card(res.data.type, res.data.id);
+    Fetch_links(res.data.type, res.data.id);
+    dispatch({
+      type: FETCH_ONE_EVENTS,
+      payload: res.data
+    });
+  };
+  const Fetch_one_company = async id => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/companies/` + id,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    add_type_links(res.data.type, res.data.id);
+    Fetch_notal_card(res.data.type, res.data.id);
+    Fetch_links(res.data.type, res.data.id);
+    dispatch({
+      type: FETCH_ONE_COMPANY,
+      payload: res.data
+    });
+  };
+
+  const Fetch_notal_card = async (type, id) => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals?obj_type=${type}&obj_id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    console.log(res.data.data);
+    debugger;
+    dispatch({
+      type: FETCH_NOTAL_CARD,
+      payload: res.data
+    });
+  };
   return (
     <ReduceContext.Provider
       value={{
-        Add_events,
-        Update_company,
-        Update_persons,
-        Update_events,
-        number_all,
-        delete_company,
-        delete_persons,
-        delete_events,
-        Add_company,
-        Add_persons,
-        delete_favorite,
-        Fetch_data_events,
-        Fetch_data_сompany,
-        Fetch_data_favorite,
-        Fetch_one_events,
-        Fetch_one_persons,
         Fetch_one_company,
-        Fetch_data_persons,
+        Fetch_one_persons,
+        Fetch_notal_card,
+        Fetch_one_events,
+        add_type_links,
+        number_all,
+        search_select,
+        delete_link,
+        delete_favorite,
+        Fetch_data_favorite,
         SelectLocation,
+        search_data,
+        search_data_links,
+        create_links,
+        Fetch_links,
         LogIn,
         LogOut,
-        show,
-        hide,
         Add_favorite,
         none: state
       }}

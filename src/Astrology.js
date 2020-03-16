@@ -11,6 +11,7 @@ import Favorite from "./ListPage/Favorite";
 import Forms from "./forms/formsOpen";
 import { ReduceContext } from "./context/reducerContext";
 import ModalExit from "./addElement/modalExit";
+import { ShowState } from "./context/show/showState";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
@@ -144,8 +145,11 @@ function Astrology() {
               <Route path="/сountries" component={Countries} />
               <Route path="/сurrencies" component={Currencies} />
               <Route path="/event" component={Events} />
-              <Route path="/favorite" component={Favorite} />
-              <Route path="/ASD" component={Favorite} />
+              <Route path="/favorite">
+                <ShowState>
+                  <Favorite></Favorite>
+                </ShowState>
+              </Route>
             </Switch>
           </div>
         </div>

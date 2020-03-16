@@ -4,12 +4,16 @@ import { NavLink, useRouteMatch } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import { ReduceContext } from "../context/reducerContext";
 import ResultCardEvents from "../addElement/resultcardevents";
+import { ShowContext } from "../context/show/showContext";
+import { ReduceContext } from "../context/reducerContext";
 
 //Страница Событий
 function EventsList() {
-  const { hide, none, show, Fetch_one_events,number_all } = useContext(ReduceContext);
+
+  const { number_all ,Fetch_one_events,none} = useContext(ReduceContext);
+
+  const { hide, display, show } = useContext(ShowContext);
   const { url } = useRouteMatch();
   function handleClick(){
     let numbers = url.replace(/\D+/g, "");
@@ -17,7 +21,7 @@ function EventsList() {
   }
   useEffect(() => {
     Fetch_one_events(url.replace(/\D+/g, ""));
-  });
+  },[]);
 
   return (
     <div className="container_list">
@@ -31,20 +35,20 @@ function EventsList() {
           </div>
         </NavLink>
       </div>
-      {none.one_events && (
+      {none.one_event && (
         <div>
           <div className="header_unite">
             <div className="unit_left">
-              <div className="elipse_profiler"> {none.one_events.name[0]}</div>
+              <div className="elipse_profiler"> {none.one_event.name[0]}</div>
               <div className="text_big_all name_profile">
-                {none.one_events.name}
+                {none.one_event.name}
               </div>
-              <NavLink to={`/event/${none.one_events.id}/edit`} onClick={handleClick}>
+              <NavLink to={`/event/${none.one_event.id}/edit`} onClick={handleClick}>
                 <div className="edit_profile">Изменить</div>
               </NavLink>
             </div>
             <div className="unit_button_right">
-              <Button onClick={none.visible ? show : hide}>
+              <Button onClick={display.visible ? show : hide}>
                 Расчитать натальную карту
               </Button>
             </div>
@@ -54,7 +58,7 @@ function EventsList() {
               <div>
                 <div className="unit_info_right">Краткое описание:</div>
                 <div className="text_events">
-                {none.one_events.description}
+                {none.one_event.description}
                 </div>
               </div>
             </div>

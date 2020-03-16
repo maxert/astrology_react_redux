@@ -4,15 +4,14 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 import CreateNote from "./createNote";
 import NoteList from "./NoteList";
-import {ReduceContext} from "../context/reducerContext";
-
+import { ShowContext } from "../context/show/showContext";
+import { ReduceContext } from "../context/reducerContext";
 
 //Блок скрытой натальной карты персоны
 function ResultCardPersons() {
+  const { display } = useContext(ShowContext);
   const { none } = useContext(ReduceContext);
-  if (!none.visible) {
-    return null;
-  }
+
   return (
     <div className="element_continer">
       <div className="notal_card_community">
@@ -36,304 +35,181 @@ function ResultCardPersons() {
               </div>
             </div>
             <div className="notal_table_persons">
-            <div className="d_flex_center image_notal notalPersons_left">
+              <div className="d_flex_center image_notal notalPersons_left">
                 <SvgLoader path="../../img/Натальная карта.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
-                <div className="block_numbers">
-                  <div className="one">1</div>
-                  <div className="two">2</div>
-                  <div className="three">3</div>
-                  <div className="four">4</div>
-                  <div className="five">5</div>
-                  <div className="six">6</div>
-                  <div className="seven">7</div>
-                  <div className="eight">8</div>
-                  <div className="nine">9</div>
-                  <div className="ten">10</div>
-                  <div className="eleven">11</div>
-                  <div className="Twelve">12</div>
-                </div>
-                <div className="block_info">
-                  <div className="OneOne">
-                    <span>Asc</span> - Стр. 11:46:48
+
+                {none.data_notal !== undefined && (
+                  <div className="block_numbers">
+                    <div className="one">
+                      {none.data_notal.data.houses[5].nmz}
+                    </div>
+                    <div className="two">
+                      {none.data_notal.data.houses[6].nmz}
+                    </div>
+                    <div className="three">
+                      {none.data_notal.data.houses[7].nmz}
+                    </div>
+                    <div className="four">
+                      {none.data_notal.data.houses[8].nmz}
+                    </div>
+                    <div className="five">
+                      {none.data_notal.data.houses[9].nmz}
+                    </div>
+                    <div className="six">
+                      {none.data_notal.data.houses[10].nmz}
+                    </div>
+                    <div className="seven">
+                      {none.data_notal.data.houses[11].nmz}
+                    </div>
+                    <div className="eight">
+                      {none.data_notal.data.houses[12].nmz}
+                    </div>
+                    <div className="nine">
+                      {none.data_notal.data.houses[1].nmz}
+                    </div>
+                    <div className="ten">
+                      {none.data_notal.data.houses[2].nmz}
+                    </div>
+                    <div className="eleven">
+                      {none.data_notal.data.houses[3].nmz}
+                    </div>
+                    <div className="Twelve">
+                      {none.data_notal.data.houses[4].nmz}
+                    </div>
                   </div>
-                  <div className="OneTwo">
-                    <span>Asc</span> - Стр. 11:46:48
+                )}
+                {none.data_notal !== undefined && (
+                  <div className="block_info">
+                    <div className="grid_column_two">
+                      <div>
+                        {none.data_notal.data.houses[2].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[12].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid_column_three">
+                      <div>
+                        {none.data_notal.data.houses[3].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[1].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[11].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid_column_two">
+                      <div>
+                        {none.data_notal.data.houses[4].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[10].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid_column_three">
+                      <div>
+                        {none.data_notal.data.houses[5].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[7].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[9].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid_column_two">
+                      <div>
+                        {none.data_notal.data.houses[6].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                      <div>
+                        {none.data_notal.data.houses[7].pl.map(items => (
+                          <div className="OneOne">{items}</div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div className="OneThree">
-                    <span>Asc</span> - Стр. 11:46:48
-                  </div>
-                  <div className="TwoOne">
-                    <span>Ur</span> - Коз. 09:50:33
-                  </div>
-                  <div className="TwoTwo">
-                    <span>Ne</span> - Коз. 13:59:40 R
-                  </div>
-                  <div className="TwoThree">
-                    <span>Ne</span> - Коз. 13:59:40 R
-                  </div>
-                  <div className="ThreeOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="ThreeTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="ThreeThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="FourOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="FourTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="FourThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="FiveOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="FiveTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="FiveThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="SixOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="SixTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="SixThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="SevenOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="SevenTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="SevenThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="EightOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="EightTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="EightThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="NineOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="NineTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="NineThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="TenOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="TenTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="TenThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="ElevenOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="ElevenTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="ElevenThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                  <div className="TwelveOne">
-                    <span>Ur</span> - Коз. 00:16:57
-                  </div>
-                  <div className="TwelveTwo">
-                    <span>Sa</span> - Вод. 00:16:57
-                  </div>
-                  <div className="TwelveThree">
-                    <span>Sa</span> - Коз. 00:16:57
-                  </div>
-                </div>
+                )}
               </div>
               <div className="notalPersons_right">
                 <div className="container_info_persons_name">
                   Вимшотари Даша
                 </div>
                 <div className="table_persons_overflow">
-                  <div className="table_persons">
-                    <div className="table_persons_left">
-                      <div className="table_persons_left_text">Ke-Ke-Ke</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ve</div>
-                      <div className="table_persons_left_text">Ke-Ke-Su</div>
-                      <div className="table_persons_left_text">Ke-Ke-Mo</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ma</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ra</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ke</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ve</div>
-                      <div className="table_persons_left_text">Ke-Ke-Su</div>
-                      <div className="table_persons_left_text">Ke-Ke-Mo</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ma</div>
-                      <div className="table_persons_left_text">Ke-Ke-Ra</div>
-                    </div>
-                    <div className="table_persons_right">
-                      <div className="table_persons_date">
-                        Tue 31-05-1988 07:57
+                  {none.data_notal !== undefined && (
+                    <div className="table_persons">
+                      <div className="table_persons_left">
+                        {none.data_notal.data.dasha.map((items, i) => (
+                          <div className="table_persons_left_text" key={i}>
+                            {items[0]}
+                          </div>
+                        ))}
                       </div>
-                      <div className="table_persons_date">
-                        Thu 09-06-1988 00:45
-                      </div>
-                      <div className="table_persons_date">
-                        Sun 03-07-1988 21:19
-                      </div>
-                      <div className="table_persons_date">
-                        Mon 11-07-1988 08:18
-                      </div>
-                      <div className="table_persons_date">
-                        Sat 23-07-1988 18:35
-                      </div>
-                      <div className="table_persons_date">
-                        Mon 01-08-1988 11:23
-                      </div>
-                      <div className="table_persons_date">
-                        Tue 31-05-1988 07:57
-                      </div>
-                      <div className="table_persons_date">
-                        Thu 09-06-1988 00:45
-                      </div>
-                      <div className="table_persons_date">
-                        Sun 03-07-1988 21:19
-                      </div>
-                      <div className="table_persons_date">
-                        Mon 11-07-1988 08:18
-                      </div>
-                      <div className="table_persons_date">
-                        Sat 23-07-1988 18:35
-                      </div>
-                      <div className="table_persons_date">
-                        Mon 01-08-1988 11:23
+                      <div className="table_persons_right">
+                        {none.data_notal.data.dasha.map((items, i) => (
+                          <div className="table_persons_date" key={i}>
+                            {items[1]}
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="notalPersons_bottom">
-                <div className="table_planets">
-                  <div className="header_table">
-                    <div className="table_text table_text_small">Планета</div>
-                    <div className="table_text">Asc</div>
-                    <div className="table_text">Mo</div>
-                    <div className="table_text">Солнце</div>
-                    <div className="table_text">Меркурий</div>
-                    <div className="table_text">Венера</div>
-                    <div className="table_text">Марс</div>
-                    <div className="table_text">Юпитер</div>
-                    <div className="table_text">Сатурн</div>
-                    <div className="table_text">Уран</div>
-                    <div className="table_text">Нептун</div>
-                    <div className="table_text">Плутон</div>
-                  </div>
-                  <div className="footer_table">
-                    <div className="table_text table_text_small">Эклиптика</div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
+                {none.data_notal !== undefined && (
+                  <div className="table_planets">
+                    <div className="header_table">
+                      <div className="table_text table_text_small">Планета</div>
+                      {Object.keys(none.data_notal.data.res_planet).map(
+                        (items, i) => (
+                          <div className="table_text" key={i}>
+                            {items}
+                          </div>
+                        )
+                      )}
                     </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
+                    <div className="footer_table">
+                      <div className="table_text table_text_small">
+                        Эклиптика
                       </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
-                    </div>
-                    <div className="table_text">
-                      <div className="center_table">
-                        <SvgLoader path="../../img/Aquarius1.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                        <div className="table_text_time">2:22:10</div>
-                      </div>
+
+                      {Object.keys(none.data_notal.data.res_planet).map(
+                        (items, i) => (
+                          <div className="table_text" key={i}>
+                            <div className="center_table">
+                              <div className="table_text_time">{none.data_notal.data.res_planet[items].text}</div>
+                            </div>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

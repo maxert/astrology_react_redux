@@ -1,17 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
-import SelectLocation  from "../addElement/SelectLocation";
+import SelectLocation from "../addElement/SelectLocation";
 import NumberFormat from "react-number-format";
-import {ReduceContext} from "../context/reducerContext";
+
+import { PersonsContext } from "../context/personReducer/personContext";
+import { ReduceContext } from "../context/reducerContext";
+import { DatePicker } from "antd";
 
 //Блок Добавление Персоны
 function PersonsAdd() {
   const { handleSubmit, register, errors } = useForm();
-  const {none,Add_persons} = useContext(ReduceContext);
-  const onSubmit = (values) => {
+  const [count, setCount] = useState("");
+  const { none } = useContext(ReduceContext);
+  const { Add_persons } = useContext(PersonsContext);
+  const onSubmit = values => {
     values["timezone"] = none.option_value;
     Add_persons(values);
   };
@@ -43,7 +48,7 @@ function PersonsAdd() {
                     className={"" + (errors.firstname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                     })}
                   />
                   {errors.firstname && errors.firstname.message}
@@ -59,7 +64,7 @@ function PersonsAdd() {
                     className={"" + (errors.lastname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+){3,24}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                     })}
                   />
                   {errors.lastname && errors.lastname.message}
@@ -108,15 +113,22 @@ function PersonsAdd() {
                   <Form.Field>
                     <Input placeholder="дд . мм . гггг">
                       <label>Дата</label>
-                      <Icon className="icon_date" />
-                      <input
+                      <Icon className="icon_date">
+                        <DatePicker
+                          onChange={(data, dataString) => setCount(dataString)}
+                        ></DatePicker>
+                      </Icon>
+                      <NumberFormat
                         type="text"
                         name="birth_date"
                         placeholder="дд . мм . гггг"
+                        mask="_"
+                        format="####-##-##"
+                        value={count}
                         className={
                           "" + (errors.birth_date ? "date active" : "")
                         }
-                        ref={register({
+                        getInputRef={register({
                           required: true,
                           pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                         })}
@@ -127,12 +139,14 @@ function PersonsAdd() {
                 </div>
                 <Form.Field>
                   <label>Время рождения</label>
-                  <input
+                  <NumberFormat
                     type="text"
-                    name="time"
+                    name="birth_time"
                     placeholder="пример: 21:34"
+                    mask="_"
+                    format="##:##"
                     className={"" + (errors.birth_time ? "active" : "")}
-                    ref={register({
+                    getInputRef={register({
                       required: true,
                       pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                     })}

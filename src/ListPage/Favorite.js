@@ -3,30 +3,40 @@ import Search from "../addElement/search";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
-import { SelectExample } from "../addElement/Select";
+import  SelectExample  from "../addElement/Select";
 import EditDrop from "../addElement/editDropDown";
+import { ShowContext } from "../context/show/showContext";
 
 //Страница Избранные
 function Favorite() {
+  const { hide, display, show } = useContext(ShowContext);
+
   const {
-    hide,
     none,
-    show,
     Fetch_data_favorite,
     number_all,
-    delete_favorite
+    delete_favorite,
+    search_select
   } = useContext(ReduceContext);
 
-
+  function onChangeElement(event, data) {
+    search_select(data.value, event._targetInst._debugOwner.key);
+    console.log(event._targetInst._debugOwner.key);
+  }
   function newSubmite(events, id, type, value) {
     if (events.target.dataset.index === "3") {
-      debugger;
       delete_favorite(id, type);
     }
   }
   useEffect(() => {
     Fetch_data_favorite();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+
+ 
+
+
   return (
     <div className="container_list">
       <div className="search_container">
@@ -35,7 +45,7 @@ function Favorite() {
       <h2>Избранное</h2>
       <div className="container_persons container_favorites">
         <div className="container_persons_head">
-          <SelectExample></SelectExample>
+          <SelectExample onChangeElement={(event, data) => onChangeElement(event, data)}></SelectExample>
           <div className="container_persons_head_right">
             <div className="filter_abc">
               <button className="text_head_persons abs_to_A_and_Y button_select active">
@@ -49,16 +59,16 @@ function Favorite() {
             <div className="row_and_column">
               <SvgLoader
                 path="../../img/Group3.svg"
-                className={none.visible ? " " : "active"}
-                onClick={none.visible ? show : show}
+                className={display.visible ? " " : "active"}
+                onClick={display.visible ? show : show}
               >
                 <SvgProxy selector="#co" />
               </SvgLoader>
 
               <SvgLoader
                 path="../../img/Group4.svg"
-                className={none.visible ? "active" : " "}
-                onClick={none.visible ? hide : hide}
+                className={display.visible ? "active" : " "}
+                onClick={display.visible ? hide : hide}
               >
                 <SvgProxy selector="#co" />
               </SvgLoader>
@@ -66,10 +76,12 @@ function Favorite() {
           </div>
         </div>
 
-        {none.visible === false && (
+        {display.visible === false && (
           <div className="persons_list_grid">
             {none.data_favorite !== null &&
-              none.data_favorite.map((items, i) => (
+
+            
+              none.data_favorite.filter(x=>x.obj_type===none.data_link.type_id).map((items, i) => (
                 <div className="persons_items" key={i}>
                   <div className="persons_items_head d_flex_center">
                     <div className="container_info_persons d_flex_center">
@@ -127,10 +139,12 @@ function Favorite() {
                     </NavLink>
                   </div>
                 </div>
-              ))}
+              ))
+              
+              }
           </div>
         )}
-        {none.visible === true && (
+        {display.visible === true && (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
               <div className="header_persons_list_name">Имя</div>

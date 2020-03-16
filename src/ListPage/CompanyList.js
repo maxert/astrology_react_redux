@@ -1,22 +1,36 @@
 import React, { useContext, useEffect } from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, matchPath } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import { ReduceContext } from "../context/reducerContext";
 import ResultCardPersons from "../addElement/resultcardpersons";
+import { ShowContext } from "../context/show/showContext";
+
+import { ReduceContext } from "../context/reducerContext";
 
 //Страница компании
 function CompanyList() {
   const { url } = useRouteMatch();
-  const { hide, none, show, Fetch_one_company,number_all } = useContext(ReduceContext);
+  const { none, number_all, Fetch_one_company } = useContext(ReduceContext);
+
+  const { hide, display, show } = useContext(ShowContext);
+
+  const match = matchPath({
+    path: "/id/:id",
+    exact: true,
+    strict: false
+  });
+  if (match) {
+    console.log(match.params.topicId);
+  }
+
   useEffect(() => {
     Fetch_one_company(url.replace(/\D+/g, ""));
-  });
-  function handleClick(){
+  }, [url]);
+  function handleClick() {
     let numbers = url.replace(/\D+/g, "");
-    number_all(numbers,url);
+    number_all(numbers, url);
   }
   return (
     <div className="container_list">
@@ -38,12 +52,15 @@ function CompanyList() {
               <div className="text_big_all name_profile">
                 {none.one_company.name}
               </div>
-              <NavLink to={`/company/${none.one_company.id}/edit`} onClick={handleClick}>
+              <NavLink
+                to={`/company/${none.one_company.id}/edit`}
+                onClick={handleClick}
+              >
                 <div className="edit_profile">Изменить</div>
               </NavLink>
             </div>
             <div className="unit_button_right">
-              <Button onClick={none.visible ? show : hide}>
+              <Button onClick={display.visible ? show : hide}>
                 Расчитать натальную карту
               </Button>
             </div>

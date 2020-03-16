@@ -1,28 +1,21 @@
 import {
-  SHOW_ELEMENT,
-  HIDE_ELEMENT,
   LOG_IN,
   LOG_OUT,
   SELECT_LOCATION,
-  FETCH_DATA_PERSONS,
-  ADD_PERSONS,
-  DELETE_PERSONS,
-  FETCH_ONE_PERSONS,
   NUMBER_ALL,
-  UPDATE_PERSONS,
-  ADD_COMPANY,
-  FETCH_DATA_COMPANY,
-  DELETE_COMPANY,
-  FETCH_ONE_COMPANY,
-  UPDATE_COMPANY,
-  ADD_EVENTS,
-  DELETE_EVENTS,
-  FETCH_DATA_EVENTS,
-  FETCH_ONE_EVENTS,
-  UPDATE_EVENTS,
   ADD_FAVORITE,
   FETCH_DATA_FAVORITE,
-  DELETE_FAVORITE
+  DELETE_FAVORITE,
+  SEARCH,
+  SEARCH_SELECT,
+  CREATE_LINKS,
+  FETCH_LINKS,
+  ADD_TYPE_LINKS,
+  FETCH_ONE_EVENTS,
+  FETCH_ONE_COMPANY,
+  FETCH_ONE_PERSONS,
+  DELETE_LINK,
+  FETCH_NOTAL_CARD
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -37,79 +30,43 @@ const handlers = {
     isLogin: false,
     token: null
   }),
-  //Показать элемент
-  [SHOW_ELEMENT]: (state, { payload }) => ({
+  [SELECT_LOCATION]:(state, { payload }) => ({
     ...state,
-    visible: false
-  }),
-  //Скрыть элемент
-  [HIDE_ELEMENT]: state => ({
-    ...state,
-    visible: true
-  }),
-  [SELECT_LOCATION]: state => ({
-    ...state,
-    option_value: ""
-  }),
-  [FETCH_DATA_PERSONS]: (state, { payload }) => ({
-    ...state,
-    data_persons: payload
-  }),
-  [FETCH_DATA_COMPANY]: (state, { payload }) => ({
-    ...state,
-    data_company: payload
-  }),
-  [FETCH_DATA_EVENTS]: (state, { payload }) => ({
-    ...state,
-    data_events: payload
+    option_value: payload
   }),
   [FETCH_DATA_FAVORITE]: (state, { payload }) => ({
     ...state,
     data_favorite: payload
   }),
-  [ADD_PERSONS]: state => ({
-    ...state,
-    add_persons_json: []
-  }),
-  [ADD_COMPANY]: state => ({
-    ...state,
-    add_company_json: []
-  }),
-  [ADD_EVENTS]: state => ({
-    ...state,
-    add_events_json: []
-  }),
   [ADD_FAVORITE]: state => ({
     ...state,
     add_favorite_json: []
   }),
-  [UPDATE_PERSONS]: state => ({
-    ...state,
-    add_update_json: []
-  }),
-  [UPDATE_COMPANY]: state => ({
-    ...state,
-    add_update_json: []
-  }),
-  [UPDATE_EVENTS]: state => ({
-    ...state,
-    add_events_json: []
-  }),
-  [DELETE_PERSONS]: state => ({
-    ...state
-  }),
-  [DELETE_COMPANY]: state => ({
-    ...state
-  }),
-  [DELETE_EVENTS]: state => ({
-    ...state
-  }),
   [DELETE_FAVORITE]: state => ({
     ...state
   }),
-  [FETCH_ONE_PERSONS]: (state, { payload }) => ({
+  [FETCH_LINKS]: (state, { payload }) => ({
     ...state,
-    one_persons: payload
+    data_fetch_links: payload
+  }),
+  [NUMBER_ALL]: (state, { payload }) => ({
+    ...state,
+    number_all: payload
+  }),
+  [SEARCH]: (state, { payload }) => ({
+    ...state,
+    data_value:payload
+  }),
+  [SEARCH_SELECT]: (state, { payload }) => ({
+    ...state,
+    data_link: payload
+  }),
+  [ADD_TYPE_LINKS]: (state, { payload }) => ({
+    ...state,
+    data_id: payload
+  }),
+  [CREATE_LINKS]: (state, { payload }) => ({
+    ...state
   }),
   [FETCH_ONE_COMPANY]: (state, { payload }) => ({
     ...state,
@@ -117,13 +74,19 @@ const handlers = {
   }),
   [FETCH_ONE_EVENTS]: (state, { payload }) => ({
     ...state,
-    one_events: payload
+    one_event: payload
   }),
-  [NUMBER_ALL]: (state, { payload }) => ({
+  [FETCH_ONE_PERSONS]: (state, { payload }) => ({
     ...state,
-    number_all: payload
+    one_persons: payload
   }),
-  
+  [FETCH_NOTAL_CARD]: (state, { payload }) => ({
+    ...state,
+    data_notal: payload
+  }),
+  [DELETE_LINK]: state => ({
+    ...state
+  }),
   DEFAULT: state => state
 };
 export const AlertReducer = (state, action) => {

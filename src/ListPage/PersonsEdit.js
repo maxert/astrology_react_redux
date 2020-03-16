@@ -1,25 +1,30 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import NumberFormat from "react-number-format";
-import {ReduceContext} from "../context/reducerContext";
+
+import { PersonsContext } from "../context/personReducer/personContext";
+import { ReduceContext } from "../context/reducerContext";
+import { DatePicker } from "antd";
 
 //Блок Редактирования Персоны
 function PersonsEdit() {
+  const [count, setCount] = useState("");
   const { handleSubmit, register, errors } = useForm();
   const { url } = useRouteMatch();
-  const { none, Fetch_one_persons,Update_persons } = useContext(ReduceContext);
+  const { none, Fetch_one_persons } = useContext(ReduceContext);
+  const { Update_persons } = useContext(PersonsContext);
 
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
-  });
+  }, []);
 
   const onSubmit = values => {
     values["timezone"] = none.option_value;
-    Update_persons(values,none.one_persons.id)
+    Update_persons(values, none.one_persons.id);
   };
   return (
     <div className="container_add">
@@ -52,7 +57,7 @@ function PersonsEdit() {
                         className={"" + (errors.firstname ? "active" : "")}
                         ref={register({
                           required: true,
-                          pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                          pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                         })}
                       />
                       {errors.firstname && errors.firstname.message}
@@ -69,7 +74,7 @@ function PersonsEdit() {
                         className={"" + (errors.lastname ? "active" : "")}
                         ref={register({
                           required: true,
-                          pattern: /^([а-яё]+|[a-z]+){3,24}$/i
+                          pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                         })}
                       />
                       {errors.lastname && errors.lastname.message}
@@ -120,19 +125,32 @@ function PersonsEdit() {
                       <Form.Field>
                         <Input placeholder="дд . мм . гггг">
                           <label>Дата</label>
-                          <Icon className="icon_date" />
-                          <input
+                          <Icon className="icon_date">
+                            <DatePicker
+                              onChange={(data, dataString) =>
+                                setCount(dataString)
+                              }
+                            ></DatePicker>
+                          </Icon>
+                          <NumberFormat
                             type="text"
                             name="birth_date"
-                            defaultValue={none.one_persons.birth_date}
+                            format="####-##-##"
                             placeholder="дд . мм . гггг"
+                            mask="_"
+                            defaultValue={none.one_persons.birth_date}
+                            value={
+                              count === "" ? none.one_persons.birth_date : count
+                            }
+
                             className={
                               "" + (errors.birth_date ? "date active" : "")
                             }
-                            ref={register({
+                            getInputRef={register({
                               required: true,
                               pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                             })}
+                   
                           />
                           {errors.birth_date && errors.birth_date.message}
                         </Input>
@@ -140,13 +158,15 @@ function PersonsEdit() {
                     </div>
                     <Form.Field>
                       <label>Время рождения</label>
-                      <input
+                      <NumberFormat
                         type="text"
-                        name="time"
+                        name="birth_time"
+                        mask="_"
+                        format="##:##"
                         placeholder="пример: 21:34"
                         defaultValue={none.one_persons.birth_time}
                         className={"" + (errors.birth_time ? "active" : "")}
-                        ref={register({
+                        getInputRef={register({
                           required: true,
                           pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                         })}

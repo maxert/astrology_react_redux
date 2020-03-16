@@ -4,12 +4,12 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 import CreateNote from "./createNote";
 import NoteList from "./NoteList";
-import {ReduceContext} from "../context/reducerContext";
+import { ShowContext } from "../context/show/showContext";
 
 //Блок скрытой натальной карты События
 function ResultCardEvents() {
-  const { none } = useContext(ReduceContext);
-  if (!none.visible) {
+  const { display } = useContext(ShowContext);
+  if (!display.visible) {
     return null;
   }
   return (

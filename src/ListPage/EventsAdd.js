@@ -1,16 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
+import { EventContext } from "../context/eventReducer/eventContext";
+import { DatePicker } from "antd";
+import NumberFormat from "react-number-format";
 
 //Страница Добавления Событий
 
 function EventsAdd() {
+  const [count, setCount] = useState("");
   const { handleSubmit, register, errors } = useForm();
-  const { none, Add_events } = useContext(ReduceContext);
+  const { none } = useContext(ReduceContext);
+  const { Add_events } = useContext(EventContext);
+
   const onSubmit = values => {
     console.log(values);
     values["timezone"] = none.option_value;
@@ -76,15 +82,21 @@ function EventsAdd() {
                   <Form.Field>
                     <Input placeholder="дд . мм . гггг">
                       <label>Дата</label>
-                      <Icon className="icon_date" />
-                      <input
+                      <Icon className="icon_date">
+                        <DatePicker
+                          onChange={(data, dataString) => setCount(dataString)}
+                        ></DatePicker>
+                      </Icon>
+                      <NumberFormat
                         type="text"
                         name="event_date"
                         placeholder="дд . мм . гггг"
+                        format="####-##-##"
+                        value={count}
                         className={
                           "" + (errors.event_date ? "date active" : "")
                         }
-                        ref={register({
+                        getInputRef={register({
                           required: true,
                           pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                         })}
@@ -98,9 +110,11 @@ function EventsAdd() {
                   <input
                     type="text"
                     name="event_time"
+                    mask="_"
+                    format="##:##"
                     placeholder="пример: 21:34"
                     className={"" + (errors.event_time ? "active" : "")}
-                    ref={register({
+                    getInputRef={register({
                       required: true,
                       pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                     })}

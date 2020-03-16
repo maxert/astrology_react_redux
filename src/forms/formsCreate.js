@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Icon, Input, Checkbox, Button } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
+import NumberFormat from "react-number-format";
 
 //Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
- 
   const [count, setCount] = useState("");
   return (
     <form className="forms_create">
@@ -15,17 +15,30 @@ function InputExampleIconChild() {
         <Input placeholder="дд . мм . гггг">
           <label>Дата</label>
           <Icon className="icon_date">
-            <DatePicker onChange={(data,dataString) => setCount(dataString)}></DatePicker>
+            <DatePicker
+              onChange={(data, dataString) => setCount(dataString)}
+            ></DatePicker>
           </Icon>
-          <input className="date" value={count} />
+          <NumberFormat
+            className="date"
+            value={count}
+            placeholder="дд . мм . гггг"
+            mask="_"
+            format="####-##-##"
+          />
         </Input>
       </div>
 
       <div className="grid_column time_location">
         <div className="input_all">
-          <Input icon placeholder="22:43">
+          <Input>
             <label>Время:</label>
-            <input className="time" />
+            <NumberFormat
+              className="time"
+              placeholder="22:43"
+              mask="_"
+              format="##:##"
+            />
           </Input>
         </div>
         <div className="input_all">

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
-import SelectLocation  from "../addElement/SelectLocation";
+import SelectLocation from "../addElement/SelectLocation";
+import { DatePicker } from "antd";
 
 //Страница добавления валют
 function CurrenciesAdd() {
+  const [count, setCount] = useState("");
   return (
     <div className="container_add">
       <div className="button_header">
@@ -25,12 +27,12 @@ function CurrenciesAdd() {
             <div className="personal_date all_box">
               <div className="text_all">Личные данные</div>
               <Form.Group widths="equal">
-                <Form.Input fluid label="Название Валюты" placeholder="Введите Валюту" />
                 <Form.Input
                   fluid
-                  label="Страна"
-                  placeholder="Введите страну"
+                  label="Название Валюты"
+                  placeholder="Введите Валюту"
                 />
+                <Form.Input fluid label="Страна" placeholder="Введите страну" />
               </Form.Group>
               <Button>Сохранить</Button>
             </div>
@@ -40,8 +42,12 @@ function CurrenciesAdd() {
                 <div className="input_all">
                   <Input placeholder="дд . мм . гггг">
                     <label>Дата</label>
-                    <Icon className="icon_date" />
-                    <input className="date" />
+                    <Icon className="icon_date">
+                      <DatePicker
+                        onChange={(data, dataString) => setCount(dataString)}
+                      ></DatePicker>
+                    </Icon>
+                    <input className="date"  value={count}/>
                   </Input>
                 </div>
                 <Form.Input
@@ -50,7 +56,10 @@ function CurrenciesAdd() {
                   placeholder="пример: 21:34"
                 />
               </Form.Group>
-              <Form.Group widths="equal" className="grid_column center_grid location_input_top">
+              <Form.Group
+                widths="equal"
+                className="grid_column center_grid location_input_top"
+              >
                 <Form.Input
                   fluid
                   label="Место рождения"
@@ -84,13 +93,12 @@ function CurrenciesAdd() {
           </div>
           <div className="create_persons_left">
             <div className="block_image">
-              <div className="image_contaner_perons">
-                У
-              </div>
+              <div className="image_contaner_perons">У</div>
               <div className="button_add">
-              <SvgLoader path="../../img/Photosm.svg">
-              <SvgProxy selector="#cst" />
-            </SvgLoader> Добавить аватар
+                <SvgLoader path="../../img/Photosm.svg">
+                  <SvgProxy selector="#cst" />
+                </SvgLoader>{" "}
+                Добавить аватар
               </div>
               <input type="file" name="file" />
             </div>

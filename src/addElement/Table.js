@@ -1,14 +1,14 @@
 import React,{useContext} from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import {ReduceContext} from "../context/reducerContext"
+import { ShowContext } from "../context/show/showContext";
 
 
 //Блок с таблицами
 export const TableList = () => {
 
 
-  const { none } = useContext(ReduceContext);
-  if (none.visible) {
+  const { display } = useContext(ShowContext);
+  if (display.visible) {
     return null;
   }
  

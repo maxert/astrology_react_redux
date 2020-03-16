@@ -5,20 +5,27 @@ import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
 import ResultCardPersons from "../addElement/resultcardpersons";
-import {ReduceContext} from "../context/reducerContext";
+import { ReduceContext } from "../context/reducerContext";
+
+import { ShowContext } from "../context/show/showContext";
 
 //Страница Персоны
 function PersonsUnit() {
   const { url } = useRouteMatch();
-  const { hide, none, show, Fetch_one_persons,number_all } = useContext(ReduceContext);
+  const { number_all, Fetch_one_persons, none } = useContext(ReduceContext);
+  const { hide, display, show } = useContext(ShowContext);
 
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
-  });
-  function handleClick(){
+  }, []);
+
+
+  
+  function handleClick() {
     let numbers = url.replace(/\D+/g, "");
-    number_all(numbers,url);
+    number_all(numbers, url);
   }
+
   return (
     <div className="container_list">
       <div className="button_header">
@@ -35,18 +42,19 @@ function PersonsUnit() {
         <div>
           <div className="header_unite">
             <div className="unit_left">
-              <div className="elipse_profiler">
-                {none.one_persons.firstname[0]}
-              </div>
+              <div className="elipse_profiler">{none.one_persons.firstname[0]}</div>
               <div className="text_big_all name_profile">
                 {none.one_persons.firstname + " " + none.one_persons.lastname}
               </div>
-              <NavLink to={`/person/${none.one_persons.id}/edit`} onClick={handleClick}>
+              <NavLink
+                to={`/person/${none.one_persons.id}/edit`}
+                onClick={handleClick}
+              >
                 <div className="edit_profile">Изменить</div>
               </NavLink>
             </div>
             <div className="unit_button_right">
-              <Button onClick={none.visible ? show : hide}>
+              <Button onClick={display.visible ? show : hide}>
                 Расчитать натальную карту
               </Button>
             </div>
@@ -73,7 +81,9 @@ function PersonsUnit() {
               </div>
               <div className="d_flex_center">
                 <div className="unit_info_left">Часовой пояс:</div>
-                <div className="unit_info_right">GMT+{none.one_persons.timezone}</div>
+                <div className="unit_info_right">
+                  GMT+{none.one_persons.timezone}
+                </div>
               </div>
             </div>
           </div>

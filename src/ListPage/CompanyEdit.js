@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
@@ -6,17 +6,21 @@ import SelectLocation from "../addElement/SelectLocation";
 import { ReduceContext } from "../context/reducerContext";
 import { useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import { CompanyContext } from "../context/companyReducer/companyContext";
+import { DatePicker } from "antd";
 
 //Страница редактирования компаний
 
 function CompanyEdit() {
   const { handleSubmit, register, errors } = useForm();
-  const { none, Fetch_one_company, Update_company } = useContext(ReduceContext);
+  const { none, Fetch_one_company } = useContext(ReduceContext);
+  const { Update_company } = useContext(CompanyContext);
+  const [count, setCount] = useState("");
   const { url } = useRouteMatch();
 
   useEffect(() => {
     Fetch_one_company(url.replace(/\D+/g, ""));
-  });
+  }, [url]);
 
   const onSubmit = values => {
     values["timezone"] = none.option_value;
@@ -25,7 +29,7 @@ function CompanyEdit() {
   return (
     <div className="container_add">
       <div className="button_header">
-      <NavLink to={`/company/id/${none.one_company&&none.one_company.id}`}>
+        <NavLink to={`/company/id/${none.one_company && none.one_company.id}`}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
@@ -52,7 +56,7 @@ function CompanyEdit() {
                       className={"" + (errors.name ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                       })}
                     />
                     {errors.name && errors.name.message}
@@ -67,7 +71,7 @@ function CompanyEdit() {
                       className={"" + (errors.osnovatel ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                       })}
                     />
                     {errors.osnovatel && errors.osnovatel.message}
@@ -134,12 +138,23 @@ function CompanyEdit() {
                     <Form.Field>
                       <Input placeholder="дд . мм . гггг">
                         <label>Дата</label>
-                        <Icon className="icon_date" />
-                        <input
+                        <Icon className="icon_date">
+                          <DatePicker
+                            onChange={(data, dataString) =>
+                              setCount(dataString)
+                            }
+                          ></DatePicker>
+                        </Icon>
+                        <NumberFormat
                           type="text"
                           name="birth_date"
+                          format="####-##-##"
                           placeholder="дд . мм . гггг"
+                          mask="_"
                           defaultValue={none.one_company.birth_date}
+                          value={
+                            count === "" ? none.one_company.birth_date : count
+                          }
                           className={
                             "" + (errors.birth_date ? "date active" : "")
                           }
@@ -156,8 +171,10 @@ function CompanyEdit() {
                     <label>Время рождения</label>
                     <input
                       type="text"
-                      name="time"
+                      name="birth_time"
                       placeholder="пример: 21:34"
+                      mask="_"
+                      format="##:##"
                       defaultValue={none.one_company.birth_time}
                       className={"" + (errors.birth_time ? "active" : "")}
                       ref={register({

@@ -11,7 +11,9 @@ import EventsList from "./EventsList";
 import EventsEdit from "./EventsEdit";
 import { ReduceContext } from "../context/reducerContext";
 import PaginationExamplePagination from "../addElement/pagination";
-
+import { EventContext } from "../context/eventReducer/eventContext";
+import { EventState } from "../context/eventReducer/eventState";
+import { ShowState } from "../context/show/showState";
 //Локализация календаря
 moment.locale("ru");
 
@@ -22,18 +24,18 @@ function EventsHome() {
     console.log(value, mode);
   }
 
-  const { Fetch_data_events, delete_events, none ,Add_favorite} = useContext(
-    ReduceContext
+  const { Add_favorite } = useContext(ReduceContext);
+  const { Fetch_data_events, delete_events, state_event } = useContext(
+    EventContext
   );
 
   function pagination(Value) {
     Fetch_data_events(Value._targetInst.pendingProps.value);
   }
 
-
   useEffect(() => {
     Fetch_data_events();
-  });
+  }, []);
 
   return (
     <div className="container_list">
@@ -47,11 +49,12 @@ function EventsHome() {
         </NavLink>
         <div className="calendar_container">
           <div className="calendar_container_left">
-            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+            <Calendar fullscreen={false} onPanelChange={onPanelChange} disabledDays={[new Date(2020, 3, 15), { daysOfWeek: [0, 6] }]} />
           </div>
           <div className="calendar_container_right">
             <div className="date_items">
               <div className="data_items_text">Январь</div>
+              {/* <Calendar fullscreen={false} onPanelChange={onPanelChange} /> */}
             </div>
             <div className="date_items">
               <div className="data_items_text">Февраль</div>
@@ -95,8 +98,8 @@ function EventsHome() {
             <div className="header_persons_list_city">Город</div>
           </div>
           <div className="persons_list_column">
-            {none.data_events !== null &&
-              none.data_events.events.map((events, i) => (
+            {state_event.data_events !== null &&
+              state_event.data_events.events.map((events, i) => (
                 <div className="persons_items" key={i}>
                   <div className="persons_items_head ">
                     <div className="container_info_persons d_flex_center">
@@ -133,7 +136,10 @@ function EventsHome() {
                   <div className="d_flex_center adress_persons">
                     <div className="persons_text_right">{events.city}</div>
                   </div>
-                  <div className="d_flex_center favorite_persons" onClick={()=>Add_favorite("event",events.id)}>
+                  <div
+                    className="d_flex_center favorite_persons"
+                    onClick={() => Add_favorite("event", events.id)}
+                  >
                     <SvgLoader path="../../img/favorites.svg">
                       <SvgProxy selector="#co" />
                     </SvgLoader>
@@ -166,7 +172,9 @@ function EventsHome() {
           </div>
           <div className="d_flex_center pagination">
             <PaginationExamplePagination
-              listPageAll={none.data_events ? none.data_events.pages : 1}
+              listPageAll={
+                state_event.data_events ? state_event.data_events.pages : 1
+              }
               listpagedefault={1}
               SelectPagination={SelectPagination =>
                 pagination(SelectPagination)
@@ -182,12 +190,18 @@ function EventsHome() {
 function Events() {
   let { path } = useRouteMatch();
   return (
-    <Switch>
-      <Route exact path={path} component={EventsHome} />
-      <Route path={`${path}/id/:id`} component={EventsList} />
-      <Route path={`${path}/add`} component={EventsAdd} />
-      <Route path={`${path}/:id/edit`} component={EventsEdit} />
-    </Switch>
+    <EventState>
+      <Switch>
+        <Route exact path={path} component={EventsHome} />
+        <Route path={`${path}/id/:id`}>
+          <ShowState>
+            <EventsList></EventsList>
+          </ShowState>
+        </Route>
+        <Route path={`${path}/add`} component={EventsAdd} />
+        <Route path={`${path}/:id/edit`} component={EventsEdit} />
+      </Switch>
+    </EventState>
   );
 }
 export default Events;

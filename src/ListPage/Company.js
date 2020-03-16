@@ -9,18 +9,19 @@ import CompanyAdd from "../ListPage/CompanyAdd";
 import { ReduceContext } from "../context/reducerContext";
 import CompanyEdit from "./CompanyEdit";
 import PaginationExamplePagination from "../addElement/pagination";
+import { ShowState } from "../context/show/showState";
+import { ShowContext } from "../context/show/showContext";
+import { CompanyContext } from "../context/companyReducer/companyContext";
+import { CompanyState } from "../context/companyReducer/companyState";
 
 //Страница списка компаний
 function CompanyHome() {
-  const {
-    hide,
-    none,
-    show,
-    Fetch_data_сompany,
-    delete_company,
-    number_all,
-    Add_favorite
-  } = useContext(ReduceContext);
+  const { hide, display, show } = useContext(ShowContext);
+  const { number_all, Add_favorite } = useContext(ReduceContext);
+  const { state_company, Fetch_data_сompany, delete_company } = useContext(
+    CompanyContext
+  );
+
   let { url } = useRouteMatch();
   function pagination(Value) {
     Fetch_data_сompany(Value._targetInst.pendingProps.value);
@@ -36,7 +37,7 @@ function CompanyHome() {
   }
   useEffect(() => {
     Fetch_data_сompany();
-  });
+  }, []);
 
   return (
     <div className="container_list">
@@ -71,16 +72,16 @@ function CompanyHome() {
             <div className="row_and_column">
               <SvgLoader
                 path="../../img/Group3.svg"
-                className={none.visible ? " " : "active"}
-                onClick={none.visible ? show : show}
+                className={display.visible ? " " : "active"}
+                onClick={display.visible ? show : show}
               >
                 <SvgProxy selector="#co" />
               </SvgLoader>
 
               <SvgLoader
                 path="../../img/Group4.svg"
-                className={none.visible ? "active" : " "}
-                onClick={none.visible ? hide : hide}
+                className={display.visible ? "active" : " "}
+                onClick={display.visible ? hide : hide}
               >
                 <SvgProxy selector="#co" />
               </SvgLoader>
@@ -88,10 +89,10 @@ function CompanyHome() {
           </div>
         </div>
 
-        {none.visible === false && (
+        {display.visible === false && (
           <div className="persons_list_grid">
-            {none.data_company !== null &&
-              none.data_company.companies.map(companies => (
+            {state_company.data_company !== null &&
+              state_company.data_company.companies.map(companies => (
                 <div className="persons_items" key={companies.id}>
                   <div className="persons_items_head d_flex_center">
                     <div className="container_info_persons d_flex_center">
@@ -138,7 +139,7 @@ function CompanyHome() {
               ))}
           </div>
         )}
-        {none.visible === true && (
+        {display.visible === true && (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
               <div className="header_persons_list_name">Название компании</div>
@@ -146,8 +147,8 @@ function CompanyHome() {
               <div className="header_persons_list_city">Город</div>
             </div>
             <div className="persons_list_column">
-              {none.data_company !== undefined &&
-                none.data_company.companies.map((companies, i) => (
+              {state_company.data_company !== undefined &&
+                state_company.data_company.companies.map((companies, i) => (
                   <div className="persons_items" key={i}>
                     <div className="persons_items_head ">
                       <div className="container_info_persons d_flex_center">
@@ -184,7 +185,10 @@ function CompanyHome() {
                     <div className="d_flex_center adress_persons">
                       <div className="persons_text_right">{companies.city}</div>
                     </div>
-                    <div className="d_flex_center favorite_persons" onClick={()=>Add_favorite("company", companies.id)}>
+                    <div
+                      className="d_flex_center favorite_persons"
+                      onClick={() => Add_favorite("company", companies.id)}
+                    >
                       <SvgLoader path="../../img/favorites.svg">
                         <SvgProxy selector="#co" />
                       </SvgLoader>
@@ -220,7 +224,9 @@ function CompanyHome() {
       </div>
       <div className="d_flex_center pagination">
         <PaginationExamplePagination
-          listPageAll={none.data_company ? none.data_company.pages : 1}
+          listPageAll={
+            state_company.data_company ? state_company.data_company.pages : 1
+          }
           listpagedefault={1}
           SelectPagination={SelectPagination => pagination(SelectPagination)}
         />
@@ -231,12 +237,27 @@ function CompanyHome() {
 function Company() {
   let { path } = useRouteMatch();
   return (
-    <Switch>
-      <Route exact path={path} component={CompanyHome} />
-      <Route path={`${path}/id/:id`} component={CompanyList} />
-      <Route path={`${path}/add`} component={CompanyAdd} />
-      <Route path={`${path}/:id/edit`} component={CompanyEdit} />
-    </Switch>
+    <CompanyState>
+      <Switch>
+        <Route exact path={path}>
+          <ShowState>
+            <CompanyHome></CompanyHome>
+          </ShowState>
+        </Route>
+        <Route exact path={`${path}/id/:id?`} >
+          <ShowState>
+            <CompanyList></CompanyList>
+          </ShowState>
+        </Route>
+        <Route strict path={`${path}/link/:id`} >
+          <ShowState>
+            <CompanyList></CompanyList>
+          </ShowState>
+        </Route>
+        <Route path={`${path}/add`} component={CompanyAdd} />
+        <Route path={`${path}/:id/edit`} component={CompanyEdit} />
+      </Switch>
+    </CompanyState>
   );
 }
 export default Company;

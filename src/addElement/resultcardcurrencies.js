@@ -4,14 +4,14 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "../addElement/SelectNew";
 import CreateNote from "./createNote";
 import NoteList from "./NoteList";
-import {ReduceContext} from "../context/reducerContext";
 import { SelectCurrentry } from "./SelectCurrentry";
+import { ShowContext } from "../context/show/showContext";
 
 
 //Блок скрытой натальной карты валюты
 function NotalCommunity() {
-  const { none } = useContext(ReduceContext);
-  if (!none.visible) {
+  const { display } = useContext(ShowContext);
+  if (!display.visible) {
     return null;
   }
   return (

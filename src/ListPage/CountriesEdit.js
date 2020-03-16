@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
-import SelectLocation  from "../addElement/SelectLocation";
-
+import SelectLocation from "../addElement/SelectLocation";
+import { DatePicker } from "antd";
 
 //Страница редактирования стран
 function CountriesEdit() {
+  const [count, setCount] = useState("");
   return (
     <div className="container_add">
       <div className="button_header">
@@ -38,7 +39,11 @@ function CountriesEdit() {
                 />
               </Form.Group>
               <div className="grid_column">
-                <Form.Input fluid label="Население страны" placeholder="Введите население страны" />
+                <Form.Input
+                  fluid
+                  label="Население страны"
+                  placeholder="Введите население страны"
+                />
               </div>
               <Button>Сохранить</Button>
             </div>
@@ -48,8 +53,12 @@ function CountriesEdit() {
                 <div className="input_all">
                   <Input placeholder="дд . мм . гггг">
                     <label>Дата</label>
-                    <Icon className="icon_date" />
-                    <input className="date" />
+                    <Icon className="icon_date">
+                      <DatePicker
+                        onChange={(data, dataString) => setCount(dataString)}
+                      ></DatePicker>
+                    </Icon>
+                    <input className="date" value={count}/>
                   </Input>
                 </div>
                 <Form.Input
@@ -114,4 +123,3 @@ function CountriesEdit() {
 }
 
 export default CountriesEdit;
- 
