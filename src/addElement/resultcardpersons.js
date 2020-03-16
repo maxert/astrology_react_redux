@@ -11,7 +11,9 @@ import { ReduceContext } from "../context/reducerContext";
 function ResultCardPersons() {
   const { display } = useContext(ShowContext);
   const { none } = useContext(ReduceContext);
-
+  if (!display.visible) {
+    return null;
+  }
   return (
     <div className="element_continer">
       <div className="notal_card_community">
@@ -202,7 +204,9 @@ function ResultCardPersons() {
                         (items, i) => (
                           <div className="table_text" key={i}>
                             <div className="center_table">
-                              <div className="table_text_time">{none.data_notal.data.res_planet[items].text}</div>
+                              <div className="table_text_time">
+                                {none.data_notal.data.res_planet[items].text}
+                              </div>
                             </div>
                           </div>
                         )

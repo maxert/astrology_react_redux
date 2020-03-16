@@ -3,7 +3,7 @@ import Search from "../addElement/search";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
-import  SelectExample  from "../addElement/Select";
+import SelectExample from "../addElement/Select";
 import EditDrop from "../addElement/editDropDown";
 import { ShowContext } from "../context/show/showContext";
 
@@ -16,12 +16,14 @@ function Favorite() {
     Fetch_data_favorite,
     number_all,
     delete_favorite,
-    search_select
+    favorite_select
   } = useContext(ReduceContext);
 
   function onChangeElement(event, data) {
-    search_select(data.value, event._targetInst._debugOwner.key);
-    console.log(event._targetInst._debugOwner.key);
+    const key = data.options.filter(x => x.value === data.value);
+    favorite_select(data.value, key[0].key);
+    console.log(key[0].key);
+    debugger;
   }
   function newSubmite(events, id, type, value) {
     if (events.target.dataset.index === "3") {
@@ -30,12 +32,8 @@ function Favorite() {
   }
   useEffect(() => {
     Fetch_data_favorite();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
-
-
- 
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="container_list">
@@ -45,7 +43,9 @@ function Favorite() {
       <h2>Избранное</h2>
       <div className="container_persons container_favorites">
         <div className="container_persons_head">
-          <SelectExample onChangeElement={(event, data) => onChangeElement(event, data)}></SelectExample>
+          <SelectExample
+            onChangeElement={(event, data) => onChangeElement(event, data)}
+          ></SelectExample>
           <div className="container_persons_head_right">
             <div className="filter_abc">
               <button className="text_head_persons abs_to_A_and_Y button_select active">
@@ -79,69 +79,67 @@ function Favorite() {
         {display.visible === false && (
           <div className="persons_list_grid">
             {none.data_favorite !== null &&
-
-            
-              none.data_favorite.filter(x=>x.obj_type===none.data_link.type_id).map((items, i) => (
-                <div className="persons_items" key={i}>
-                  <div className="persons_items_head d_flex_center">
-                    <div className="container_info_persons d_flex_center">
-                      <div className="icon_image active">
-                        {items.firstname ? items.firstname[0] : items.name[0]}
-                        <SvgLoader
-                          className="favorite_svg"
-                          path="../../img/favorites_21.svg"
-                        >
+              none.data_favorite
+                .filter(x => x.obj_type === none.data_link_favorite.type_id)
+                .map((items, i) => (
+                  <div className="persons_items" key={i}>
+                    <div className="persons_items_head d_flex_center">
+                      <div className="container_info_persons d_flex_center">
+                        <div className="icon_image active">
+                          {items.firstname ? items.firstname[0] : items.name[0]}
+                          <SvgLoader
+                            className="favorite_svg"
+                            path="../../img/favorites_21.svg"
+                          >
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </div>
+                        <div className="container_info_persons_name">
+                          {items.firstname
+                            ? items.firstname + " " + items.lastname
+                            : items.name}
+                        </div>
+                      </div>
+                      <div className="persons_edit">
+                        <EditDrop
+                          key={items.id}
+                          onClickDataNew={(events, data) =>
+                            newSubmite(events, items.id, items.obj_type, data)
+                          }
+                          onClickData={() =>
+                            number_all(items.id, `/${items.obj_type}`)
+                          }
+                        ></EditDrop>
+                        <SvgLoader path="../../img/Group5.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
                       </div>
-                      <div className="container_info_persons_name">
-                        {items.firstname
-                          ? items.firstname + " " + items.lastname
-                          : items.name}
+                    </div>
+                    <div className="d_flex_center date_persons">
+                      <div className="persons_text_left">День рождения:</div>
+                      <div className="persons_text_right">
+                        {items.birth_date !== undefined
+                          ? items.birth_date
+                          : items.event_date}
                       </div>
                     </div>
-                    <div className="persons_edit">
-                      <EditDrop
-                        key={items.id}
-                        onClickDataNew={(events, data) =>
-                          newSubmite(events, items.id, items.obj_type, data)
-                        }
-                        onClickData={() =>
-                          number_all(items.id, `/${items.obj_type}`)
-                        }
-                      ></EditDrop>
-                      <SvgLoader path="../../img/Group5.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
+                    <div className="d_flex_center adress_persons">
+                      <div className="persons_text_left">Город:</div>
+                      <div className="persons_text_right">{items.city}</div>
+                    </div>
+                    <div className="d_flex_center page_persons">
+                      <NavLink
+                        className="text_link d_flex_center"
+                        to={`/${items.obj_type}/id/${items.id}`}
+                      >
+                        Перейти{" "}
+                        <SvgLoader path="../../img/Arrow_21.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                      </NavLink>
                     </div>
                   </div>
-                  <div className="d_flex_center date_persons">
-                    <div className="persons_text_left">День рождения:</div>
-                    <div className="persons_text_right">
-                      {items.birth_date !== undefined
-                        ? items.birth_date
-                        : items.event_date}
-                    </div>
-                  </div>
-                  <div className="d_flex_center adress_persons">
-                    <div className="persons_text_left">Город:</div>
-                    <div className="persons_text_right">{items.city}</div>
-                  </div>
-                  <div className="d_flex_center page_persons">
-                    <NavLink
-                      className="text_link d_flex_center"
-                      to={`/${items.obj_type}/id/${items.id}`}
-                    >
-                      Перейти{" "}
-                      <SvgLoader path="../../img/Arrow_21.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                    </NavLink>
-                  </div>
-                </div>
-              ))
-              
-              }
+                ))}
           </div>
         )}
         {display.visible === true && (
@@ -158,13 +156,13 @@ function Favorite() {
                     <div className="persons_items_head ">
                       <div className="container_info_persons d_flex_center">
                         <div className="icon_image">
-                        {items.firstname ? items.firstname[0] : items.name[0]}
+                          {items.firstname ? items.firstname[0] : items.name[0]}
                         </div>
                         <div className="container_info_persons_column">
                           <div className="container_info_persons_name">
-                          {items.firstname
-                          ? items.firstname + " " + items.lastname
-                          : items.name}
+                            {items.firstname
+                              ? items.firstname + " " + items.lastname
+                              : items.name}
                           </div>
                           <NavLink
                             className="text_link d_flex_center"
@@ -195,13 +193,19 @@ function Favorite() {
                       </SvgLoader>
                       <div className="persons_text_right">В избранные</div>
                     </div>
-                    <NavLink  to={`/${items.obj_type}/${items.id}/edit`} className="d_flex_center edit_persons">
+                    <NavLink
+                      to={`/${items.obj_type}/${items.id}/edit`}
+                      className="d_flex_center edit_persons"
+                    >
                       <SvgLoader path="../../img/Edit1.svg">
                         <SvgProxy selector="#co" />
                       </SvgLoader>
                       <div className="persons_text_right">Редактировать</div>
                     </NavLink>
-                    <div className="d_flex_center delete_persons" onClick={()=>delete_favorite(items.id, items.obj_type)}>
+                    <div
+                      className="d_flex_center delete_persons"
+                      onClick={() => delete_favorite(items.id, items.obj_type)}
+                    >
                       <SvgLoader path="../../img/Delete1.svg">
                         <SvgProxy selector="#co" />
                       </SvgLoader>

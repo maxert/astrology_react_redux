@@ -182,7 +182,12 @@ function PersonsHome() {
                     </div>
                   </div>
                 ))}
-                {none.data_value.value.length===0&&<div className="center_none_grid">Результатов не найденно</div>}
+            {none.data_value.isSearch === true &&
+            none.data_value.value.length === 0 ? (
+              <div className="center_none_grid">Результатов не найденно</div>
+            ) : (
+              <div></div>
+            )}
           </div>
         )}
         {display.visible === true && (

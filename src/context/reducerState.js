@@ -18,7 +18,9 @@ import {
   FETCH_ONE_EVENTS,
   FETCH_ONE_COMPANY,
   DELETE_LINK,
-  FETCH_NOTAL_CARD
+  FETCH_NOTAL_CARD,
+  FAVORITE_SELECT,
+  SELECT_HOME
 } from "./types";
 import Axios from "axios";
 
@@ -35,7 +37,9 @@ export const ReducerState = ({ children }) => {
       value:[],
       isSearch:false
     },
-    data_link: "/api/companies"
+    data_value_select: [],
+    data_link: "/api/companies",
+    data_link_favorite: "/api/companies"
   };
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
@@ -190,7 +194,7 @@ export const ReducerState = ({ children }) => {
     });
 
     dispatch({
-      type: SEARCH,
+      type: SELECT_HOME,
       payload
     });
   };
@@ -207,6 +211,16 @@ export const ReducerState = ({ children }) => {
   const search_select = async (type, id) => {
     dispatch({
       type: SEARCH_SELECT,
+      payload: {
+        type_link: type,
+        type_id: id
+      }
+    });
+  };
+
+  const favorite_select = async (type, id) => {
+    dispatch({
+      type: FAVORITE_SELECT,
       payload: {
         type_link: type,
         type_id: id
@@ -358,6 +372,7 @@ export const ReducerState = ({ children }) => {
         LogIn,
         LogOut,
         Add_favorite,
+        favorite_select,
         none: state
       }}
     >

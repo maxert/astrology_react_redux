@@ -28,15 +28,15 @@ function SearchLinks({handleResultSelect}) {
           ? "event"
           : "person"
     };
-
+    favorite_select(urls.type_link, urls.type_id);
     search_select(urls.type_link, urls.type_id);
   }, []);
-  const { search_select, search_data_links, none } = useContext(ReduceContext);
+  const { search_select,favorite_select, search_data_links, none } = useContext(ReduceContext);
   const [dataSearch, setSearch] = useState({ isLoading: false });
 
   function onChangeElement(event, data) {
-    search_select(data.value, event._targetInst._debugOwner.key);
-    console.log(event._targetInst._debugOwner.key);
+    search_select(data.value, event._targetInst.return.key);
+    console.log(event._targetInst.return.key);
   }
 
   function handleSearchChange(e, { value }) {
@@ -62,7 +62,7 @@ function SearchLinks({handleResultSelect}) {
           onSearchChange={_.debounce(handleSearchChange, 500, {
             isLoading: true
           })}
-          results={none.data_value.value}
+          results={none.data_value_select}
           className="search_new"
           placeholder="Что-то ищете..."
         />

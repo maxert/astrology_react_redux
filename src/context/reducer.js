@@ -15,7 +15,9 @@ import {
   FETCH_ONE_COMPANY,
   FETCH_ONE_PERSONS,
   DELETE_LINK,
-  FETCH_NOTAL_CARD
+  FETCH_NOTAL_CARD,
+  FAVORITE_SELECT,
+  SELECT_HOME
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -49,6 +51,10 @@ const handlers = {
     ...state,
     data_fetch_links: payload
   }),
+  [FAVORITE_SELECT]: (state, { payload }) => ({
+    ...state,
+    data_link_favorite: payload
+  }),
   [NUMBER_ALL]: (state, { payload }) => ({
     ...state,
     number_all: payload
@@ -56,6 +62,10 @@ const handlers = {
   [SEARCH]: (state, { payload }) => ({
     ...state,
     data_value:payload
+  }),
+  [SELECT_HOME]: (state, { payload }) => ({
+    ...state,
+    data_value_select:payload
   }),
   [SEARCH_SELECT]: (state, { payload }) => ({
     ...state,
