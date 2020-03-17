@@ -4,9 +4,9 @@ import { NavLink, useRouteMatch } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import ResultCardEvents from "../addElement/resultcardevents";
 import { ShowContext } from "../context/show/showContext";
 import { ReduceContext } from "../context/reducerContext";
+import ResultCardPersons from "../addElement/resultcardpersons";
 
 //Страница Событий
 function EventsList() {
@@ -63,7 +63,7 @@ function EventsList() {
               </div>
             </div>
           </div>
-          <ResultCardEvents></ResultCardEvents>
+          <ResultCardPersons></ResultCardPersons>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
         </div>

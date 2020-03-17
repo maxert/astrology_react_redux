@@ -28,8 +28,11 @@ function SearchExampleStandard({ handleResultSelect }) {
           ? "company"
           : url.indexOf("event") === 1
           ? "event"
+          : url.indexOf("home_card") === 1
+          ? "home_card"
           : "person"
     };
+    console.log(urls);
     favorite_select(urls.type_link, urls.type_id);
     search_select(urls.type_link, urls.type_id);
   }, []);

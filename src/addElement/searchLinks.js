@@ -35,8 +35,9 @@ function SearchLinks({handleResultSelect}) {
   const [dataSearch, setSearch] = useState({ isLoading: false });
 
   function onChangeElement(event, data) {
-    search_select(data.value, event._targetInst.return.key);
-    console.log(event._targetInst.return.key);
+    const key = data.options.filter(x => x.value === data.value);
+    search_select(data.value, key[0].key);
+    console.log(key[0].key);
   }
 
   function handleSearchChange(e, { value }) {

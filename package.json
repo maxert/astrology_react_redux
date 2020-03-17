@@ -26,6 +26,7 @@
     "react-router": "latest",
     "react-router-dom": "latest",
     "react-scripts": "3.4.0",
+    "react-simple-timefield": "^3.0.0",
     "react-slick": "^0.25.2",
     "react-svgmt": "^1.1.11",
     "redux": "^4.0.5",

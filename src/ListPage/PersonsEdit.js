@@ -127,6 +127,7 @@ function PersonsEdit() {
                           <label>Дата</label>
                           <Icon className="icon_date">
                             <DatePicker
+                              format={"DD.MM.YYYY"}
                               onChange={(data, dataString) =>
                                 setCount(dataString)
                               }
@@ -135,14 +136,13 @@ function PersonsEdit() {
                           <NumberFormat
                             type="text"
                             name="birth_date"
-                            format="####-##-##"
                             placeholder="дд . мм . гггг"
-                            mask="_"
-                            defaultValue={none.one_persons.birth_date}
+                            mask={"_"}
+                            format="##.##.####"
                             value={
                               count === "" ? none.one_persons.birth_date : count
                             }
-
+                            defaultValue={none.one_persons.birth_date}
                             className={
                               "" + (errors.birth_date ? "date active" : "")
                             }
@@ -150,7 +150,6 @@ function PersonsEdit() {
                               required: true,
                               pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                             })}
-                   
                           />
                           {errors.birth_date && errors.birth_date.message}
                         </Input>
@@ -161,10 +160,10 @@ function PersonsEdit() {
                       <NumberFormat
                         type="text"
                         name="birth_time"
-                        mask="_"
-                        format="##:##"
                         placeholder="пример: 21:34"
                         defaultValue={none.one_persons.birth_time}
+                        mask="_"
+                        format="##:##"
                         className={"" + (errors.birth_time ? "active" : "")}
                         getInputRef={register({
                           required: true,
@@ -180,8 +179,8 @@ function PersonsEdit() {
                       <input
                         type="text"
                         name="city"
+                        placeholder="г. Киев"
                         defaultValue={none.one_persons.city}
-                        placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
                         className={"" + (errors.city ? "active" : "")}
                         ref={register({
                           required: true,
@@ -204,21 +203,23 @@ function PersonsEdit() {
                       <label>Долгота:</label>
                       <input
                         type="text"
-                        name="longitude"
+                        name="longtitude"
+                        placeholder="36.6666"
                         defaultValue={none.one_persons.longtitude}
-                        className={"" + (errors.longitude ? "active" : "")}
+                        className={"" + (errors.longtitude ? "active" : "")}
                         ref={register({
                           required: true,
                           pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                         })}
                       />
-                      {errors.longitude && errors.longitude.message}
+                      {errors.longtitude && errors.longtitude.message}
                     </Form.Field>
                     <Form.Field>
                       <label>Широта:</label>
                       <input
                         type="text"
                         name="latitude"
+                        placeholder="49.6666"
                         defaultValue={none.one_persons.latitude}
                         className={"" + (errors.latitude ? "active" : "")}
                         ref={register({

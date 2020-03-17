@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Search from "../addElement/search";
 import { Button } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
@@ -20,7 +20,6 @@ function PersonsHome() {
   const { state_persons, Fetch_data_persons, delete_persons } = useContext(
     PersonsContext
   );
-
   function newSubmite(events, id, value) {
     if (events.target.dataset.index === "2") {
       delete_persons(id);
@@ -32,9 +31,9 @@ function PersonsHome() {
   function pagination(Value) {
     Fetch_data_persons(Value._targetInst.pendingProps.value);
   }
-
+ 
   useEffect(() => {
-    Fetch_data_persons();
+    Fetch_data_persons(1,true);
   }, []);
 
   let { url } = useRouteMatch();
@@ -51,10 +50,13 @@ function PersonsHome() {
           </NavLink>
           <div className="container_persons_head_right">
             <div className="filter_abc">
-              <button className="text_head_persons abs_to_A_and_Y button_select active">
+              <button className="text_head_persons abs_to_A_and_Y button_select active"  >
                 По алфавиту А-Я
               </button>
-              <button className="text_head_persons abs_to_Y_and_A button_select">
+              <button
+                className="text_head_persons abs_to_Y_and_A button_select"
+              
+              >
                 По алфавиту Я-А
               </button>
             </div>
@@ -205,12 +207,6 @@ function PersonsHome() {
                       <div className="container_info_persons d_flex_center">
                         <div className="icon_image active">
                           {person.firstname[0]}
-                          <SvgLoader
-                            className="favorite_svg"
-                            path="../../img/favorites_21.svg"
-                          >
-                            <SvgProxy selector="#co" />
-                          </SvgLoader>
                         </div>
                         <div className="container_info_persons_column">
                           <div className="container_info_persons_name">

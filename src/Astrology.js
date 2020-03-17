@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Switch, Route, NavLink } from "react-router-dom";
+import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
 import Company from "./ListPage/Company";
@@ -12,6 +12,7 @@ import Forms from "./forms/formsOpen";
 import { ReduceContext } from "./context/reducerContext";
 import ModalExit from "./addElement/modalExit";
 import { ShowState } from "./context/show/showState";
+import NotalHome from "./ListPage/NotalHome";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
@@ -29,7 +30,8 @@ function Astrology() {
               </div>
               <ul className="menu_list">
                 <li>
-                  <NavLink to="/" exact={true} activeClassName="active">
+                
+                  <NavLink to="/" exact={none.data_link.type_id==="home_card"?false:true} activeClassName="active">
                     <SvgLoader path="../../img/Union.svg">
                       <SvgProxy selector="#cod" />
                     </SvgLoader>
@@ -140,6 +142,7 @@ function Astrology() {
           <div className="container_right">
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/home_card" component={NotalHome} />
               <Route path="/person" component={Persons} />
               <Route path="/company" component={Company} />
               <Route path="/сountries" component={Countries} />

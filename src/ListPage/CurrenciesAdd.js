@@ -78,7 +78,7 @@ function CurrenciesAdd() {
                 <div className="input_all">
                   <Input>
                     <label>Долгота:</label>
-                    <input className="longitude" />
+                    <input className="longtitude" />
                   </Input>
                 </div>
                 <div className="input_all">

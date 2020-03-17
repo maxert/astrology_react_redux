@@ -31,6 +31,7 @@ function ModalExampleSize() {
     values["obj_type"] = none.data_id.type_link;
     values["obj_id"] = none.data_id.type_id;
     values["link_obj_type"] = none.data_link.type_id;
+    debugger
     values["link_obj_id"] = result.id;
     console.log(values);
 

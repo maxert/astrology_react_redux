@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
+
 import {
   LOG_OUT,
   LOG_IN,
@@ -20,13 +21,15 @@ import {
   DELETE_LINK,
   FETCH_NOTAL_CARD,
   FAVORITE_SELECT,
-  SELECT_HOME
+  SELECT_HOME,
+  ADD_NOTAL_CARD,
+  UPDATE_PERSONS,
+  CREATE_NOTAL_HOME
 } from "./types";
 import Axios from "axios";
 
 export const ReducerState = ({ children }) => {
   const initialState = {
-    visible: false,
     isLogin: localStorage.getItem("users") !== "null" ? true : false,
     token: localStorage.getItem("users"),
     option_value: "GMT+2",
@@ -34,9 +37,10 @@ export const ReducerState = ({ children }) => {
     data_fetch_links: null,
     number_all: "",
     data_value: {
-      value:[],
-      isSearch:false
+      value: [],
+      isSearch: false
     },
+    data_fetch_value:[],
     data_value_select: [],
     data_link: "/api/companies",
     data_link_favorite: "/api/companies"
@@ -161,18 +165,17 @@ export const ReducerState = ({ children }) => {
 
     dispatch({
       type: SEARCH,
-      payload:{
+      payload: {
         value: payload,
         isSearch: bool
       }
-      
     });
   };
   const search_data_links = async (type, value, url) => {
     if (value.length === 0 || value === " ") {
       value = "a";
     }
-    debugger;
+   
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
       {
@@ -229,7 +232,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const create_links = async value => {
-    debugger;
+ 
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type&obj_id&link_obj_type=&link_obj_id=&name=`,
       {
@@ -251,6 +254,32 @@ export const ReducerState = ({ children }) => {
       create_links: res.data
     });
   };
+
+  const createNotals = async value => {
+    var time = value.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
+    const res = await Axios.post(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
+      {
+        date: value.date,
+        time: value.time,
+        lat:  parseFloat(value.lat),
+        lng: parseFloat(value.lng),
+        timezone: time[0],
+        letnee: parseInt(value.letnee)
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    console.log(res.data);
+    dispatch({
+      type:CREATE_NOTAL_HOME,
+      payload:res.data
+    });
+  };
+  
   const Fetch_links = async (type, id) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
@@ -260,7 +289,6 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-
     dispatch({
       type: FETCH_LINKS,
       payload: res.data
@@ -294,6 +322,8 @@ export const ReducerState = ({ children }) => {
     add_type_links(res.data.type, res.data.id);
     Fetch_notal_card(res.data.type, res.data.id);
     Fetch_links(res.data.type, res.data.id);
+
+    console.log(res.data);
     dispatch({
       type: FETCH_ONE_PERSONS,
       payload: res.data
@@ -335,9 +365,13 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const Fetch_notal_card = async (type, id) => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals?obj_type=${type}&obj_id=${id}`,
+  const add_notal_card = async (type, id) => {
+    const res = await Axios.post(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals`,
+      {
+        obj_type: type,
+        obj_id: id
+      },
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
@@ -345,18 +379,68 @@ export const ReducerState = ({ children }) => {
       }
     );
     console.log(res.data.data);
-    debugger;
+ 
     dispatch({
-      type: FETCH_NOTAL_CARD,
+      type: ADD_NOTAL_CARD,
       payload: res.data
     });
+  };
+
+  const update_notal_card = async id => {
+    const res = await Axios.put(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    Fetch_notal_card(res.data.obj_type, res.data.obj_id);
+    dispatch({
+      type: UPDATE_PERSONS,
+      payload: res.data
+    });
+  };
+  const Fetch_notal_card = async (type, id) => {
+    await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals?obj_type=${type}&obj_id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    ).then(
+      response => {
+        dispatch({
+          type: FETCH_NOTAL_CARD,
+          payload: response.data
+        });
+        
+      },
+      error => {
+      
+        if (error.response.status === 404) {
+          dispatch({
+            type: FETCH_NOTAL_CARD,
+            payload: undefined
+          });
+        }
+      }
+    );
+    // dispatch({
+    //   type: FETCH_NOTAL_CARD,
+    //   payload: res.data
+    // });
   };
   return (
     <ReduceContext.Provider
       value={{
+        createNotals,
         Fetch_one_company,
         Fetch_one_persons,
         Fetch_notal_card,
+        add_notal_card,
         Fetch_one_events,
         add_type_links,
         number_all,
@@ -373,6 +457,7 @@ export const ReducerState = ({ children }) => {
         LogOut,
         Add_favorite,
         favorite_select,
+        update_notal_card,
         none: state
       }}
     >

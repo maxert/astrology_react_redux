@@ -7,20 +7,19 @@ import NotalCommunity from "../addElement/notal_community";
 import ResultCardPersons from "../addElement/resultcardpersons";
 import { ReduceContext } from "../context/reducerContext";
 
-import { ShowContext } from "../context/show/showContext";
 
 //Страница Персоны
 function PersonsUnit() {
   const { url } = useRouteMatch();
-  const { number_all, Fetch_one_persons, none } = useContext(ReduceContext);
-  const { hide, display, show } = useContext(ShowContext);
+  const { number_all, Fetch_one_persons, none, add_notal_card,update_notal_card } = useContext(
+    ReduceContext
+  );
 
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
-  }, []);
 
+  }, [url]);
 
-  
   function handleClick() {
     let numbers = url.replace(/\D+/g, "");
     number_all(numbers, url);
@@ -42,7 +41,9 @@ function PersonsUnit() {
         <div>
           <div className="header_unite">
             <div className="unit_left">
-              <div className="elipse_profiler">{none.one_persons.firstname[0]}</div>
+              <div className="elipse_profiler">
+                {none.one_persons.firstname[0]}
+              </div>
               <div className="text_big_all name_profile">
                 {none.one_persons.firstname + " " + none.one_persons.lastname}
               </div>
@@ -54,16 +55,32 @@ function PersonsUnit() {
               </NavLink>
             </div>
             <div className="unit_button_right">
-              <Button onClick={display.visible ? show : hide}>
-                Расчитать натальную карту
-              </Button>
+              {none.data_notal===undefined ? (
+                <Button
+                  onClick={() => {
+                    add_notal_card(none.one_persons.type, none.one_persons.id);
+                  }}
+                >
+                  Расчитать натальную карту
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    update_notal_card(none.data_notal.id);
+                  }}
+                >
+                  Перерасчитать натальную карту
+                </Button>
+              )}
             </div>
           </div>
           <div className="unit_grid">
             <div className="unit_info_contact">
               <div className="d_flex_center">
                 <div className="unit_info_left">Телефон:</div>
-                <div className="unit_info_right">{none.one_persons.telephone}</div>
+                <div className="unit_info_right">
+                  {none.one_persons.telephone}
+                </div>
               </div>
               <div className="d_flex_center">
                 <div className="unit_info_left">Email:</div>
@@ -73,7 +90,9 @@ function PersonsUnit() {
             <div className="unit_info_adress">
               <div className="d_flex_center">
                 <div className="unit_info_left">День рождения:</div>
-                <div className="unit_info_right">{none.one_persons.birth_date}</div>
+                <div className="unit_info_right">
+                  {none.one_persons.birth_date}
+                </div>
               </div>
               <div className="d_flex_center">
                 <div className="unit_info_left">Город:</div>
@@ -88,7 +107,10 @@ function PersonsUnit() {
             </div>
           </div>
 
-          <ResultCardPersons></ResultCardPersons>
+          <ResultCardPersons
+            Birthday={none.one_persons.birth_date}
+            Time={none.one_persons.birth_time}
+          ></ResultCardPersons>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
         </div>

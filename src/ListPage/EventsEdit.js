@@ -90,6 +90,7 @@ function EventsEdit() {
                         <label>Дата</label>
                         <Icon className="icon_date">
                           <DatePicker
+                            format={"DD.MM.YYYY"}
                             onChange={(data, dataString) =>
                               setCount(dataString)
                             }
@@ -97,15 +98,15 @@ function EventsEdit() {
                         </Icon>
                         <NumberFormat
                           type="text"
-                          name="event_date"
+                          name="birth_date"
                           placeholder="дд . мм . гггг"
-                          format="####-##-##"
+                          mask="_"
                           value={
                             count === "" ? none.one_event.event_date : count
                           }
-                          defaultValue={none.one_event.event_date}
+                          format="##.##.####"
                           className={
-                            "" + (errors.event_date ? "date active" : "")
+                            "" + (errors.birth_date ? "date active" : "")
                           }
                           getInputRef={register({
                             required: true,
@@ -141,7 +142,7 @@ function EventsEdit() {
                       type="text"
                       name="city"
                       defaultValue={none.one_event.city}
-                      placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
+                      placeholder="г. Киев"
                       className={"" + (errors.city ? "active" : "")}
                       ref={register({
                         required: true,
@@ -164,21 +165,23 @@ function EventsEdit() {
                     <label>Долгота:</label>
                     <input
                       type="text"
-                      name="longitude"
+                      name="longtitude"
+                      placeholder="36.6666"
                       defaultValue={none.one_event.longtitude}
-                      className={"" + (errors.longitude ? "active" : "")}
+                      className={"" + (errors.longtitude ? "active" : "")}
                       ref={register({
                         required: true,
                         pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                       })}
                     />
-                    {errors.longitude && errors.longitude.message}
+                    {errors.longtitude && errors.longtitude.message}
                   </Form.Field>
                   <Form.Field>
                     <label>Широта:</label>
                     <input
                       type="text"
                       name="latitude"
+                      placeholder="49.6666"
                       defaultValue={none.one_event.latitude}
                       className={"" + (errors.latitude ? "active" : "")}
                       ref={register({

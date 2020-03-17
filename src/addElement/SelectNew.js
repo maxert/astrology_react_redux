@@ -3,11 +3,10 @@ import { Select } from "semantic-ui-react";
 
 //Блок с выбором
 const countryOptions = [
-  { key: "1", value: "1", text: "Все" },
-  { key: "2", value: "2", text: "Без Айнамши" },
-  { key: "3", value: "3", text: "Айнамши" },
+  { key: "0", value: "0", text: "Без Айнамши" },
+  { key: "1", value: "1", text: "Айнамши" },
 ];
 
-export const SelectNew = () => {
-  return <Select placeholder="Без Айнамши" options={countryOptions} />;
+export const SelectNew = ({ChangeSelect}) => {
+  return <Select placeholder="Без Айнамши" options={countryOptions} onChange={(event,data)=>ChangeSelect(event,data)}/>;
 };

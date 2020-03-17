@@ -132,116 +132,119 @@ function CompanyEdit() {
                 <Button>Сохранить</Button>
               </div>
               <div className="personal_date all_box">
-                <div className="text_all">Место и время основания компании</div>
-                <div className="grid_column center_grid">
-                  <div className="input_all">
-                    <Form.Field>
-                      <Input placeholder="дд . мм . гггг">
-                        <label>Дата</label>
-                        <Icon className="icon_date">
-                          <DatePicker
-                            onChange={(data, dataString) =>
-                              setCount(dataString)
+                  <div className="text_all">Место и время основания компании</div>
+                  <div className="grid_column center_grid">
+                    <div className="input_all">
+                      <Form.Field>
+                        <Input placeholder="дд . мм . гггг">
+                          <label>Дата</label>
+                          <Icon className="icon_date">
+                            <DatePicker
+                              format={"DD.MM.YYYY"}
+                              onChange={(data, dataString) =>
+                                setCount(dataString)
+                              }
+                            ></DatePicker>
+                          </Icon>
+                          <NumberFormat
+                            type="text"
+                            name="birth_date"
+                            placeholder="дд . мм . гггг"
+                            mask={"_"}
+                            format="##.##.####"
+                            value={
+                              count === "" ? none.one_company.birth_date : count
                             }
-                          ></DatePicker>
-                        </Icon>
-                        <NumberFormat
-                          type="text"
-                          name="birth_date"
-                          format="####-##-##"
-                          placeholder="дд . мм . гггг"
-                          mask="_"
-                          defaultValue={none.one_company.birth_date}
-                          value={
-                            count === "" ? none.one_company.birth_date : count
-                          }
-                          className={
-                            "" + (errors.birth_date ? "date active" : "")
-                          }
-                          ref={register({
-                            required: true,
-                            pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                          })}
-                        />
-                        {errors.birth_date && errors.birth_date.message}
-                      </Input>
+                            defaultValue={none.one_company.birth_date}
+                            className={
+                              "" + (errors.birth_date ? "date active" : "")
+                            }
+                            getInputRef={register({
+                              required: true,
+                              pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                            })}
+                          />
+                          {errors.birth_date && errors.birth_date.message}
+                        </Input>
+                      </Form.Field>
+                    </div>
+                    <Form.Field>
+                      <label>Время рождения</label>
+                      <NumberFormat
+                        type="text"
+                        name="birth_time"
+                        placeholder="пример: 21:34"
+                        defaultValue={none.one_company.birth_time}
+                        mask="_"
+                        format="##:##"
+                        className={"" + (errors.birth_time ? "active" : "")}
+                        getInputRef={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.birth_time && errors.birth_time.message}
                     </Form.Field>
                   </div>
-                  <Form.Field>
-                    <label>Время рождения</label>
-                    <input
-                      type="text"
-                      name="birth_time"
-                      placeholder="пример: 21:34"
-                      mask="_"
-                      format="##:##"
-                      defaultValue={none.one_company.birth_time}
-                      className={"" + (errors.birth_time ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.birth_time && errors.birth_time.message}
-                  </Form.Field>
-                </div>
-                <div className="grid_column center_grid location_input_top">
-                  <Form.Field>
-                    <label>Место рождения</label>
-                    <input
-                      type="text"
-                      name="city"
-                      placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
-                      defaultValue={none.one_company.city}
-                      className={"" + (errors.city ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.city && errors.city.message}
-                  </Form.Field>
-                  <div className="input_all location_input">
-                    <div className="text_localisation">Часовой пояс:</div>
-                    <SelectLocation></SelectLocation>
+                  <div className="grid_column center_grid location_input_top">
+                    <Form.Field>
+                      <label>Место рождения</label>
+                      <input
+                        type="text"
+                        name="city"
+                        placeholder="г. Киев"
+                        defaultValue={none.one_company.city}
+                        className={"" + (errors.city ? "active" : "")}
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.city && errors.city.message}
+                    </Form.Field>
+                    <div className="input_all location_input">
+                      <div className="text_localisation">Часовой пояс:</div>
+                      <SelectLocation></SelectLocation>
+                    </div>
                   </div>
+                  <Checkbox
+                    label="Летнее время"
+                    className="time_location"
+                  ></Checkbox>
+                  <div className="grid_column grid_small">
+                    <Form.Field>
+                      <label>Долгота:</label>
+                      <input
+                        type="text"
+                        name="longtitude"
+                        placeholder="36.6666"
+                        defaultValue={none.one_company.longtitude}
+                        className={"" + (errors.longtitude ? "active" : "")}
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.longtitude && errors.longtitude.message}
+                    </Form.Field>
+                    <Form.Field>
+                      <label>Широта:</label>
+                      <input
+                        type="text"
+                        name="latitude"
+                        placeholder="49.6666"
+                        defaultValue={none.one_company.latitude}
+                        className={"" + (errors.latitude ? "active" : "")}
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.latitude && errors.latitude.message}
+                    </Form.Field>
+                  </div>
+                  <Button>Сохранить</Button>
                 </div>
-                <Checkbox
-                  label="Летнее время"
-                  className="time_location"
-                ></Checkbox>
-                <div className="grid_column grid_small">
-                  <Form.Field>
-                    <label>Долгота:</label>
-                    <input
-                      type="text"
-                      name="longitude"
-                      defaultValue={none.one_company.longtitude}
-                      className={"" + (errors.longitude ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.longitude && errors.longitude.message}
-                  </Form.Field>
-                  <Form.Field>
-                    <label>Широта:</label>
-                    <input
-                      type="text"
-                      name="latitude"
-                      defaultValue={none.one_company.latitude}
-                      className={"" + (errors.latitude ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.latitude && errors.latitude.message}
-                  </Form.Field>
-                </div>
-                <Button>Сохранить</Button>
-              </div>
             </div>
             <div className="create_persons_right">
               <div className="block_image">

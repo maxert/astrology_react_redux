@@ -70,7 +70,7 @@ export const EventState = ({ children }) => {
         event_date: values.event_date,
         event_time: values.event_time,
         timezone: parseFloat(time[0]),
-        longtitude: parseFloat(values.longitude),
+        longtitude: parseFloat(values.longtitude),
         latitude: parseFloat(values.latitude),
         city: values.city
       },
@@ -98,7 +98,7 @@ export const EventState = ({ children }) => {
         event_date: values.event_date,
         event_time: values.event_time,
         timezone: time[0],
-        longtitude: parseFloat(values.longitude),
+        longtitude: parseFloat(values.longtitude),
         latitude: parseFloat(values.latitude),
         city: values.city
       },

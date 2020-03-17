@@ -20,6 +20,9 @@ function EventsAdd() {
   const onSubmit = values => {
     console.log(values);
     values["timezone"] = none.option_value;
+    const birth_date = values.birth_date.split(".");
+    let new_data= birth_date[2]+"-"+birth_date[1]+"-"+birth_date[0];
+    values["birth_date"] = new_data;
     Add_events(values);
   };
   return (
@@ -84,17 +87,19 @@ function EventsAdd() {
                       <label>Дата</label>
                       <Icon className="icon_date">
                         <DatePicker
+                          format={"DD.MM.YYYY"}
                           onChange={(data, dataString) => setCount(dataString)}
                         ></DatePicker>
                       </Icon>
                       <NumberFormat
                         type="text"
-                        name="event_date"
+                        name="birth_date"
                         placeholder="дд . мм . гггг"
-                        format="####-##-##"
+                        mask="_"
+                        format="##.##.####"
                         value={count}
                         className={
-                          "" + (errors.event_date ? "date active" : "")
+                          "" + (errors.birth_date ? "date active" : "")
                         }
                         getInputRef={register({
                           required: true,
@@ -105,14 +110,15 @@ function EventsAdd() {
                     </Input>
                   </Form.Field>
                 </div>
+
                 <Form.Field>
                   <label>Время рождения</label>
-                  <input
+                  <NumberFormat
                     type="text"
                     name="event_time"
+                    placeholder="пример: 21:34"
                     mask="_"
                     format="##:##"
-                    placeholder="пример: 21:34"
                     className={"" + (errors.event_time ? "active" : "")}
                     getInputRef={register({
                       required: true,
@@ -128,7 +134,7 @@ function EventsAdd() {
                   <input
                     type="text"
                     name="city"
-                    placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
+                    placeholder="г. Киев"
                     className={"" + (errors.city ? "active" : "")}
                     ref={register({
                       required: true,
@@ -151,20 +157,23 @@ function EventsAdd() {
                   <label>Долгота:</label>
                   <input
                     type="text"
-                    name="longitude"
-                    className={"" + (errors.longitude ? "active" : "")}
+                    name="longtitude"
+                    placeholder="36.6666"
+      
+                    className={"" + (errors.longtitude ? "active" : "")}
                     ref={register({
                       required: true,
                       pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                     })}
                   />
-                  {errors.longitude && errors.longitude.message}
+                  {errors.longtitude && errors.longtitude.message}
                 </Form.Field>
                 <Form.Field>
                   <label>Широта:</label>
                   <input
                     type="text"
                     name="latitude"
+                    placeholder="49.6666"
                     className={"" + (errors.latitude ? "active" : "")}
                     ref={register({
                       required: true,

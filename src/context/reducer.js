@@ -17,7 +17,10 @@ import {
   DELETE_LINK,
   FETCH_NOTAL_CARD,
   FAVORITE_SELECT,
-  SELECT_HOME
+  SELECT_HOME,
+  ADD_NOTAL_CARD,
+  UPDATE_NOTAL_CARD,
+  CREATE_NOTAL_HOME,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -78,6 +81,10 @@ const handlers = {
   [CREATE_LINKS]: (state, { payload }) => ({
     ...state
   }),
+  [CREATE_NOTAL_HOME]: (state, { payload }) => ({
+    ...state,
+    notal_home:payload
+  }),
   [FETCH_ONE_COMPANY]: (state, { payload }) => ({
     ...state,
     one_company: payload
@@ -91,6 +98,14 @@ const handlers = {
     one_persons: payload
   }),
   [FETCH_NOTAL_CARD]: (state, { payload }) => ({
+    ...state,
+    data_notal: payload
+  }),
+  [ADD_NOTAL_CARD]: (state, { payload }) => ({
+    ...state,
+    data_notal: payload
+  }),
+  [UPDATE_NOTAL_CARD]: (state, { payload }) => ({
     ...state,
     data_notal: payload
   }),

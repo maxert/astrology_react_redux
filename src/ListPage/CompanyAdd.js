@@ -18,6 +18,9 @@ function CompanyAdd() {
   const [count, setCount] = useState("");
   const onSubmit = values => {
     console.log(values);
+    const birth_date = values.birth_date.split(".");
+    let new_data= birth_date[2]+"-"+birth_date[1]+"-"+birth_date[0];
+    values["birth_date"] = new_data;
     values["timezone"] = none.option_value;
     Add_company(values);
   };
@@ -89,15 +92,13 @@ function CompanyAdd() {
                   <NumberFormat
                     type="tel"
                     name="telephone"
-                    format="+38 (###)-###-##-##"
-                    mask="_"
-                    className={"" + (errors.email ? "active" : "")}
-                    placeholder="+38 (000)-000-00-00"
+                    prefix={'+'}
+                    className={"" + (errors.telephone ? "active" : "")}
+                    placeholder="Пример: +38 (000)-000-00-00"
                     getInputRef={register({
                       required: true,
-                      pattern: /\+[0-9]{2}[ .-](\([0-9]{3})\)([ .-]?)([0-9]{3})\2([0-9]{2})\2([0-9]{2})/g
                     })}
-                    allowEmptyFormatting
+               
                   />
                   {errors.telephone && errors.telephone.message}
                 </Form.Field>
@@ -129,20 +130,21 @@ function CompanyAdd() {
                       <label>Дата</label>
                       <Icon className="icon_date">
                         <DatePicker
+                          format={"DD.MM.YYYY"}
                           onChange={(data, dataString) => setCount(dataString)}
                         ></DatePicker>
                       </Icon>
                       <NumberFormat
                         type="text"
                         name="birth_date"
-                        format="####-##-##"
                         placeholder="дд . мм . гггг"
                         mask="_"
+                        format="##.##.####"
                         value={count}
                         className={
                           "" + (errors.birth_date ? "date active" : "")
                         }
-                        ref={register({
+                        getInputRef={register({
                           required: true,
                           pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                         })}
@@ -153,14 +155,14 @@ function CompanyAdd() {
                 </div>
                 <Form.Field>
                   <label>Время рождения</label>
-                  <input
+                  <NumberFormat
                     type="text"
                     name="birth_time"
                     placeholder="пример: 21:34"
                     mask="_"
-                    format="##:##" 
+                    format="##:##"
                     className={"" + (errors.birth_time ? "active" : "")}
-                    ref={register({
+                    getInputRef={register({
                       required: true,
                       pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                     })}
@@ -174,7 +176,7 @@ function CompanyAdd() {
                   <input
                     type="text"
                     name="city"
-                    placeholder="ул. Энергетическая 42, Харьков, Харьковская область"
+                    placeholder="г. Киев"
                     className={"" + (errors.city ? "active" : "")}
                     ref={register({
                       required: true,
@@ -197,20 +199,23 @@ function CompanyAdd() {
                   <label>Долгота:</label>
                   <input
                     type="text"
-                    name="longitude"
-                    className={"" + (errors.longitude ? "active" : "")}
+                    name="longtitude"
+                    placeholder="36.6666"
+      
+                    className={"" + (errors.longtitude ? "active" : "")}
                     ref={register({
                       required: true,
                       pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
                     })}
                   />
-                  {errors.longitude && errors.longitude.message}
+                  {errors.longtitude && errors.longtitude.message}
                 </Form.Field>
                 <Form.Field>
                   <label>Широта:</label>
                   <input
                     type="text"
                     name="latitude"
+                    placeholder="49.6666"
                     className={"" + (errors.latitude ? "active" : "")}
                     ref={register({
                       required: true,
@@ -222,6 +227,7 @@ function CompanyAdd() {
               </div>
               <Button>Сохранить</Button>
             </div>
+           
           </div>
           <div className="create_persons_right">
             <div className="block_image">
