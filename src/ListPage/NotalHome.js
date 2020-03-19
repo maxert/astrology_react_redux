@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Search from "../addElement/search";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
@@ -8,11 +8,19 @@ import EditDrop from "../addElement/editDropDown";
 //Блок Главной страниццы
 function NotalHome() {
   const [select, setSelect] = useState("0");
-  const { none } = useContext(ReduceContext);
+  const { none,createNotals } = useContext(ReduceContext);
   function selectNew(event, data) {
     setSelect(data.value);
     debugger;
   }
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("save_natal"));
+    const date = data.date.split(".");
+    let new_date = date[2] + "-" + date[1] + "-" + date[0];
+    data["date"]=new_date;
+    
+    createNotals(data);
+  }, []);
   return (
     <div className="container_list">
       <div className="search_container">

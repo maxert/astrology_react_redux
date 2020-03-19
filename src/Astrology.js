@@ -32,7 +32,7 @@ function Astrology() {
       setDataNumber(res.data);
     })
     
-  }, [data_number])
+  }, [])
   return (
     <div className="container_home">
       {none.isLogin === true && (
