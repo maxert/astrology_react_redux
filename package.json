@@ -11,6 +11,7 @@
     "antd": "^4.0.0",
     "apollo-server-express": "^2.11.0",
     "axios": "^0.19.2",
+    "cleave.js": "^1.5.8",
     "faker": "^4.1.0",
     "http-proxy-middleware": "^1.0.1",
     "lodash": "^4.17.15",
@@ -19,9 +20,12 @@
     "path": "^0.12.7",
     "react": "^16.12.0",
     "react-dom": "latest",
+    "react-geocode": "^0.2.1",
     "react-hook-form": "^4.10.1",
+    "react-imask": "^6.0.3",
     "react-inlinesvg": "^1.2.0",
     "react-number-format": "^4.4.1",
+    "react-places-autocomplete": "^7.2.1",
     "react-redux": "^7.2.0",
     "react-router": "latest",
     "react-router-dom": "latest",
@@ -34,7 +38,8 @@
     "redux-logger": "^3.0.6",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "use-position": "0.0.6"
   },
   "scripts": {
     "start": "react-scripts start",

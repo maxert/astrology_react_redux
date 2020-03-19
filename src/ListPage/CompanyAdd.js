@@ -193,6 +193,7 @@ function CompanyAdd() {
               <Checkbox
                 label="Летнее время"
                 className="time_location"
+               
               ></Checkbox>
               <div className="grid_column grid_small">
                 <Form.Field>

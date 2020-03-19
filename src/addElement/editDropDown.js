@@ -4,11 +4,15 @@ import { ReduceContext } from "../context/reducerContext";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 //Функциональный Блок изменений карточки
-function DropdownExampleInline({ Values, onClickData,onClickDataNew }) {
+function DropdownExampleInline({
+  Values,
+  onClickData,
+  onClickDataNew,
+  Favorite
+}) {
   const { url } = useRouteMatch();
-  const { none } = useContext(ReduceContext);
+  const { none,delete_favorite } = useContext(ReduceContext);
 
-  
   return (
     <Dropdown
       className={"edit_drop"}
@@ -21,16 +25,31 @@ function DropdownExampleInline({ Values, onClickData,onClickDataNew }) {
     >
       <Dropdown.Menu onClick={(events, value) => onClickDataNew(events, value)}>
         <Dropdown.Item data-index="0">
-          <SvgLoader path="../../img/favorites.svg">
-            <SvgProxy selector="#cst" />
-          </SvgLoader>
-          В избранные
+          {Favorite > 0 ? (
+            <div onClick={()=>delete_favorite(none.number_all.numbers,none.data_link.type_id)}>
+              <SvgLoader path="../../img/favorites_21.svg">
+                <SvgProxy selector="#cst" />
+              </SvgLoader>
+              В избранныx
+            </div>
+          ) : (
+            <div>
+              <SvgLoader path="../../img/favorites.svg">
+                <SvgProxy selector="#cst" />
+              </SvgLoader>
+              В избранные
+            </div>
+          )}
         </Dropdown.Item>
         <Dropdown.Item data-index="1">
           <SvgLoader path="../../img/Edit1.svg">
             <SvgProxy selector="#cst" />
           </SvgLoader>
-          <NavLink to={`${url==="/favorite"?none.number_all.match:url}/${none.number_all.numbers}/edit`}>
+          <NavLink
+            to={`${url === "/favorite" ? none.number_all.match : url}/${
+              none.number_all.numbers
+            }/edit`}
+          >
             Редактировать
           </NavLink>
         </Dropdown.Item>

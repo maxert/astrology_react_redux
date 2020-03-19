@@ -31,9 +31,9 @@ function PersonsHome() {
   function pagination(Value) {
     Fetch_data_persons(Value._targetInst.pendingProps.value);
   }
- 
+
   useEffect(() => {
-    Fetch_data_persons(1,true);
+    Fetch_data_persons(1, true);
   }, []);
 
   let { url } = useRouteMatch();
@@ -50,13 +50,10 @@ function PersonsHome() {
           </NavLink>
           <div className="container_persons_head_right">
             <div className="filter_abc">
-              <button className="text_head_persons abs_to_A_and_Y button_select active"  >
+              <button className="text_head_persons abs_to_A_and_Y button_select active">
                 По алфавиту А-Я
               </button>
-              <button
-                className="text_head_persons abs_to_Y_and_A button_select"
-              
-              >
+              <button className="text_head_persons abs_to_Y_and_A button_select">
                 По алфавиту Я-А
               </button>
             </div>
@@ -98,7 +95,19 @@ function PersonsHome() {
                   <div className="persons_items" key={person.id}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
-                        <div className="icon_image">{person.firstname[0]}</div>
+                        <div
+                          className={
+                            person.fav > 0 ? "icon_image  active" : "icon_image"
+                          }
+                        >
+                          {person.firstname[0]}
+                          <SvgLoader
+                            className="favorite_svg"
+                            path="../../img/favorites_21.svg"
+                          >
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </div>
                         <div className="container_info_persons_name">
                           {person.firstname + " " + person.lastname}
                         </div>
@@ -109,6 +118,7 @@ function PersonsHome() {
                           onClickDataNew={(events, data) =>
                             newSubmite(events, person.id, data)
                           }
+                          Favorite={person.fav}
                           onClickData={() => number_all(person.id)}
                         ></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
@@ -143,7 +153,19 @@ function PersonsHome() {
                   <div className="persons_items" key={person.id}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
-                        <div className="icon_image">{person.firstname[0]}</div>
+                        <div
+                          className={
+                            person.fav > 0 ? "icon_image  active" : "icon_image"
+                          }
+                        >
+                          {person.firstname[0]}
+                          <SvgLoader
+                            className="favorite_svg"
+                            path="../../img/favorites_21.svg"
+                          >
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </div>
                         <div className="container_info_persons_name">
                           {person.firstname + " " + person.lastname}
                         </div>
@@ -154,6 +176,7 @@ function PersonsHome() {
                           onClickDataNew={(events, data) =>
                             newSubmite(events, person.id, data)
                           }
+                          Favorite={person.fav}
                           onClickData={() => number_all(person.id)}
                         ></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
@@ -205,8 +228,18 @@ function PersonsHome() {
                   <div className="persons_items" key={i}>
                     <div className="persons_items_head ">
                       <div className="container_info_persons d_flex_center">
-                        <div className="icon_image active">
+                        <div
+                          className={
+                            person.fav > 0 ? "icon_image  active" : "icon_image"
+                          }
+                        >
                           {person.firstname[0]}
+                          <SvgLoader
+                            className="favorite_svg"
+                            path="../../img/favorites_21.svg"
+                          >
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
                         </div>
                         <div className="container_info_persons_column">
                           <div className="container_info_persons_name">
@@ -232,12 +265,23 @@ function PersonsHome() {
                     <div className="d_flex_center adress_persons">
                       <div className="persons_text_right">{person.city}</div>
                     </div>
-                    <div className="d_flex_center favorite_persons">
-                      <SvgLoader path="../../img/favorites.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                      <div className="persons_text_right">В избранные</div>
-                    </div>
+
+                    {person.fav > 0 ? (
+                     <div className="d_flex_center favorite_persons">
+                     <SvgLoader path="../../img/favorites_21.svg">
+                       <SvgProxy selector="#co" />
+                     </SvgLoader>
+                     <div className="persons_text_right">В избранных</div>
+                   </div>
+                    ) : (
+                      <div className="d_flex_center favorite_persons"  onClick={() => Add_favorite("person", person.id)}>
+                        <SvgLoader path="../../img/favorites.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div className="persons_text_right">В избранные</div>
+                      </div>
+                    )}
+
                     <NavLink
                       to={`/person/${person.id}/edit`}
                       className="d_flex_center edit_persons"

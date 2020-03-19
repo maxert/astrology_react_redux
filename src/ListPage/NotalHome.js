@@ -60,7 +60,7 @@ function NotalHome() {
                       <SvgLoader path="../../img/Натальная карта.svg">
                         <SvgProxy selector="#co" />
                       </SvgLoader>
-                        
+
                       {none.notal_home !== undefined && (
                         <div className="block_numbers">
                           <div className="one">
@@ -105,144 +105,120 @@ function NotalHome() {
                         <div className="block_info">
                           <div className="grid_column_two">
                             <div>
-                              {none.notal_home.houses[2].pl.map(
-                                (items, i) => (
-                                  <div
-                                    className="OneOne"
-                                    key={i}
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[2].pl.map((items, i) => (
+                                <div
+                                  className="OneOne"
+                                  key={i}
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[12].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[12].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                           </div>
                           <div className="grid_column_three">
                             <div>
-                              {none.notal_home.houses[3].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[3].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[1].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[1].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[11].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[11].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                           </div>
                           <div className="grid_column_two">
                             <div>
-                              {none.notal_home.houses[4].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[4].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[10].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[10].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                           </div>
                           <div className="grid_column_three">
                             <div>
-                              {none.notal_home.houses[5].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[5].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[7].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[7].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[9].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[9].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                           </div>
                           <div className="grid_column_two">
                             <div>
-                              {none.notal_home.houses[6].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[6].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[7].pl.map(
-                                (items, i) => (
-                                  <div
-                                    key={i}
-                                    className="OneOne"
-                                    dangerouslySetInnerHTML={{ __html: items }}
-                                  ></div>
-                                )
-                              )}
+                              {none.notal_home.houses[7].pl.map((items, i) => (
+                                <div
+                                  key={i}
+                                  className="OneOne"
+                                  dangerouslySetInnerHTML={{ __html: items }}
+                                ></div>
+                              ))}
                             </div>
                           </div>
                         </div>
@@ -304,8 +280,7 @@ function NotalHome() {
                                       className="table_text_time"
                                       dangerouslySetInnerHTML={{
                                         __html:
-                                          none.notal_home.res_planet[items]
-                                            .text
+                                          none.notal_home.res_planet[items].text
                                       }}
                                     ></div>
                                   </div>
@@ -540,44 +515,82 @@ function NotalHome() {
                       </div>
                     </div>
                     <div className="notalPersons_bottom">
-                      {none.notal_home !== undefined && (
-                        <div className="table_planets">
-                          <div className="header_table">
-                            <div className="table_text table_text_small">
-                              Планета
-                            </div>
-                            {Object.keys(none.notal_home.res_planet).map(
-                              (items, i) => (
-                                <div className="table_text" key={i}>
-                                  {items}
-                                </div>
-                              )
-                            )}
-                          </div>
-                          <div className="footer_table">
-                            <div className="table_text table_text_small">
-                              Эклиптика
-                            </div>
-
-                            {Object.keys(none.notal_home.res_planet).map(
-                              (items, i) => (
-                                <div className="table_text" key={i}>
-                                  <div className="center_table">
-                                    <div
-                                      className="table_text_time"
-                                      dangerouslySetInnerHTML={{
-                                        __html:
-                                          none.notal_home.res_planet[items]
-                                            .text
-                                      }}
-                                    ></div>
+                      {none.notal_home !== undefined &&
+                        (select === "0" ? (
+                          <div className="table_planets">
+                            <div className="header_table">
+                              <div className="table_text table_text_small">
+                                Планета
+                              </div>
+                              {Object.keys(none.notal_home.res_planet).map(
+                                (items, i) => (
+                                  <div className="table_text" key={i}>
+                                    {items}
                                   </div>
-                                </div>
-                              )
-                            )}
+                                )
+                              )}
+                            </div>
+                            <div className="footer_table">
+                              <div className="table_text table_text_small">
+                                Эклиптика
+                              </div>
+
+                              {Object.keys(none.notal_home.res_planet).map(
+                                (items, i) => (
+                                  <div className="table_text" key={i}>
+                                    <div className="center_table">
+                                      <div
+                                        className="table_text_time"
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            none.notal_home.res_planet[items]
+                                              .text
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <div className="table_planets">
+                            <div className="header_table">
+                              <div className="table_text table_text_small">
+                                Планета
+                              </div>
+                              {Object.keys(none.notal_home.res_planet).map(
+                                (items, i) => (
+                                  <div className="table_text" key={i}>
+                                    {items}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                            <div className="footer_table">
+                              <div className="table_text table_text_small">
+                                Эклиптика
+                              </div>
+
+                              {Object.keys(none.notal_home.res_planet).map(
+                                (items, i) => (
+                                  <div className="table_text" key={i}>
+                                    <div className="center_table">
+                                      <div
+                                        className="table_text_time"
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            none.notal_home.res_planet[items]
+                                              .text_ay
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}

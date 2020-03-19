@@ -96,7 +96,16 @@ function CompanyHome() {
                 <div className="persons_items" key={companies.id}>
                   <div className="persons_items_head d_flex_center">
                     <div className="container_info_persons d_flex_center">
-                      <div className="icon_image">{companies.name[0]}</div>
+                      <div
+                        className={
+                          companies.fav > 0 ? "icon_image active" : "icon_image"
+                        }
+                      >
+                        {companies.name[0]}{" "}
+                        <SvgLoader path="../../img/favorites_21.svg" className="favorite_svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                      </div>
                       <div className="container_info_persons_name">
                         {companies.name}
                       </div>
@@ -152,7 +161,9 @@ function CompanyHome() {
                   <div className="persons_items" key={i}>
                     <div className="persons_items_head ">
                       <div className="container_info_persons d_flex_center">
-                        <div className="icon_image active">
+                        <div className={
+                          companies.fav > 0 ? "icon_image active" : "icon_image"
+                        }>
                           {companies.name[0]}
                           <SvgLoader
                             className="favorite_svg"
@@ -185,15 +196,24 @@ function CompanyHome() {
                     <div className="d_flex_center adress_persons">
                       <div className="persons_text_right">{companies.city}</div>
                     </div>
-                    <div
-                      className="d_flex_center favorite_persons"
-                      onClick={() => Add_favorite("company", companies.id)}
-                    >
-                      <SvgLoader path="../../img/favorites.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                      <div className="persons_text_right">В избранные</div>
-                    </div>
+                    {companies.fav > 0 ? (
+                      <div
+                        className="d_flex_center favorite_persons"
+                        onClick={() => Add_favorite("company", companies.id)}
+                      >
+                        <SvgLoader path="../../img/favorites_21.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div className="persons_text_right">В избранныx</div>
+                      </div>
+                    ) : (
+                      <div className="d_flex_center favorite_persons">
+                        <SvgLoader path="../../img/favorites.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div className="persons_text_right">В избранные</div>
+                      </div>
+                    )}
                     <NavLink
                       to={`${url}/${companies.id}/events`}
                       className="d_flex_center edit_persons"
@@ -244,12 +264,12 @@ function Company() {
             <CompanyHome></CompanyHome>
           </ShowState>
         </Route>
-        <Route exact path={`${path}/id/:id?`} >
+        <Route exact path={`${path}/id/:id?`}>
           <ShowState>
             <CompanyList></CompanyList>
           </ShowState>
         </Route>
-        <Route strict path={`${path}/link/:id`} >
+        <Route strict path={`${path}/link/:id`}>
           <ShowState>
             <CompanyList></CompanyList>
           </ShowState>

@@ -49,7 +49,11 @@ function EventsHome() {
         </NavLink>
         <div className="calendar_container">
           <div className="calendar_container_left">
-            <Calendar fullscreen={false} onPanelChange={onPanelChange} disabledDays={[new Date(2020, 3, 15), { daysOfWeek: [0, 6] }]} />
+            <Calendar
+              fullscreen={false}
+              onPanelChange={onPanelChange}
+              disabledDays={[new Date(2020, 3, 15), { daysOfWeek: [0, 6] }]}
+            />
           </div>
           <div className="calendar_container_right">
             <div className="date_items">
@@ -103,7 +107,11 @@ function EventsHome() {
                 <div className="persons_items" key={i}>
                   <div className="persons_items_head ">
                     <div className="container_info_persons d_flex_center">
-                      <div className="icon_image">
+                      <div
+                        className={
+                          events.fav > 0 ? "icon_image active" : "icon_image"
+                        }
+                      >
                         {events.name[0]}
                         <SvgLoader
                           className="favorite_svg"
@@ -136,15 +144,28 @@ function EventsHome() {
                   <div className="d_flex_center adress_persons">
                     <div className="persons_text_right">{events.city}</div>
                   </div>
-                  <div
-                    className="d_flex_center favorite_persons"
-                    onClick={() => Add_favorite("event", events.id)}
-                  >
-                    <SvgLoader path="../../img/favorites.svg">
-                      <SvgProxy selector="#co" />
-                    </SvgLoader>
-                    <div className="persons_text_right">В избранные</div>
-                  </div>
+
+                  {events.fav > 0 ? (
+                    <div
+                      className="d_flex_center favorite_persons"
+                      onClick={() => Add_favorite("event", events.id)}
+                    >
+                      <SvgLoader path="../../img/favorites_21.svg">
+                        <SvgProxy selector="#co" />
+                      </SvgLoader>
+                      <div className="persons_text_right">В избранныx</div>
+                    </div>
+                  ) : (
+                    <div
+                      className="d_flex_center favorite_persons"
+                      onClick={() => Add_favorite("event", events.id)}
+                    >
+                      <SvgLoader path="../../img/favorites.svg">
+                        <SvgProxy selector="#co" />
+                      </SvgLoader>
+                      <div className="persons_text_right">В избранныe</div>
+                    </div>
+                  )}
                   <NavLink
                     to={`${url}/${events.id}/edit`}
                     className="d_flex_center edit_persons"

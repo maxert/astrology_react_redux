@@ -21,6 +21,9 @@ import {
   ADD_NOTAL_CARD,
   UPDATE_NOTAL_CARD,
   CREATE_NOTAL_HOME,
+  ONLINE_CARD,
+  GEOLOCATION,
+  SEARCH_CITY,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -85,6 +88,15 @@ const handlers = {
     ...state,
     notal_home:payload
   }),
+
+  [SEARCH_CITY]: (state, { payload }) => ({
+    ...state,
+    data_city:payload
+  }),
+  [ONLINE_CARD]: (state, { payload }) => ({
+    ...state,
+    online_data:payload
+  }),
   [FETCH_ONE_COMPANY]: (state, { payload }) => ({
     ...state,
     one_company: payload
@@ -111,6 +123,10 @@ const handlers = {
   }),
   [DELETE_LINK]: state => ({
     ...state
+  }),
+  [GEOLOCATION]: (state, { payload }) => ({
+    ...state,
+    geolocation: payload
   }),
   DEFAULT: state => state
 };

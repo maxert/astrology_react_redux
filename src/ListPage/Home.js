@@ -11,7 +11,7 @@ function Home() {
       <div className="search_container">
         <Search />
       </div>
-
+     
       <div className="container_grid">
         <div className="container_left_two">
           <div className="create_notal_card">

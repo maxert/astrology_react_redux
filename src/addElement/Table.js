@@ -1,17 +1,14 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ShowContext } from "../context/show/showContext";
 
-
 //Блок с таблицами
-export const TableList = () => {
-
-
+export const TableList = ({ TableData, SelectOptions }) => {
   const { display } = useContext(ShowContext);
   if (display.visible) {
     return null;
   }
- 
+
   return (
     <div className="table_list">
       <div className="text_small">Mon 17-02-2020 09:32:44</div>
@@ -32,87 +29,22 @@ export const TableList = () => {
           <div className="table_text">Neptune</div>
           <div className="table_text">Pluto</div>
         </div>
-        <div className="table_right">
-          <div className="table_head">Без айнамши</div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
+
+        {SelectOptions === "0" ? (
+          <div className="table_right">
+            <div className="table_head">Без айнамши</div>
+            {Object.keys(TableData).map((key,i) => (
+              <div className="table_text table_row" key={i} dangerouslySetInnerHTML={{ __html: TableData[key].text }}></div>
+            ))}
           </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
+        ) : (
+          <div className="table_right">
+            <div className="table_head">C айнамши</div>
+            {Object.keys(TableData).map((key,i) => (
+              <div className="table_text table_row" key={i} dangerouslySetInnerHTML={{ __html: TableData[key].text_ay }}></div>
+            ))}
           </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-          <div className="table_text table_row">
-            <SvgLoader path="./img/Aquarius1.svg">
-              <SvgProxy selector="#co" />
-            </SvgLoader>
-            2:22:10
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -1,27 +1,38 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Icon, Input, Checkbox, Button, Form } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
-import NumberFormat from "react-number-format";
 import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
 import { useHistory } from "react-router";
+import Cleave from "cleave.js/react";
+import SearchCity from "../addElement/searchCity";
+import { usePosition } from "use-position";
+import moment from "moment";
 //Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
-  const [count, setCount] = useState("");
+  const [date_value, setDate_value] = useState("");
+  const [data_notal, setData] = useState([]);
   const history = useHistory();
-  const [isChekbox, setChecbox] = useState(0);
-  const { none,createNotals } = useContext(ReduceContext);
+  const [isChekbox, setChecbox] = useState(false);
+  const { none, createNotals, geolocation } = useContext(ReduceContext);
   const { handleSubmit, register, errors } = useForm();
-  function CheckboxElement(event, data) {
-    data.checked === true ? setChecbox(1) : setChecbox(0);
-  }
- 
+  const { latitude, longitude, error } = usePosition(false, {
+    enableHighAccuracy: true
+  });
+  const d = new Date();
+
+  // useEffect(() => {
+  //   let data = JSON.parse(localStorage.getItem("save_natal"));
+  //   setData(data);
+  //   setChecbox(data !== null && data.letnee);
+  // }, []);
+
   function onSubmit(values) {
+    debugger;
     const date = values.date.split(".");
-    debugger
-    let new_date= date[2]+"-"+date[1]+"-"+date[0];
+    let new_date = date[2] + "-" + date[1] + "-" + date[0];
     values["date"] = new_date;
     values["timezone"] = none.option_value;
     values["letnee"] = isChekbox;
@@ -29,50 +40,63 @@ function InputExampleIconChild() {
     createNotals(values);
 
     history.push(`/home_card`);
-
-  };
+  }
   return (
     <Form className="forms_create" onSubmit={handleSubmit(onSubmit)}>
       <div className="input_all">
-        {/* <DateTimeForm></DateTimeForm> */}
         <Form.Field>
-          <Input placeholder="дд . мм . гггг">
-            <label>Дата</label>
-            <Icon className="icon_date">
-              <DatePicker
-                format={"DD.MM.YYYY"}
-                onChange={(data, dataString) => setCount(dataString)}
-              ></DatePicker>
-            </Icon>
-            <NumberFormat
-              type="text"
-              name="date"
-              placeholder="дд . мм . гггг"
-              mask="_"
-              format="##.##.####"
-              value={count}
-              className={"" + (errors.date ? "date active" : "")}
-              getInputRef={register({
-                required: true,
-                pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-              })}
-            />
-            {errors.date && errors.date.message}
-          </Input>
+          <label>Дата</label>
+          <Icon className="icon_date">
+            <DatePicker
+              format={"DD.MM.YYYY"}
+              onChange={(data, dataString) => setDate_value(dataString)}
+            ></DatePicker>
+          </Icon>
+
+          <Cleave
+            type="text"
+            name="date"
+            placeholder="дд . мм . гггг"
+            htmlRef={register({
+              required: true,
+              pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+            })}
+            options={{
+              date: true,
+              delimiter: ".",
+              datePattern: ["d", "m", "Y"]
+            }}
+            value={
+              date_value
+                ? date_value
+                : data_notal !== null
+                ? data_notal.date
+                : moment(Date.now()).format("DD:MM:YYYY")
+            }
+            className={"" + (errors.date ? "date active" : "")}
+          />
+          {errors.date && errors.date.message}
         </Form.Field>
       </div>
 
       <div className="grid_column time_location">
         <Form.Field>
           <label>Время</label>
-          <NumberFormat
+          <Cleave
             type="text"
             name="time"
             placeholder="21:34"
-            mask="_"
-            format="##:##"
+            options={{
+              time: true,
+              timePattern: ["h", "m"]
+            }}
+            value={
+              data_notal !== null
+                ? data_notal.time
+                : moment(Date.now()).format("HH:mm")
+            }
             className={"" + (errors.time ? "active" : "")}
-            getInputRef={register({
+            htmlRef={register({
               required: true,
               pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
             })}
@@ -82,27 +106,36 @@ function InputExampleIconChild() {
 
         <Form.Field>
           <label>Место рождения</label>
-          <input
+          <SearchCity
             type="text"
             name="city"
-            placeholder="г. Киев"
+            ValueData={
+              localStorage.getItem("city") ? localStorage.getItem("city") : ""
+            }
             className={"" + (errors.city ? "active" : "")}
-            ref={register({
-              required: true,
-              pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-            })}
           />
-          {errors.city && errors.city.message}
         </Form.Field>
       </div>
       <div className="grid_column">
         <div className="input_all">
-          <SelectLocation></SelectLocation>
+          <SelectLocation
+            ValueOptions={"" + none.option_value}
+          ></SelectLocation>
         </div>
         <Checkbox
           label="Летнее время"
           className="time_location"
-          onChange={(event, data) => CheckboxElement(event, data)}
+          checked={
+            none.geolocation
+              ? none.geolocation.letnee
+                ? true
+                : false
+              : isChekbox
+              ? true
+              : false
+          }
+          value={1}
+          onClick={() => (isChekbox ? setChecbox(0) : setChecbox(1))}
         ></Checkbox>
       </div>
       <div className="grid_column grid_small">
@@ -111,6 +144,16 @@ function InputExampleIconChild() {
           <input
             type="text"
             name="lng"
+            value={
+              none.geolocation
+                ? none.geolocation.location.lng
+                : data_notal === null
+                ? longitude !== undefined
+                  ? longitude.toFixed(4)
+                  : ""
+                : data_notal.lng
+            }
+          
             placeholder="36.6666"
             className={"" + (errors.lng ? "active" : "")}
             ref={register({
@@ -128,6 +171,16 @@ function InputExampleIconChild() {
             name="lat"
             placeholder="49.6666"
             className={"" + (errors.lat ? "active" : "")}
+            value={
+              none.geolocation
+                ? none.geolocation.location.lat
+                : data_notal === null
+                ? latitude !== undefined
+                  ? latitude.toFixed(4)
+                  : ""
+                : data_notal.lat
+            }
+           
             ref={register({
               required: true,
               pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i

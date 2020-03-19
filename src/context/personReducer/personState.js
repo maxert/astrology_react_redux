@@ -86,13 +86,15 @@ export const PersonState = ({ children }) => {
         }
       }
     );
+
+
     Fetch_data_persons();
 
     dispatch({
       type: DELETE_PERSONS
     });
   };
-  const Fetch_data_persons = async (number,isSorted) => {
+const Fetch_data_persons = async (number,isSorted) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/persons?page=${
         number === undefined ? 1 : number

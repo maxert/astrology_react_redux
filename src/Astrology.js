@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Switch, Route, NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
 import Company from "./ListPage/Company";
@@ -13,11 +13,26 @@ import { ReduceContext } from "./context/reducerContext";
 import ModalExit from "./addElement/modalExit";
 import { ShowState } from "./context/show/showState";
 import NotalHome from "./ListPage/NotalHome";
+import Axios from "axios";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
   const { none } = useContext(ReduceContext);
+  const [data_number,setDataNumber]=useState();
+  useEffect(() => {
 
+    Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/custom/objcount`,
+      {
+        headers: {
+          Authorization: `Bearer ${none.token}`
+        }
+      }
+    ).then(res=>{
+      setDataNumber(res.data);
+    })
+    
+  }, [])
   return (
     <div className="container_home">
       {none.isLogin === true && (
@@ -54,7 +69,7 @@ function Astrology() {
                       </SvgLoader>
                     </div>
                     <div className="text_list">
-                      Персоны <div className="block_number">5</div>
+                      Персоны <div className="block_number">{data_number&&data_number.person}</div>
                     </div>
                   </NavLink>
                 </li>
@@ -69,7 +84,7 @@ function Astrology() {
                       </SvgLoader>
                     </div>
                     <div className="text_list">
-                      Компании<div className="block_number">5</div>
+                      Компании<div className="block_number">{data_number&&data_number.company}</div>
                     </div>
                   </NavLink>
                 </li>
@@ -114,7 +129,7 @@ function Astrology() {
                       </SvgLoader>
                     </div>
                     <div className="text_list">
-                      События <div className="block_number">5</div>
+                      События <div className="block_number">{data_number&&data_number.event}</div>
                     </div>
                   </NavLink>
                 </li>
@@ -129,7 +144,7 @@ function Astrology() {
                       </SvgLoader>
                     </div>
                     <div className="text_list">
-                      Избранное <div className="block_number">5</div>{" "}
+                      Избранное 
                     </div>
                   </NavLink>
                 </li>

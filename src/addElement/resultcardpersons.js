@@ -516,7 +516,7 @@ function ResultCardPersons({ Birthday, Time }) {
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       none.data_notal.data.res_planet[items]
-                                        .text
+                                        .text_ay
                                   }}
                                 ></div>
                               </div>

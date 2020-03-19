@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
+import Geocode from "react-geocode";
 
 import {
   LOG_OUT,
@@ -24,7 +25,10 @@ import {
   SELECT_HOME,
   ADD_NOTAL_CARD,
   UPDATE_PERSONS,
-  CREATE_NOTAL_HOME
+  CREATE_NOTAL_HOME,
+  ONLINE_CARD,
+  GEOLOCATION,
+  SEARCH_CITY
 } from "./types";
 import Axios from "axios";
 
@@ -32,15 +36,20 @@ export const ReducerState = ({ children }) => {
   const initialState = {
     isLogin: localStorage.getItem("users") !== "null" ? true : false,
     token: localStorage.getItem("users"),
-    option_value: "GMT+2",
+    option_value: "0",
     data_favorite: null,
     data_fetch_links: null,
+    data_notal_online: {
+      type: "hour",
+      interval: 1,
+      interval_direction: 1
+    },
     number_all: "",
     data_value: {
       value: [],
       isSearch: false
     },
-    data_fetch_value:[],
+    data_fetch_value: [],
     data_value_select: [],
     data_link: "/api/companies",
     data_link_favorite: "/api/companies"
@@ -62,7 +71,7 @@ export const ReducerState = ({ children }) => {
       token: res.data.data.api_token
     });
   };
-  const SelectLocation = async value => {
+  const SelectLocationNew = async value => {
     dispatch({
       type: SELECT_LOCATION,
       payload: value
@@ -116,7 +125,7 @@ export const ReducerState = ({ children }) => {
   };
   const Add_favorite = async (type, id) => {
     const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=&obj_id=",
+      "http://1690550.masgroup.web.hosting-test.net/api/favorites",
       {
         obj_type: type,
         obj_id: id
@@ -171,11 +180,35 @@ export const ReducerState = ({ children }) => {
       }
     });
   };
+
+  const search_data_city = async value => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/custom/getcity?search=${value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+
+    const payload = Object.keys(res.data.predictions).map(key => {
+      return {
+        id: res.data.predictions[key].id,
+        title:res.data.predictions[key].description
+      };
+    });
+
+    dispatch({
+      type: SEARCH_CITY,
+      payload
+    });
+  };
+
   const search_data_links = async (type, value, url) => {
     if (value.length === 0 || value === " ") {
       value = "a";
     }
-   
+
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
       {
@@ -232,7 +265,6 @@ export const ReducerState = ({ children }) => {
   };
 
   const create_links = async value => {
- 
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type&obj_id&link_obj_type=&link_obj_id=&name=`,
       {
@@ -256,15 +288,14 @@ export const ReducerState = ({ children }) => {
   };
 
   const createNotals = async value => {
-    var time = value.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
       {
         date: value.date,
         time: value.time,
-        lat:  parseFloat(value.lat),
+        lat: parseFloat(value.lat),
         lng: parseFloat(value.lng),
-        timezone: time[0],
+        timezone: value.timezone,
         letnee: parseInt(value.letnee)
       },
       {
@@ -273,13 +304,26 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data);
+    const date = value.date.split("-");
+    let new_date = date[2] + "." + date[1] + "." + date[0];
+    console.log(new_date);
+    let data = {
+      date: new_date,
+      time: value.time,
+      lat: parseFloat(value.lat),
+      lng: parseFloat(value.lng),
+      timezone: parseFloat(value.timezone),
+      city: value.city,
+      letnee: parseInt(value.letnee)
+    };
+    localStorage.setItem("save_natal", JSON.stringify(data));
+
     dispatch({
-      type:CREATE_NOTAL_HOME,
-      payload:res.data
+      type: CREATE_NOTAL_HOME,
+      payload: res.data
     });
   };
-  
+
   const Fetch_links = async (type, id) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
@@ -379,7 +423,7 @@ export const ReducerState = ({ children }) => {
       }
     );
     console.log(res.data.data);
- 
+
     dispatch({
       type: ADD_NOTAL_CARD,
       payload: res.data
@@ -416,10 +460,8 @@ export const ReducerState = ({ children }) => {
           type: FETCH_NOTAL_CARD,
           payload: response.data
         });
-        
       },
       error => {
-      
         if (error.response.status === 404) {
           dispatch({
             type: FETCH_NOTAL_CARD,
@@ -433,11 +475,55 @@ export const ReducerState = ({ children }) => {
     //   payload: res.data
     // });
   };
+
+  const online_card = async (int_d, int_type, int, refresh) => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    dispatch({
+      type: ONLINE_CARD,
+      payload: res.data
+    });
+  };
+
+  const geolocation = async city => {
+    const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
+
+    Geocode.setApiKey(API);
+    Geocode.setLanguage("ru");
+    Geocode.fromAddress(city).then(
+      async response => {
+        debugger;
+        const res = await Axios.get(
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}&timestamp=${parseInt(Date.now()/1000)}&key=${API}`
+        );
+        console.log(res);
+        SelectLocationNew(parseInt(res.data.rawOffset/3600));
+        dispatch({
+          type: GEOLOCATION,
+          payload: {
+            location: response.results[0].geometry.location,
+            timezone:parseInt(res.data.rawOffset/3600),
+            letnee:(res.data.dstOffset>0?true:false)
+          }
+        });
+      },
+      error => alert(`Rejected: ${error}`)
+    );
+  };
   return (
     <ReduceContext.Provider
       value={{
+        search_data_city,
+        geolocation,
         createNotals,
         Fetch_one_company,
+        online_card,
         Fetch_one_persons,
         Fetch_notal_card,
         add_notal_card,
@@ -448,7 +534,7 @@ export const ReducerState = ({ children }) => {
         delete_link,
         delete_favorite,
         Fetch_data_favorite,
-        SelectLocation,
+        SelectLocationNew,
         search_data,
         search_data_links,
         create_links,

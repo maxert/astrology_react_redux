@@ -308,7 +308,7 @@ body {
     }
   }
 }
-.notal_home{
+.notal_home {
   margin-top: 28px;
 }
 .create_notal_card {
@@ -325,7 +325,7 @@ body {
     line-height: 14px;
     color: #1f222e;
   }
- 
+
   .grid_column .ui.selection.dropdown {
     background: #f8f7fb;
     /* B3B3BE */
@@ -387,7 +387,7 @@ body {
 }
 .ui.checkbox input:checked ~ label:after {
   content: " ";
-  background-image: url("/img/OK.svg");
+  background-image: url("/img/ok.svg");
   background-repeat: no-repeat;
 }
 .ui.checkbox input:checked ~ label:before,
@@ -616,8 +616,16 @@ i.icon.search:before {
     }
   }
 }
+.planeta_сheckbox {
+  margin-top: 20px;
+}
+.numbers input {
+  -moz-appearance: textfield!important;
+}
+.numbers input::-webkit-inner-spin-button {
+  display: none!important;
+}
 .header_card {
-  margin-top: 40px;
   margin-bottom: 24px;
   display: flex;
   .ui.button {
@@ -1126,6 +1134,10 @@ body ::-webkit-scrollbar-thumb {
   border-radius: 0px !important;
 }
 .ui.dropdown.edit_drop .menu > .item {
+  >div{
+    display: flex;
+    align-items: center;
+  }
   display: flex;
   align-items: center;
 }
@@ -1490,9 +1502,204 @@ body ::-webkit-scrollbar-thumb {
   color: #73737a;
   margin-left: 20px;
 }
+.image_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.aynamsha {
+  > div {
+    transition: .5s all;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    border: 1px solid #e5e7fa;
+    border-radius: 400px;
+    > div {
+      position: relative;
+      top: -10px;
+    }
+  }
+  .pl {
+    width: 375px;
+    height: 375px;
+  }
+  .ne {
+    width: 345.16px;
+    height: 345.16px;
+  }
+  .ur {
+    width: 317.32px;
+    height: 317.32px;
+  }
+  .sa {
+    width: 288.48px;
+    height: 288.48px;
+  }
+  .ju {
+    width: 259.64px;
+    height: 259.64px;
+  }
+  .ma {
+    width: 230.8px;
+    height: 230.8px;
+  }
+  .ve {
+    width: 201.96px;
+    height: 201.96px;
+  }
+  .me {
+    width: 173.12px;
+    height: 173.12px;
+  }
+  .su {
+    width: 144.28px;
+    height: 144.28px;
+  }
+  .ke {
+    width: 115.44px;
+    height: 115.44px;
+  }
+  .ra {
+    width: 86.6px;
+    height: 86.6px;
+  }
+  .mo {
+    width: 57.76px;
+    height: 57.76px;
+  }
+  .as {
+    width: 27px;
+    height: 27px;
+  }
+  > div > div {
+    background: linear-gradient(180deg, #7558ff 0%, #6544e9 100%);
+    width: 18.63px;
+    height: 18.63px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+    /* or 100% */
 
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    /* FFFFFF */
+
+    color: #ffffff;
+    text-transform: capitalize;
+    border-radius: 30px;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 9%;
+}
+.none_aynamsha {
+  > div {
+    transition: .5s all;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    border: 1px solid #e5e7fa;
+    border-radius: 400px;
+    > div {
+      position: relative;
+      top: -10px;
+    }
+  }
+  .pl {
+    width: 375px;
+    height: 375px;
+  }
+  .ne {
+    width: 345.16px;
+    height: 345.16px;
+  }
+  .ur {
+    width: 317.32px;
+    height: 317.32px;
+  }
+  .sa {
+    width: 288.48px;
+    height: 288.48px;
+  }
+  .ju {
+    width: 259.64px;
+    height: 259.64px;
+  }
+  .ma {
+    width: 230.8px;
+    height: 230.8px;
+  }
+  .ve {
+    width: 201.96px;
+    height: 201.96px;
+  }
+  .me {
+    width: 173.12px;
+    height: 173.12px;
+  }
+  .su {
+    width: 144.28px;
+    height: 144.28px;
+  }
+  .ke {
+    width: 115.44px;
+    height: 115.44px;
+  }
+  .ra {
+    width: 86.6px;
+    height: 86.6px;
+  }
+  .mo {
+    width: 57.76px;
+    height: 57.76px;
+  }
+  .as {
+    width: 27px;
+    height: 27px;
+  }
+  > div > div {
+    background: linear-gradient(90deg, #ff698f 0%, #ff8aaf 100%);
+    width: 18.63px;
+    height: 18.63px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+    /* or 100% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    /* FFFFFF */
+
+    color: #ffffff;
+    text-transform: capitalize;
+    border-radius: 30px;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 9%;
+}
 .notal_card_community {
- 
   .text_big_all {
     margin-bottom: 28px;
   }
@@ -2621,4 +2828,10 @@ label {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.ui.page.dimmer {
+  .notalPersons_right .table_persons {
+    height: 343px;
+    overflow-y: scroll;
+  }
 }

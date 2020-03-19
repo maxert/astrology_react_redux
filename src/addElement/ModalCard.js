@@ -437,7 +437,7 @@ function ModalExampleDimmer(Houses) {
                               <div
                                 className="table_text_time"
                                 dangerouslySetInnerHTML={{
-                                  __html: Houses.Houses.res_planet[items].text
+                                  __html: Houses.Houses.res_planet[items].text_ay
                                 }}
                               ></div>
                             </div>
