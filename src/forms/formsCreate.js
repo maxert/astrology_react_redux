@@ -15,7 +15,7 @@ function InputExampleIconChild() {
   const [date_value, setDate_value] = useState("");
   const [data_notal, setData] = useState([]);
   const history = useHistory();
-  const [isChekbox, setChecbox] = useState(false);
+  const [isChekbox, setChecbox] = useState(0);
   const { none, createNotals, geolocation } = useContext(ReduceContext);
   const { handleSubmit, register, errors } = useForm();
   const { latitude, longitude, error } = usePosition(false, {
@@ -38,7 +38,6 @@ function InputExampleIconChild() {
     values["letnee"] = isChekbox;
     console.log(values);
     createNotals(values);
-
     history.push(`/home_card`);
   }
   return (

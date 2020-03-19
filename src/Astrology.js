@@ -32,7 +32,7 @@ function Astrology() {
       setDataNumber(res.data);
     })
     
-  }, [])
+  }, [data_number])
   return (
     <div className="container_home">
       {none.isLogin === true && (
@@ -144,7 +144,7 @@ function Astrology() {
                       </SvgLoader>
                     </div>
                     <div className="text_list">
-                      Избранное 
+                      Избранное <div className="block_number">{data_number&&data_number.fav}</div>
                     </div>
                   </NavLink>
                 </li>

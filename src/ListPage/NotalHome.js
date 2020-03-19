@@ -9,7 +9,6 @@ import EditDrop from "../addElement/editDropDown";
 function NotalHome() {
   const [select, setSelect] = useState("0");
   const { none } = useContext(ReduceContext);
-
   function selectNew(event, data) {
     setSelect(data.value);
     debugger;
