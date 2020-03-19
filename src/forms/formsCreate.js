@@ -23,11 +23,11 @@ function InputExampleIconChild() {
   });
   const d = new Date();
 
-  // useEffect(() => {
-  //   let data = JSON.parse(localStorage.getItem("save_natal"));
-  //   setData(data);
-  //   setChecbox(data !== null && data.letnee);
-  // }, []);
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("save_natal"));
+    setData(data);
+    setChecbox(data !== null && data.letnee);
+  }, []);
 
   function onSubmit(values) {
     debugger;
