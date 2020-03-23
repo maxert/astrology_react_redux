@@ -1,13 +1,16 @@
 import {
     FETCH_DATA_PERSONS,
     ADD_PERSONS,
-    DELETE_PERSONS,
     UPDATE_PERSONS,
+    DELETE_PERSONS,
   } from "../types";
   const handlers = {
     [FETCH_DATA_PERSONS]: (state, { payload }) => ({
       ...state,
       data_persons: payload
+    }),
+    [DELETE_PERSONS]: (state) => ({
+      ...state,
     }),
     [ADD_PERSONS]: state => ({
       ...state,
@@ -16,9 +19,6 @@ import {
     [UPDATE_PERSONS]: state => ({
       ...state,
       add_update_json: []
-    }),
-    [DELETE_PERSONS]: state => ({
-      ...state
     }),
 
 

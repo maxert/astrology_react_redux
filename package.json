@@ -19,6 +19,8 @@
     "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "react": "^16.12.0",
+    "react-alert": "^7.0.0",
+    "react-alert-template-basic": "^1.0.0",
     "react-dom": "latest",
     "react-geocode": "^0.2.1",
     "react-hook-form": "^4.10.1",

@@ -170,7 +170,7 @@ function ModalExampleDimmer(Houses) {
                           ))}
                         </div>
                         <div>
-                          {Houses.Houses.houses[7].pl.map((items, i) => (
+                          {Houses.Houses.houses[8].pl.map((items, i) => (
                             <div
                               key={i}
                               className="OneOne"
@@ -376,7 +376,7 @@ function ModalExampleDimmer(Houses) {
                           ))}
                         </div>
                         <div>
-                          {Houses.Houses.houses_ay[7].pl.map((items, i) => (
+                          {Houses.Houses.houses_ay[8].pl.map((items, i) => (
                             <div
                               key={i}
                               className="OneOne"

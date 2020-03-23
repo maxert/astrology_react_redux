@@ -1007,7 +1007,15 @@ body ::-webkit-scrollbar-thumb {
 
   color: #3f3356;
 }
+.container_persons{
+  position: relative;
+  min-height: 553px;
+}
+.ui.dimmer.invert_none{
+  background-color: transparent!important;
+}
 .persons_list_grid {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 28px;
@@ -1474,7 +1482,17 @@ body ::-webkit-scrollbar-thumb {
     display: none;
   }
 }
+.notal_items{
+  min-height: 500px;
+}
+.container_loading{
+  position: relative;
+}
+.table_persons_overflow{
+  position: relative;
+}
 .persons_items {
+  position: relative;
   .ui.dropdown .menu > div:nth-last-child(2) {
     color: red;
   }
@@ -1891,7 +1909,10 @@ body ::-webkit-scrollbar-thumb {
   display: block;
 }
 .image_notal > .block_info > div {
-  height: 15%;
+  height: 20%;
+}
+.favorites{
+  cursor: pointer;
 }
 .notalPersons_right {
   .container_info_persons_name {
@@ -1905,6 +1926,9 @@ body ::-webkit-scrollbar-thumb {
   .table_persons {
     height: 482px;
     overflow-y: scroll;
+  }
+  .table_persons_left_text{
+    white-space: nowrap;
   }
   .table_persons {
     margin-right: 12px;
@@ -2558,8 +2582,12 @@ label {
   cursor: pointer;
 }
 .ui.page.dimmer {
+  .button_footer{
+    display: flex;
+  }
   .ui.modal {
-    width: max-content;
+    width: 100%;
+    max-width: 500px;
     .block_info div {
       font-size: 0.8vw;
     }
@@ -2834,4 +2862,16 @@ label {
     height: 343px;
     overflow-y: scroll;
   }
+}
+#__react-alert__{
+  >div>div>div{
+    width: 100%!important;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

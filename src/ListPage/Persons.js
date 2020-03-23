@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Search from "../addElement/search";
-import { Button } from "semantic-ui-react";
+import { Button, Dimmer, Loader, Segment } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import EditDrop from "../addElement/editDropDown";
@@ -11,30 +11,42 @@ import PersonsEdit from "./PersonsEdit";
 import PaginationExamplePagination from "../addElement/pagination";
 import { ShowState } from "../context/show/showState";
 import { ShowContext } from "../context/show/showContext";
-import { PersonState } from "../context/personReducer/personState";
 import { PersonsContext } from "../context/personReducer/personContext";
 //Cтраница списка персон
 function PersonsHome() {
   const { hide, display, show } = useContext(ShowContext);
-  const { Add_favorite, number_all, none } = useContext(ReduceContext);
-  const { state_persons, Fetch_data_persons, delete_persons } = useContext(
-    PersonsContext
-  );
-  function newSubmite(events, id, value) {
-    if (events.target.dataset.index === "2") {
-      delete_persons(id);
-    } else if (events.target.dataset.index === "0") {
-      debugger;
-      Add_favorite("person", id);
-    }
-  }
+  const {
+    Add_favorite,
+    delete_favorite,
+    none,
+    pagination_number,
+    Order_by,
+    delete_all,
+    Fetch_data_favorite,
+    isLoading
+  } = useContext(ReduceContext);
+  const [isFavorite, setFavorite] = useState(false);
+  const { state_persons, Fetch_data_persons } = useContext(PersonsContext);
   function pagination(Value) {
-    Fetch_data_persons(Value._targetInst.pendingProps.value);
+    pagination_number(Value._targetInst.pendingProps.value);
   }
-
+  function FavoriteClick() {
+    isFavorite ? setFavorite(false) : setFavorite(true);
+    Fetch_data_favorite(none.data_link_favorite.type_id);
+  }
   useEffect(() => {
-    Fetch_data_persons(1, true);
-  }, []);
+    debugger;
+
+    Fetch_data_persons(
+      none.pagination !== 1 ? none.pagination : 1,
+      none.sorted
+    );
+    isLoading(false);
+  }, [
+    none.pagination === 1 ? 1 : none.pagination,
+    none.sorted,
+    none.data_number !== undefined ? none.data_number : false
+  ]);
 
   let { url } = useRouteMatch();
   return (
@@ -50,23 +62,44 @@ function PersonsHome() {
           </NavLink>
           <div className="container_persons_head_right">
             <div className="filter_abc">
-              <button className="text_head_persons abs_to_A_and_Y button_select active">
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (none.sorted === "asc" ? " active" : "")
+                }
+                onClick={() => Order_by("asc")}
+              >
                 По алфавиту А-Я
-              </button>
-              <button className="text_head_persons abs_to_Y_and_A button_select">
+              </div>
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (none.sorted !== "asc" ? " active" : "")
+                }
+                onClick={() => Order_by("desc")}
+              >
                 По алфавиту Я-А
-              </button>
+              </div>
             </div>
 
-            <NavLink
+            <div
               className="text_head_persons favorites"
-              to={`${url}/favorite`}
+              onClick={() => {
+                FavoriteClick();
+              }}
             >
-              <SvgLoader path="../../img/favorites.svg">
-                <SvgProxy selector="#co" />
-              </SvgLoader>
+              {isFavorite === false ? (
+                <SvgLoader path="../../img/favorites.svg">
+                  <SvgProxy selector="#co" />
+                </SvgLoader>
+              ) : (
+                <SvgLoader path="../../img/favorites_21.svg">
+                  <SvgProxy selector="#co" />
+                </SvgLoader>
+              )}
               Избранные
-            </NavLink>
+            </div>
+
             <div className="row_and_column">
               <SvgLoader
                 path="../../img/Group3.svg"
@@ -86,20 +119,161 @@ function PersonsHome() {
             </div>
           </div>
         </div>
-
-        {display.visible === false && (
-          <div className="persons_list_grid">
-            {state_persons.data_persons !== null &&
-            none.data_value.isSearch === false
-              ? state_persons.data_persons.persons.map(person => (
+        {none.isLoading === false ? (
+          <Dimmer className="invert_none" active inverted>
+            <Loader size="massive">Loading</Loader>
+          </Dimmer>
+        ) : display.visible === false ? (
+          isFavorite === false ? (
+            <div className="persons_list_grid">
+              {state_persons.data_persons !== undefined &&
+              none.data_value.isSearch === false
+                ? state_persons.data_persons.persons.map(person => (
+                    <div className="persons_items" key={person.id}>
+                      <div className="persons_items_head d_flex_center">
+                        <div className="container_info_persons d_flex_center">
+                          <div
+                            className={
+                              person.fav > 0
+                                ? "icon_image  active"
+                                : "icon_image"
+                            }
+                          >
+                            {person.firstname[0]}
+                            <SvgLoader
+                              className="favorite_svg"
+                              path="../../img/favorites_21.svg"
+                            >
+                              <SvgProxy selector="#co" />
+                            </SvgLoader>
+                          </div>
+                          <div className="container_info_persons_name">
+                            {person.firstname + " " + person.lastname}
+                          </div>
+                        </div>
+                        <div className="persons_edit">
+                          <EditDrop
+                            key={person.id}
+                            ID={person.id}
+                            Type={
+                              none.data_link_favorite
+                                ? none.data_link_favorite.type_id
+                                : "person"
+                            }
+                            Favorite={person.fav}
+                          ></EditDrop>
+                          <SvgLoader path="../../img/Group5.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </div>
+                      </div>
+                      <div className="d_flex_center date_persons">
+                        <div className="persons_text_left">День рождения:</div>
+                        <div className="persons_text_right">
+                          {person.birth_date}
+                        </div>
+                      </div>
+                      <div className="d_flex_center adress_persons">
+                        <div className="persons_text_left">Город:</div>
+                        <div className="persons_text_right">{person.city}</div>
+                      </div>
+                      <div className="d_flex_center page_persons">
+                        <NavLink
+                          className="text_link d_flex_center"
+                          to={`${url}/id/${person.id}`}
+                        >
+                          Перейти{" "}
+                          <SvgLoader path="../../img/Arrow_21.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </NavLink>
+                      </div>
+                    </div>
+                  ))
+                : none.data_value.value.map(person => (
+                    <div className="persons_items" key={person.id}>
+                      <div className="persons_items_head d_flex_center">
+                        <div className="container_info_persons d_flex_center">
+                          <div
+                            className={
+                              person.fav > 0
+                                ? "icon_image  active"
+                                : "icon_image"
+                            }
+                          >
+                            {person.firstname[0]}
+                            <SvgLoader
+                              className="favorite_svg"
+                              path="../../img/favorites_21.svg"
+                            >
+                              <SvgProxy selector="#co" />
+                            </SvgLoader>
+                          </div>
+                          <div className="container_info_persons_name">
+                            {person.firstname + " " + person.lastname}
+                          </div>
+                        </div>
+                        <div className="persons_edit">
+                          <EditDrop
+                            key={person.id}
+                            Favorite={person.fav}
+                            ID={person.id}
+                            Type={
+                              none.data_link_favorite
+                                ? none.data_link_favorite.type_id
+                                : "person"
+                            }
+                          ></EditDrop>
+                          <SvgLoader path="../../img/Group5.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </div>
+                      </div>
+                      <div className="d_flex_center date_persons">
+                        <div className="persons_text_left">День рождения:</div>
+                        <div className="persons_text_right">
+                          {person.birth_date}
+                        </div>
+                      </div>
+                      <div className="d_flex_center adress_persons">
+                        <div className="persons_text_left">Город:</div>
+                        <div className="persons_text_right">{person.city}</div>
+                      </div>
+                      <div className="d_flex_center page_persons">
+                        <NavLink
+                          className="text_link d_flex_center"
+                          to={`${url}/id/${person.id}`}
+                        >
+                          Перейти{" "}
+                          <SvgLoader path="../../img/Arrow_21.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </NavLink>
+                      </div>
+                    </div>
+                  ))}
+              {none.data_value.isSearch === true &&
+              none.data_value.value.length === 0 ? (
+                <div className="center_none_grid">Результатов не найденно</div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          ) : (
+            <div className="persons_list_grid">
+              {none.isLoading === false ? (
+                <Dimmer className="invert_none" active inverted>
+                  <Loader active size="massive">
+                    Loading
+                  </Loader>
+                </Dimmer>
+              ) : none.data_favorite !== null &&
+                none.data_value.isSearch === false ? (
+                none.data_favorite.map(person => (
                   <div className="persons_items" key={person.id}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
-                        <div
-                          className={
-                            person.fav > 0 ? "icon_image  active" : "icon_image"
-                          }
-                        >
+                        <div className={"icon_image  active"}>
                           {person.firstname[0]}
                           <SvgLoader
                             className="favorite_svg"
@@ -115,11 +289,13 @@ function PersonsHome() {
                       <div className="persons_edit">
                         <EditDrop
                           key={person.id}
-                          onClickDataNew={(events, data) =>
-                            newSubmite(events, person.id, data)
+                          ID={person.id}
+                          Type={
+                            none.data_link_favorite
+                              ? none.data_link_favorite.type_id
+                              : "person"
                           }
                           Favorite={person.fav}
-                          onClickData={() => number_all(person.id)}
                         ></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
                           <SvgProxy selector="#co" />
@@ -149,7 +325,8 @@ function PersonsHome() {
                     </div>
                   </div>
                 ))
-              : none.data_value.value.map(person => (
+              ) : (
+                none.data_value.value.map(person => (
                   <div className="persons_items" key={person.id}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
@@ -173,11 +350,13 @@ function PersonsHome() {
                       <div className="persons_edit">
                         <EditDrop
                           key={person.id}
-                          onClickDataNew={(events, data) =>
-                            newSubmite(events, person.id, data)
-                          }
                           Favorite={person.fav}
-                          onClickData={() => number_all(person.id)}
+                          ID={person.id}
+                          Type={
+                            none.data_link_favorite
+                              ? none.data_link_favorite.type_id
+                              : "person"
+                          }
                         ></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
                           <SvgProxy selector="#co" />
@@ -206,14 +385,18 @@ function PersonsHome() {
                       </NavLink>
                     </div>
                   </div>
-                ))}
-            {none.data_value.isSearch === true &&
-            none.data_value.value.length === 0 ? (
-              <div className="center_none_grid">Результатов не найденно</div>
-            ) : (
-              <div></div>
-            )}
-          </div>
+                ))
+              )}
+              {none.data_value.isSearch === true &&
+              none.data_value.value.length === 0 ? (
+                <div className="center_none_grid">Результатов не найденно</div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          )
+        ) : (
+          <div></div>
         )}
         {display.visible === true && (
           <div className="persons_list_grid persons_list_column">
@@ -222,95 +405,216 @@ function PersonsHome() {
               <div className="header_persons_list_date">Дата рождения</div>
               <div className="header_persons_list_city">Город</div>
             </div>
-            <div className="persons_list_column">
-              {state_persons.data_persons !== undefined &&
-                state_persons.data_persons.persons.map((person, i) => (
-                  <div className="persons_items" key={i}>
-                    <div className="persons_items_head ">
-                      <div className="container_info_persons d_flex_center">
-                        <div
-                          className={
-                            person.fav > 0 ? "icon_image  active" : "icon_image"
-                          }
-                        >
-                          {person.firstname[0]}
-                          <SvgLoader
-                            className="favorite_svg"
-                            path="../../img/favorites_21.svg"
+            {!isFavorite ? (
+              <div className="persons_list_column">
+                {state_persons.data_persons !== undefined &&
+                  state_persons.data_persons.persons.map((person, i) => (
+                    <div className="persons_items" key={i}>
+                      <div className="persons_items_head ">
+                        <div className="container_info_persons d_flex_center">
+                          <div
+                            className={
+                              person.fav > 0
+                                ? "icon_image  active"
+                                : "icon_image"
+                            }
                           >
-                            <SvgProxy selector="#co" />
-                          </SvgLoader>
-                        </div>
-                        <div className="container_info_persons_column">
-                          <div className="container_info_persons_name">
-                            {person.firstname + " " + person.lastname}
-                          </div>
-                          <NavLink
-                            className="text_link d_flex_center"
-                            to={`${url}/id/${person.id}`}
-                          >
-                            Перейти{" "}
-                            <SvgLoader path="../../img/Arrow_21.svg">
+                            {person.firstname[0]}
+                            <SvgLoader
+                              className="favorite_svg"
+                              path="../../img/favorites_21.svg"
+                            >
                               <SvgProxy selector="#co" />
                             </SvgLoader>
-                          </NavLink>
+                          </div>
+                          <div className="container_info_persons_column">
+                            <div className="container_info_persons_name">
+                              {person.firstname + " " + person.lastname}
+                            </div>
+                            <NavLink
+                              className="text_link d_flex_center"
+                              to={`${url}/id/${person.id}`}
+                            >
+                              Перейти{" "}
+                              <SvgLoader path="../../img/Arrow_21.svg">
+                                <SvgProxy selector="#co" />
+                              </SvgLoader>
+                            </NavLink>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="d_flex_center date_persons">
+                        <div className="persons_text_right">
+                          {person.birth_date}
+                        </div>
+                      </div>
+                      <div className="d_flex_center adress_persons">
+                        <div className="persons_text_right">{person.city}</div>
+                      </div>
+
+                      {person.fav > 0 ? (
+                        <div
+                          className="d_flex_center favorite_persons"
+                          onClick={() =>
+                            delete_favorite(
+                              person.id,
+                              none.data_link_favorite
+                                ? none.data_link_favorite.type_id
+                                : "person",
+                              none.pagination !== 1 ? none.pagination : 1,
+                              none.sorted
+                            )
+                          }
+                        >
+                          <SvgLoader path="../../img/favorites_21.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                          <div className="persons_text_right">В избранных</div>
+                        </div>
+                      ) : (
+                        <div
+                          className="d_flex_center favorite_persons"
+                          onClick={() =>
+                            Add_favorite(
+                              none.data_link_favorite
+                                ? none.data_link_favorite.type_id
+                                : "person",
+                              person.id,
+                              none.pagination !== 1 ? none.pagination : 1,
+                              none.sorted
+                            )
+                          }
+                        >
+                          <SvgLoader path="../../img/favorites.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                          <div className="persons_text_right">В избранные</div>
+                        </div>
+                      )}
+
+                      <NavLink
+                        to={`/person/${person.id}/edit`}
+                        className="d_flex_center edit_persons"
+                      >
+                        <SvgLoader path="../../img/Edit1.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div className="persons_text_right">Редактировать</div>
+                      </NavLink>
+                      <div className="d_flex_center delete_persons">
+                        <SvgLoader path="../../img/Delete1.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div
+                          className="persons_text_right"
+                          onClick={() =>
+                            delete_all(
+                              none.data_link_favorite.type_link,
+                              person.id
+                            )
+                          }
+                        >
+                          Удалить
                         </div>
                       </div>
                     </div>
-                    <div className="d_flex_center date_persons">
-                      <div className="persons_text_right">
-                        {person.birth_date}
+                  ))}
+              </div>
+            ) : (
+              <div className="persons_list_column">
+                {none.data_favorite !== null &&
+                  none.data_favorite.map((favorite, i) => (
+                    <div className="persons_items" key={i}>
+                      <div className="persons_items_head ">
+                        <div className="container_info_persons d_flex_center">
+                          <div className={"icon_image  active"}>
+                            {favorite.firstname[0]}
+                            <SvgLoader
+                              className="favorite_svg"
+                              path="../../img/favorites_21.svg"
+                            >
+                              <SvgProxy selector="#co" />
+                            </SvgLoader>
+                          </div>
+                          <div className="container_info_persons_column">
+                            <div className="container_info_persons_name">
+                              {favorite.firstname + " " + favorite.lastname}
+                            </div>
+                            <NavLink
+                              className="text_link d_flex_center"
+                              to={`${url}/id/${favorite.id}`}
+                            >
+                              Перейти{" "}
+                              <SvgLoader path="../../img/Arrow_21.svg">
+                                <SvgProxy selector="#co" />
+                              </SvgLoader>
+                            </NavLink>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="d_flex_center adress_persons">
-                      <div className="persons_text_right">{person.city}</div>
-                    </div>
+                      <div className="d_flex_center date_persons">
+                        <div className="persons_text_right">
+                          {favorite.birth_date}
+                        </div>
+                      </div>
+                      <div className="d_flex_center adress_persons">
+                        <div className="persons_text_right">
+                          {favorite.city}
+                        </div>
+                      </div>
 
-                    {person.fav > 0 ? (
-                     <div className="d_flex_center favorite_persons">
-                     <SvgLoader path="../../img/favorites_21.svg">
-                       <SvgProxy selector="#co" />
-                     </SvgLoader>
-                     <div className="persons_text_right">В избранных</div>
-                   </div>
-                    ) : (
-                      <div className="d_flex_center favorite_persons"  onClick={() => Add_favorite("person", person.id)}>
-                        <SvgLoader path="../../img/favorites.svg">
+                      <div
+                        className="d_flex_center favorite_persons"
+                        onClick={() =>
+                          delete_favorite(
+                            favorite.id,
+                            none.data_link_favorite
+                              ? none.data_link_favorite.type_id
+                              : "person",
+                            none.pagination !== 1 ? none.pagination : 1,
+                            none.sorted
+                          )
+                        }
+                      >
+                        <SvgLoader path="../../img/favorites_21.svg">
                           <SvgProxy selector="#co" />
                         </SvgLoader>
-                        <div className="persons_text_right">В избранные</div>
+                        <div className="persons_text_right">В избранных</div>
                       </div>
-                    )}
 
-                    <NavLink
-                      to={`/person/${person.id}/edit`}
-                      className="d_flex_center edit_persons"
-                    >
-                      <SvgLoader path="../../img/Edit1.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                      <div className="persons_text_right">Редактировать</div>
-                    </NavLink>
-                    <div className="d_flex_center delete_persons">
-                      <SvgLoader path="../../img/Delete1.svg">
-                        <SvgProxy selector="#co" />
-                      </SvgLoader>
-                      <div
-                        className="persons_text_right"
-                        onClick={() => {
-                          delete_persons(person.id);
-                        }}
+                      <NavLink
+                        to={`/person/${favorite.id}/edit`}
+                        className="d_flex_center edit_persons"
                       >
-                        Удалить
+                        <SvgLoader path="../../img/Edit1.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div className="persons_text_right">Редактировать</div>
+                      </NavLink>
+                      <div className="d_flex_center delete_persons">
+                        <SvgLoader path="../../img/Delete1.svg">
+                          <SvgProxy selector="#co" />
+                        </SvgLoader>
+                        <div
+                          className="persons_text_right"
+                          onClick={() =>
+                            delete_all(
+                              none.data_link_favorite.type_link,
+                              favorite.id
+                            )
+                          }
+                        >
+                          Удалить
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-            </div>
+                  ))}
+              </div>
+            )}
           </div>
         )}
       </div>
-      {none.data_value.isSearch === false ? (
+      {none.data_value.isSearch === false && isFavorite === false ? (
         <div className="d_flex_center pagination">
           <PaginationExamplePagination
             listPageAll={
@@ -329,22 +633,20 @@ function PersonsHome() {
 function Persons() {
   let { path } = useRouteMatch();
   return (
-    <PersonState>
-      <Switch>
-        <Route exact path={path}>
-          <ShowState>
-            <PersonsHome />
-          </ShowState>
-        </Route>
-        <Route path={`${path}/id/:id`}>
-          <ShowState>
-            <PersonsUnit />
-          </ShowState>
-        </Route>
-        <Route path={`${path}/add`} component={PersonsAdd} />
-        <Route path={`${path}/:id/edit`} component={PersonsEdit} />
-      </Switch>
-    </PersonState>
+    <Switch>
+      <Route exact path={path}>
+        <ShowState>
+          <PersonsHome />
+        </ShowState>
+      </Route>
+      <Route path={`${path}/id/:id`}>
+        <ShowState>
+          <PersonsUnit />
+        </ShowState>
+      </Route>
+      <Route path={`${path}/add`} component={PersonsAdd} />
+      <Route path={`${path}/:id/edit`} component={PersonsEdit} />
+    </Switch>
   );
 }
 export default Persons;

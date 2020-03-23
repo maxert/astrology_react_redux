@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
 import Geocode from "react-geocode";
@@ -28,48 +28,69 @@ import {
   CREATE_NOTAL_HOME,
   ONLINE_CARD,
   GEOLOCATION,
-  SEARCH_CITY
+  SEARCH_CITY,
+  FETCH_NUMBER,
+  PAGINATION_NUMBER,
+  SORTED,
+  LOADING
 } from "./types";
 import Axios from "axios";
-
+import { PersonsContext } from "./personReducer/personContext";
+import { useAlert } from "react-alert";
 export const ReducerState = ({ children }) => {
   const initialState = {
-    isLogin: localStorage.getItem("users") !== "null" ? true : false,
+    isLoading:false,
+    isLogin: localStorage.getItem("users") ? true : false,
     token: localStorage.getItem("users"),
     option_value: "0",
     data_favorite: null,
     data_fetch_links: null,
+    sorted: "asc",
     data_notal_online: {
       type: "hour",
       interval: 1,
       interval_direction: 1
     },
-    number_all: "",
+    data_number:[],
     data_value: {
       value: [],
       isSearch: false
     },
+    pagination: 1,
     data_fetch_value: [],
     data_value_select: [],
     data_link: "/api/companies",
     data_link_favorite: "/api/companies"
   };
+  const alert = useAlert();
   const [state, dispatch] = useReducer(AlertReducer, initialState);
-
-  const LogIn = async values => {
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/login",
-      {
-        email: values.email,
-        password: values.password
-      }
-    );
-
-    localStorage.setItem("users", res.data.data.api_token);
+  const pagination_number = number => {
     dispatch({
-      type: LOG_IN,
-      token: res.data.data.api_token
+      type: PAGINATION_NUMBER,
+      payload: number
     });
+  };
+  const isLoading = (bool) => {
+    dispatch({
+      type: LOADING,
+      payload: bool
+    });
+  };
+  const LogIn = values => {
+    Axios.post("http://1690550.masgroup.web.hosting-test.net/api/login", {
+      email: values.email,
+      password: values.password
+    })
+      .then(res => {
+        localStorage.setItem("users", res.data.data.api_token);
+        dispatch({
+          type: LOG_IN,
+          token: res.data.data.api_token
+        });
+      })
+      .catch(error => {
+        alert.error(error.response);
+      });
   };
   const SelectLocationNew = async value => {
     dispatch({
@@ -78,24 +99,30 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const Fetch_data_favorite = async number => {
+  const Fetch_data_favorite = async obj_type => {
     const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/favorites`,
-
+      `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
-
+    console.log(res.data)
+    debugger
     dispatch({
       type: FETCH_DATA_FAVORITE,
       payload: res.data
     });
   };
 
-  const delete_favorite = async (id, type) => {
+  const Order_by = async order_by => {
+    dispatch({
+      type: SORTED,
+      payload: order_by
+    });
+  };
+  const delete_favorite = async (id, type, id_pagination, order_by) => {
     const res = await Axios.delete(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${type}&obj_id=${id}`,
       {
@@ -104,6 +131,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    fetch_number();
     Fetch_data_favorite();
     dispatch({
       type: DELETE_FAVORITE
@@ -123,7 +151,7 @@ export const ReducerState = ({ children }) => {
       type: DELETE_LINK
     });
   };
-  const Add_favorite = async (type, id) => {
+  const Add_favorite = async (type, id, id_pagination, order_by) => {
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/favorites",
       {
@@ -136,9 +164,9 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    fetch_number();
     dispatch({
-      type: ADD_FAVORITE,
-      add_favortie_json: res.data
+      type: ADD_FAVORITE
     });
   };
 
@@ -194,7 +222,7 @@ export const ReducerState = ({ children }) => {
     const payload = Object.keys(res.data.predictions).map(key => {
       return {
         id: res.data.predictions[key].id,
-        title:res.data.predictions[key].description
+        title: res.data.predictions[key].description
       };
     });
 
@@ -288,6 +316,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const createNotals = async value => {
+    isLoading(false);
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
       {
@@ -303,7 +332,9 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
+     
     );
+
     const date = value.date.split("-");
     let new_date = date[2] + "." + date[1] + "." + date[0];
     console.log(new_date);
@@ -313,15 +344,15 @@ export const ReducerState = ({ children }) => {
       lat: parseFloat(value.lat),
       lng: parseFloat(value.lng),
       timezone: parseFloat(value.timezone),
-      city: value.city,
       letnee: parseInt(value.letnee)
     };
-    localStorage.setItem("save_natal", JSON.stringify(data));
 
+    debugger;
     dispatch({
       type: CREATE_NOTAL_HOME,
       payload: res.data
     });
+    isLoading(true);
   };
 
   const Fetch_links = async (type, id) => {
@@ -338,23 +369,45 @@ export const ReducerState = ({ children }) => {
       payload: res.data
     });
   };
-  const number_all = async (numbers, links) => {
+  const number_all = async (numbers, type) => {
     dispatch({
       type: NUMBER_ALL,
       payload: {
         numbers: numbers,
-        match: links
+        match: type
       }
     });
   };
   const LogOut = async () => {
-    localStorage.setItem("users", null);
+    localStorage.removeItem("users");
     dispatch({
       type: LOG_OUT,
       token: null
     });
   };
+
+  const fetch_number = async () => {
+    // console.log(stateNew.getState())
+    await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/custom/objcount`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    )
+      .then(res => {
+        dispatch({
+          type: FETCH_NUMBER,
+          payload: res.data
+        });
+      })
+      .catch(error => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
   const Fetch_one_persons = async id => {
+     
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
       {
@@ -367,7 +420,7 @@ export const ReducerState = ({ children }) => {
     Fetch_notal_card(res.data.type, res.data.id);
     Fetch_links(res.data.type, res.data.id);
 
-    console.log(res.data);
+    
     dispatch({
       type: FETCH_ONE_PERSONS,
       payload: res.data
@@ -410,7 +463,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const add_notal_card = async (type, id) => {
-    const res = await Axios.post(
+    await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/natals`,
       {
         obj_type: type,
@@ -421,13 +474,18 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    );
-    console.log(res.data.data);
-
-    dispatch({
-      type: ADD_NOTAL_CARD,
-      payload: res.data
-    });
+    )
+      .then(res =>
+        dispatch({
+          type: ADD_NOTAL_CARD,
+          payload: res.data
+        })
+      )
+      .catch(error => {
+        error.response.data.error.forEach(none => {
+          alert.error(none);
+        });
+      });
   };
 
   const update_notal_card = async id => {
@@ -476,18 +534,22 @@ export const ReducerState = ({ children }) => {
     // });
   };
 
-  const online_card = async (int_d, int_type, int, refresh) => {
-    const res = await Axios.get(
+  const online_card = (int_d, int_type, int, refresh) => {
+
+    Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    );
-    dispatch({
-      type: ONLINE_CARD,
-      payload: res.data
+    ).then(res => {
+      console.log(res.data);
+      dispatch({
+        type: ONLINE_CARD,
+        payload: res.data
+      });
+    
     });
   };
 
@@ -500,16 +562,21 @@ export const ReducerState = ({ children }) => {
       async response => {
         debugger;
         const res = await Axios.get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}&timestamp=${parseInt(Date.now()/1000)}&key=${API}`
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${
+            response.results[0].geometry.location.lat
+          },${response.results[0].geometry.location.lng}&timestamp=${parseInt(
+            Date.now() / 1000
+          )}&key=${API}`
         );
         console.log(res);
-        SelectLocationNew(parseInt(res.data.rawOffset/3600));
+        SelectLocationNew(parseInt(res.data.rawOffset / 3600));
+        SelectLocationNew(parseInt(res.data.rawOffset / 3600));
         dispatch({
           type: GEOLOCATION,
           payload: {
             location: response.results[0].geometry.location,
-            timezone:parseInt(res.data.rawOffset/3600),
-            letnee:(res.data.dstOffset>0?true:false)
+            timezone: parseInt(res.data.rawOffset / 3600),
+            letnee: res.data.dstOffset > 0 ? true : false
           }
         });
       },
@@ -544,6 +611,10 @@ export const ReducerState = ({ children }) => {
         Add_favorite,
         favorite_select,
         update_notal_card,
+        fetch_number,
+        pagination_number,
+        Order_by,
+        isLoading,
         none: state
       }}
     >

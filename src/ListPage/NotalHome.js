@@ -5,27 +5,27 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
 import { SelectNew } from "../addElement/SelectNew";
 import EditDrop from "../addElement/editDropDown";
+import { Dimmer, Loader } from "semantic-ui-react";
 //Блок Главной страниццы
 function NotalHome() {
   const [select, setSelect] = useState("0");
-  const { none,createNotals } = useContext(ReduceContext);
+  const { none, createNotals } = useContext(ReduceContext);
   function selectNew(event, data) {
     setSelect(data.value);
     debugger;
   }
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("save_natal"));
-    const date = data.date.split(".");
-    let new_date = date[2] + "-" + date[1] + "-" + date[0];
-    data["date"]=new_date;
-    
-    createNotals(data);
+    if (data !== null) {
+      const date = data.date.split(".");
+      let new_date = date[2] + "-" + date[1] + "-" + date[0];
+      data["date"] = new_date;
+
+      createNotals(data);
+    }
   }, []);
   return (
     <div className="container_list">
-      <div className="search_container">
-        <Search />
-      </div>
       <div className="container_persons">
         <div className="button_header">
           <NavLink to={`/`}>
@@ -60,8 +60,11 @@ function NotalHome() {
                     </SvgLoader>
                   </div>
                 </div>
-
-                {select === "0" ? (
+                {none.isLoading === false ? (
+                  <Dimmer active={true} inverted>
+                    <Loader size="massive">Loading</Loader>
+                  </Dimmer>
+                ) : select === "0" ? (
                   <div className="notal_table_persons">
                     <div className="d_flex_center image_notal notalPersons_left">
                       <SvgLoader path="../../img/Натальная карта.svg">
@@ -219,7 +222,7 @@ function NotalHome() {
                               ))}
                             </div>
                             <div>
-                              {none.notal_home.houses[7].pl.map((items, i) => (
+                              {none.notal_home.houses[8].pl.map((items, i) => (
                                 <div
                                   key={i}
                                   className="OneOne"
@@ -479,7 +482,7 @@ function NotalHome() {
                               )}
                             </div>
                             <div>
-                              {none.notal_home.houses_ay[7].pl.map(
+                              {none.notal_home.houses_ay[8].pl.map(
                                 (items, i) => (
                                   <div
                                     key={i}

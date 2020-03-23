@@ -3,7 +3,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ShowContext } from "../context/show/showContext";
 
 //Блок с таблицами
-export const TableList = ({ TableData, SelectOptions }) => {
+export const TableList = ({ TableData, SelectOptions,DateValue }) => {
   const { display } = useContext(ShowContext);
   if (display.visible) {
     return null;
@@ -11,7 +11,7 @@ export const TableList = ({ TableData, SelectOptions }) => {
 
   return (
     <div className="table_list">
-      <div className="text_small">Mon 17-02-2020 09:32:44</div>
+      <div className="text_small">{DateValue}</div>
       <div className="table_grid">
         <div className="table_left">
           <div className="table_head">Планета</div>

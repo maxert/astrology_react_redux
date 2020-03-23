@@ -191,7 +191,7 @@ function NotalCommunity() {
                         ))}
                       </div>
                       <div>
-                        {items.natal.data.houses[7].pl.map((items, i) => (
+                        {items.natal.data.houses[8].pl.map((items, i) => (
                           <div
                             key={i}
                             className="OneOne"

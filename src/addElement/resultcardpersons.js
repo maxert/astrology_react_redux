@@ -208,7 +208,7 @@ function ResultCardPersons({ Birthday, Time }) {
                           ))}
                         </div>
                         <div>
-                          {none.data_notal.data.houses[7].pl.map((items, i) => (
+                          {none.data_notal.data.houses[8].pl.map((items, i) => (
                             <div
                               key={i}
                               className="OneOne"
@@ -450,7 +450,7 @@ function ResultCardPersons({ Birthday, Time }) {
                           ))}
                         </div>
                         <div>
-                          {none.data_notal.data.houses_ay[7].pl.map((items, i) => (
+                          {none.data_notal.data.houses_ay[8].pl.map((items, i) => (
                             <div
                               key={i}
                               className="OneOne"

@@ -2,15 +2,17 @@ import React, { useContext, useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import {ReduceContext} from "../context/reducerContext";
+import { useHistory } from "react-router";
 
 //Модальной окно ВЫХОДА
 function ModalExit() {
   const { LogOut } = useContext(ReduceContext);
   const [open, setOpen] = useState(false);
-  
+  const history = useHistory();
 
   function handleClick() {
     LogOut();
+    history.push("/login")
   }
   return (
     <div>

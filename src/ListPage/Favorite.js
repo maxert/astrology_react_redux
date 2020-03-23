@@ -22,7 +22,7 @@ function Favorite() {
   function onChangeElement(event, data) {
     const key = data.options.filter(x => x.value === data.value);
     favorite_select(data.value, key[0].key);
-    console.log(key[0].key);
+    Fetch_data_favorite(key[0].key);
     debugger;
   }
   function newSubmite(events, id, type, value) {
@@ -31,7 +31,7 @@ function Favorite() {
     }
   }
   useEffect(() => {
-    Fetch_data_favorite();
+    Fetch_data_favorite(none.data_link_favorite!==undefined?none.data_link_favorite.type_id:false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -75,8 +75,9 @@ function Favorite() {
             </div>
           </div>
         </div>
-
+        
         {display.visible === false && (
+          
           <div className="persons_list_grid">
             {none.data_favorite !== null &&
               none.data_favorite
@@ -155,8 +156,14 @@ function Favorite() {
                   <div className="persons_items">
                     <div className="persons_items_head ">
                       <div className="container_info_persons d_flex_center">
-                        <div className="icon_image">
+                        <div className="icon_image active">
                           {items.firstname ? items.firstname[0] : items.name[0]}
+                          <SvgLoader
+                            className="favorite_svg"
+                            path="../../img/favorites_21.svg"
+                          >
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
                         </div>
                         <div className="container_info_persons_column">
                           <div className="container_info_persons_name">

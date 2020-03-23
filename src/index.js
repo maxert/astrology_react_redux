@@ -8,22 +8,51 @@ import logger from "redux-logger";
 import { ConfigProvider } from "antd";
 import { ReducerState } from "./context/reducerState";
 import { AlertReducer } from "./context/reducer";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 import "antd/dist/antd.css";
-import { Provider } from "react-redux";
 import ru from "antd/es/locale/ru_RU";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-
-const store = createStore(AlertReducer,composeWithDevTools(applyMiddleware(logger)));
+import Forms from "./forms/formsOpen";
+import { PersonsReducer } from "./context/personReducer/personReducer";
+import { CompanyReducer } from "./context/companyReducer/companyReducer";
+import { EventReducer } from "./context/eventReducer/eventReducer";
+import { PersonState } from "./context/personReducer/personState";
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+const options = {
+  timeout: 5000,
+  position: positions.TOP_CENTER
+};
+const store = createStore(
+  (AlertReducer, PersonsReducer, CompanyReducer, EventReducer),
+  composeWithDevTools(applyMiddleware(logger))
+);
 //Основной блок где рендерится все елементы в указанный класс root
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={store} template={AlertTemplate} {...options}>
     <ConfigProvider locale={ru}>
       <ReducerState store={store}>
-        <Router>
-          <Astrology />
-        </Router>
+        <PersonState>
+          <Router>
+            <Switch>
+              <Route path="/login">
+                <Forms></Forms>
+              </Route>
+              <Route path="/:q">
+                <Astrology />
+              </Route>
+              <Route path="/">
+                <Astrology />
+              </Route>
+            </Switch>
+          </Router>
+        </PersonState>
       </ReducerState>
     </ConfigProvider>
   </Provider>,

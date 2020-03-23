@@ -24,6 +24,11 @@ import {
   ONLINE_CARD,
   GEOLOCATION,
   SEARCH_CITY,
+  FETCH_NUMBER,
+  DELETE_ALL,
+  PAGINATION_NUMBER,
+  SORTED,
+  LOADING,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -38,9 +43,16 @@ const handlers = {
     isLogin: false,
     token: null
   }),
+  [DELETE_ALL]: state => ({
+    ...state
+  }),
   [SELECT_LOCATION]:(state, { payload }) => ({
     ...state,
     option_value: payload
+  }),
+  [PAGINATION_NUMBER]:(state, { payload }) => ({
+    ...state,
+    pagination: payload
   }),
   [FETCH_DATA_FAVORITE]: (state, { payload }) => ({
     ...state,
@@ -124,9 +136,21 @@ const handlers = {
   [DELETE_LINK]: state => ({
     ...state
   }),
+  [FETCH_NUMBER]:  (state, { payload }) => ({
+    ...state,
+    data_number:payload
+  }),
   [GEOLOCATION]: (state, { payload }) => ({
     ...state,
     geolocation: payload
+  }),
+  [SORTED]: (state, { payload }) => ({
+    ...state,
+    sorted: payload
+  }),
+  [LOADING]: (state, { payload }) => ({
+    ...state,
+    isLoading: payload
   }),
   DEFAULT: state => state
 };
