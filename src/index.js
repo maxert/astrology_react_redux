@@ -6,6 +6,7 @@ import "semantic-ui-css/semantic.min.css";
 import "./styles.scss";
 import logger from "redux-logger";
 import { ConfigProvider } from "antd";
+import "smartblock/css/smartblock.css";
 import { ReducerState } from "./context/reducerState";
 import { AlertReducer } from "./context/reducer";
 import {
@@ -25,6 +26,7 @@ import { EventReducer } from "./context/eventReducer/eventReducer";
 import { PersonState } from "./context/personReducer/personState";
 import { positions, Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { createBrowserHistory } from "history";
 const options = {
   timeout: 5000,
   position: positions.TOP_CENTER
@@ -33,13 +35,14 @@ const store = createStore(
   (AlertReducer, PersonsReducer, CompanyReducer, EventReducer),
   composeWithDevTools(applyMiddleware(logger))
 );
+const history = createBrowserHistory();
 //Основной блок где рендерится все елементы в указанный класс root
 ReactDOM.render(
   <Provider store={store} template={AlertTemplate} {...options}>
     <ConfigProvider locale={ru}>
-      <ReducerState store={store}>
-        <PersonState>
-          <Router>
+      <Router history={history}>
+        <ReducerState store={store}>
+          <PersonState>
             <Switch>
               <Route path="/login">
                 <Forms></Forms>
@@ -51,9 +54,9 @@ ReactDOM.render(
                 <Astrology />
               </Route>
             </Switch>
-          </Router>
-        </PersonState>
-      </ReducerState>
+          </PersonState>
+        </ReducerState>
+      </Router>
     </ConfigProvider>
   </Provider>,
   document.getElementById("root")

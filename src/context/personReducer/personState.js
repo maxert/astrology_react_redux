@@ -9,14 +9,18 @@ import { PersonsContext } from "./personContext";
 import { PersonsReducer } from "./personReducer";
 import Axios from "axios";
 import { ReduceContext } from "../reducerContext";
+import { useAlert } from "react-alert";
+import { useHistory } from "react-router";
 
 export const PersonState = ({ children }) => {
   const initialState = {
     token: localStorage.getItem("users"),
-    data_perons:[]
+    data_perons: []
   };
   const [state, dispatch] = useReducer(PersonsReducer, initialState);
-  const {isLoading} = useContext(ReduceContext);
+  const { isLoading } = useContext(ReduceContext);
+  const alert = useAlert();
+  const history = useHistory();
   const Update_persons = async (values, id) => {
     var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
     const res = await Axios.put(
@@ -32,7 +36,7 @@ export const PersonState = ({ children }) => {
         longtitude: parseFloat(values.longtitude),
         latitude: parseFloat(values.latitude),
         city: values.city,
-        image: "asd"
+        upload_image: values.upload_image
       },
       {
         headers: {
@@ -49,35 +53,43 @@ export const PersonState = ({ children }) => {
 
   const Add_persons = async values => {
     var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
+    let formData = new FormData();
+    /*
+      Iteate over any file sent over appending the files
+      to the form data.
+    */
+    Object.keys(values).map(key => {
+      if(key==="upload_image"){
+      formData.append(key, values[key][0]);
+      }else{
+        formData.append(key, values[key]);
+      }
+    });
+    // for( var i = 0; i <  values.upload_image.length; i++ ){
+    //   let file =  values.upload_image[i];
+    //   formData.append('files[' + i + ']', file);
+    // }
+
+    console.log(formData);
     debugger;
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/persons",
-      {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.birth_time,
-        timezone: parseFloat(time[0]),
-        longtitude: parseFloat(values.longtitude),
-        latitude: parseFloat(values.latitude),
-        city: values.city,
-        image: "asd"
-      },
+      formData,
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
-    debugger;
+    alert.success("Персона созданна");
+    history.goBack();
     dispatch({
       type: ADD_PERSONS,
-      add_persons_json: res.data
+      payload: res.data
     });
   };
-  const delete_persons = async (id,id_pagination,order_by) => {
+  const delete_persons = async (id, id_pagination, order_by) => {
     const res = await Axios.delete(
       `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
       {
@@ -86,7 +98,8 @@ export const PersonState = ({ children }) => {
         }
       }
     );
-    Fetch_data_persons(id_pagination,order_by)
+    isLoading(false);
+    Fetch_data_persons(id_pagination, order_by);
     dispatch({
       type: DELETE_PERSONS
     });
@@ -103,7 +116,7 @@ export const PersonState = ({ children }) => {
       }
     ).then(res => {
       console.log(res.data);
-      debugger
+      debugger;
       dispatch({
         type: FETCH_DATA_PERSONS,
         payload: res.data

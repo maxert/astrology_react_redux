@@ -32,7 +32,8 @@ import {
   FETCH_NUMBER,
   PAGINATION_NUMBER,
   SORTED,
-  LOADING
+  LOADING,
+  URL_BACK
 } from "./types";
 import Axios from "axios";
 import { PersonsContext } from "./personReducer/personContext";
@@ -51,7 +52,6 @@ export const ReducerState = ({ children }) => {
       interval: 1,
       interval_direction: 1
     },
-    data_number:[],
     data_value: {
       value: [],
       isSearch: false
@@ -74,6 +74,12 @@ export const ReducerState = ({ children }) => {
     dispatch({
       type: LOADING,
       payload: bool
+    });
+  };
+  const urlBack = (url) => {
+    dispatch({
+      type: URL_BACK,
+      payload: url
     });
   };
   const LogIn = values => {
@@ -100,6 +106,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const Fetch_data_favorite = async obj_type => {
+    isLoading(false);
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
       {
@@ -114,6 +121,7 @@ export const ReducerState = ({ children }) => {
       type: FETCH_DATA_FAVORITE,
       payload: res.data
     });
+    isLoading(true);
   };
 
   const Order_by = async order_by => {
@@ -245,15 +253,17 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    const payload = Object.keys(res.data.persons).map(key => {
+    console.log(res.data.persons)
+    debugger
+    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
-        id: res.data.persons[key].id,
+        id: res.data[Object.keys(res.data)[0]][key].id,
         title:
-          res.data.persons[key].name === undefined
-            ? res.data.persons[key].firstname +
+          res.data[Object.keys(res.data)[0]][key].name === undefined
+            ? res.data[Object.keys(res.data)[0]][key].firstname +
               " " +
-              res.data.persons[key].lastname
-            : res.data.persons[key].name
+              res.data[Object.keys(res.data)[0]][key].lastname
+            : res.data[Object.keys(res.data)[0]][key].name
       };
     });
 
@@ -528,10 +538,6 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    // dispatch({
-    //   type: FETCH_NOTAL_CARD,
-    //   payload: res.data
-    // });
   };
 
   const online_card = (int_d, int_type, int, refresh) => {
@@ -555,7 +561,6 @@ export const ReducerState = ({ children }) => {
 
   const geolocation = async city => {
     const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
-
     Geocode.setApiKey(API);
     Geocode.setLanguage("ru");
     Geocode.fromAddress(city).then(
@@ -571,6 +576,7 @@ export const ReducerState = ({ children }) => {
         console.log(res);
         SelectLocationNew(parseInt(res.data.rawOffset / 3600));
         SelectLocationNew(parseInt(res.data.rawOffset / 3600));
+        localStorage.setItem("city", city);
         dispatch({
           type: GEOLOCATION,
           payload: {
@@ -608,6 +614,7 @@ export const ReducerState = ({ children }) => {
         Fetch_links,
         LogIn,
         LogOut,
+        urlBack,
         Add_favorite,
         favorite_select,
         update_notal_card,

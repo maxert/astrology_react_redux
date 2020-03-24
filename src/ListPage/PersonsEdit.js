@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
@@ -17,7 +17,7 @@ function PersonsEdit() {
   const { url } = useRouteMatch();
   const { none, Fetch_one_persons } = useContext(ReduceContext);
   const { Update_persons } = useContext(PersonsContext);
-
+  const history = useHistory();
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
   }, []);
@@ -30,15 +30,13 @@ function PersonsEdit() {
     <div className="container_add">
       {none.one_persons && (
         <div>
-          <div className="button_header">
-            <NavLink to={`/person/id/${none.one_persons.id}`}>
-              <div className="purple">
-                <SvgLoader path="../../img/Arrow2.svg">
-                  <SvgProxy selector="#cst" />
-                </SvgLoader>
-                Назад
-              </div>
-            </NavLink>
+          <div className="button_header" onClick={()=>history.goBack()}>
+            <div className="purple">
+              <SvgLoader path="../../img/Arrow2.svg">
+                <SvgProxy selector="#cst" />
+              </SvgLoader>
+              Назад
+            </div>
           </div>
           <div className="container_list container_create">
             <h2>Редактирования персоны</h2>
@@ -118,120 +116,7 @@ function PersonsEdit() {
                   </div>
                   <Button>Сохранить</Button>
                 </div>
-                <div className="personal_date all_box">
-                  <div className="text_all">Место и время рождения</div>
-                  <div className="grid_column center_grid">
-                    <div className="input_all">
-                      <Form.Field>
-                        <Input placeholder="дд . мм . гггг">
-                          <label>Дата</label>
-                          <Icon className="icon_date">
-                            <DatePicker
-                              format={"DD.MM.YYYY"}
-                              onChange={(data, dataString) =>
-                                setCount(dataString)
-                              }
-                            ></DatePicker>
-                          </Icon>
-                          <NumberFormat
-                            type="text"
-                            name="birth_date"
-                            placeholder="дд . мм . гггг"
-                            mask={"_"}
-                            format="##.##.####"
-                            value={
-                              count === "" ? none.one_persons.birth_date : count
-                            }
-                            defaultValue={none.one_persons.birth_date}
-                            className={
-                              "" + (errors.birth_date ? "date active" : "")
-                            }
-                            getInputRef={register({
-                              required: true,
-                              pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                            })}
-                          />
-                          {errors.birth_date && errors.birth_date.message}
-                        </Input>
-                      </Form.Field>
-                    </div>
-                    <Form.Field>
-                      <label>Время рождения</label>
-                      <NumberFormat
-                        type="text"
-                        name="birth_time"
-                        placeholder="пример: 21:34"
-                        defaultValue={none.one_persons.birth_time}
-                        mask="_"
-                        format="##:##"
-                        className={"" + (errors.birth_time ? "active" : "")}
-                        getInputRef={register({
-                          required: true,
-                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                        })}
-                      />
-                      {errors.birth_time && errors.birth_time.message}
-                    </Form.Field>
-                  </div>
-                  <div className="grid_column center_grid location_input_top">
-                    <Form.Field>
-                      <label>Место рождения</label>
-                      <input
-                        type="text"
-                        name="city"
-                        placeholder="г. Киев"
-                        defaultValue={none.one_persons.city}
-                        className={"" + (errors.city ? "active" : "")}
-                        ref={register({
-                          required: true,
-                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                        })}
-                      />
-                      {errors.city && errors.city.message}
-                    </Form.Field>
-                    <div className="input_all location_input">
-                      <div className="text_localisation">Часовой пояс:</div>
-                      <SelectLocation></SelectLocation>
-                    </div>
-                  </div>
-                  <Checkbox
-                    label="Летнее время"
-                    className="time_location"
-                  ></Checkbox>
-                  <div className="grid_column grid_small">
-                    <Form.Field>
-                      <label>Долгота:</label>
-                      <input
-                        type="text"
-                        name="longtitude"
-                        placeholder="36.6666"
-                        defaultValue={none.one_persons.longtitude}
-                        className={"" + (errors.longtitude ? "active" : "")}
-                        ref={register({
-                          required: true,
-                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                        })}
-                      />
-                      {errors.longtitude && errors.longtitude.message}
-                    </Form.Field>
-                    <Form.Field>
-                      <label>Широта:</label>
-                      <input
-                        type="text"
-                        name="latitude"
-                        placeholder="49.6666"
-                        defaultValue={none.one_persons.latitude}
-                        className={"" + (errors.latitude ? "active" : "")}
-                        ref={register({
-                          required: true,
-                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                        })}
-                      />
-                      {errors.latitude && errors.latitude.message}
-                    </Form.Field>
-                  </div>
-                  <Button>Сохранить</Button>
-                </div>
+               
               </div>
               <div className="create_persons_right">
                 <div className="block_image">

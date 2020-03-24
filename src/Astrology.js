@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Switch, Route, NavLink, Redirect } from "react-router-dom";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { Switch, Route, NavLink, Redirect, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
 import Company from "./ListPage/Company";
@@ -16,9 +16,8 @@ import { PersonsContext } from "./context/personReducer/personContext";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
-  const { none, fetch_number } = useContext(ReduceContext);
+  const { none, fetch_number} = useContext(ReduceContext);
   const {state_persons} = useContext(PersonsContext);
-
 
 
   useEffect(() => {

@@ -29,6 +29,7 @@ import {
   PAGINATION_NUMBER,
   SORTED,
   LOADING,
+  URL_BACK,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь

@@ -31,7 +31,7 @@ function ModalExampleSize() {
     values["obj_type"] = none.data_id.type_link;
     values["obj_id"] = none.data_id.type_id;
     values["link_obj_type"] = none.data_link.type_id;
-    debugger
+    debugger;
     values["link_obj_id"] = result.id;
     console.log(values);
 
@@ -80,16 +80,12 @@ function ModalExampleSize() {
 
 function SimpleSlider() {
   const { none, delete_link } = useContext(ReduceContext);
-  console.log(none.data_fetch_links);
+
   const setting = {
     infinite: true,
     arrow: true,
     speed: 500,
-    slidesToShow:
-      none.data_fetch_links !== null &&
-      (none.data_fetch_links.length >=1 && none.data_fetch_links.length <= 6
-        ? none.data_fetch_links.length - 1
-        : 7),
+    slidesToShow: 7,
     slidesToScroll: 1
   };
   return (
@@ -97,7 +93,7 @@ function SimpleSlider() {
       {none.data_fetch_links !== null &&
         (none.data_fetch_links.length === 0 ? (
           <div className="error_none">У вас нет связей</div>
-        ) : (
+        ) : none.data_fetch_links.length >= 7 ? (
           <Slider {...setting}>
             {none.data_fetch_links.map((items, i) => (
               <div key={i}>
@@ -135,6 +131,44 @@ function SimpleSlider() {
               </div>
             ))}
           </Slider>
+        ) : (
+          <div className="slider_center">
+            {none.data_fetch_links.map((items, i) => (
+              <div key={i}>
+                <div className="items_slider">
+                  <div className="icon_elipse">{items.name[0]}</div>
+                  <div className="icon_text">{items.name}</div>
+                  <DropdownSlider
+                    Content={
+                      <div className="dropdownslider">
+                        <Link
+                          to={`/${items.link_obj_type}/id/${items.link_obj_id}`}
+                        >
+                          Перейти на страницу
+                        </Link>
+                        <div
+                          className="delete_comunity"
+                          onClick={() =>
+                            delete_link(
+                              items.id,
+                              none.data_id.type_link,
+                              none.data_id.type_id
+                            )
+                          }
+                        >
+                          Удалить связь
+                        </div>
+                        <div className="add_notal">
+                          {" "}
+                          Добавить натальную карту
+                        </div>
+                      </div>
+                    }
+                  ></DropdownSlider>
+                </div>
+              </div>
+            ))}
+          </div>
         ))}
 
       <ModalExampleSize></ModalExampleSize>

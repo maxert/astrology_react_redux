@@ -12,9 +12,9 @@ import {
     [DELETE_PERSONS]: (state) => ({
       ...state,
     }),
-    [ADD_PERSONS]: state => ({
+    [ADD_PERSONS]: (state, { payload }) => ({
       ...state,
-      add_persons_json: []
+      payload
     }),
     [UPDATE_PERSONS]: state => ({
       ...state,

@@ -3,11 +3,11 @@ import { Search } from "semantic-ui-react";
 import { ReduceContext } from "../context/reducerContext.js";
 
 //Блок плашки поиска
-function SearchCity({ ValueData }) {
+function SearchCity({ ValueData,ValueLocation }) {
   const { none, search_data_city, geolocation } = useContext(ReduceContext);
   function newSubmite(e, resulte) {
     geolocation(resulte.result.title);
-    localStorage.setItem("city", resulte.result.title);
+
   }
   function handleSearchChange(e, { value }) {
     search_data_city(value);

@@ -8,9 +8,11 @@ import { Item } from "semantic-ui-react";
 //Блок натальной карты связи
 function NotalCommunity() {
   const { none } = useContext(ReduceContext);
+  if(none.data_fetch_links === null){
+    return null
+  }
   return (
     <div className="notal_card_community">
-      {none.data_fetch_links !== null && (
         <div>
           <div className="text_big_all">натальные карты Связей</div>
           <div className="notal_card_community_container">
@@ -206,7 +208,7 @@ function NotalCommunity() {
             ))}
           </div>
         </div>
-      )}
+
     </div>
   );
 }

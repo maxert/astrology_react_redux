@@ -1,21 +1,52 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
-import { SvgLoader, SvgProxy } from "react-svgmt";
+// import { SvgLoader, SvgProxy } from "react-svgmt";
+import { SmartBlock, Extensions } from "smartblock";
+import { useForm } from "react-hook-form";
+import { useAlert } from "react-alert";
+import { NoteContext } from "../context/noteReducer/noteContext";
+import { ReduceContext } from "../context/reducerContext";
 
 //Создание заметки
-function CreateNote() {
+function CreateNote({ID,Type}) {
+  const {add_note} = useContext(NoteContext);
+  const alert=useAlert();
+  const [htmlDesc,setHtml]=useState("<p></p>")
+  const { handleSubmit, register, errors } = useForm({
+    reValidateMode: onSubmit
+  });
+  useEffect(() => {
+    if (errors.name !== undefined) {
+      alert.error("Введите название");
+    }
+  }, [errors]);
+  function onSubmit(values) {
+    values['description']=htmlDesc;
+    values['obj_type']=Type;
+    values["obj_id"]=ID
+    console.log(values);
+    add_note(values)
+  }
   return (
     <div className="create_note">
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <div className="text_all">Создать заметку</div>
         <Form.Field className="text_note">
           <label>Название заметки</label>
-          <input/>
+          <input
+            type="text"
+            name="name"
+            className={"" + (errors.name ? "active" : "")}
+            ref={register({
+              required: true,
+              pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+            })}
+          />
         </Form.Field>
         <div className="textarea_container">
           <div className="textarea_note">
             Заметка
-            <div className="checkbox">
+            {/* <div className="checkbox">
               <div className="checkbox_list">
                 <input type="checkbox" id="bold" />
                 <label htmlFor="bold">
@@ -48,14 +79,19 @@ function CreateNote() {
                   </SvgLoader>
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
-          <Form.TextArea rows="8"/>
+          <SmartBlock
+            extensions={Extensions}
+            html={"<p> </p>"}
+            onChange={({ html }) => {
+              setHtml(html);
+            }}
+          />
+          {/* <Form.TextArea rows="8"/> */}
           <div className="button_footer">
             <Button>Создать</Button>
-            <Button className="clear_buttton">
-            Очистить
-            </Button>
+            <Button className="clear_buttton">Очистить</Button>
           </div>
         </div>
       </Form>

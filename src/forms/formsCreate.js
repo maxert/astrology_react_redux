@@ -4,7 +4,7 @@ import SelectLocation from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
-import { useHistory } from "react-router";
+import { useHistory, Router } from "react-router";
 import Cleave from "cleave.js/react";
 import SearchCity from "../addElement/searchCity";
 import { usePosition } from "use-position";
@@ -13,7 +13,6 @@ import { useAlert } from "react-alert";
 //Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
-
   const [data_notal, setData] = useState([]);
   const history = useHistory();
   const [isChekbox, setChecbox] = useState(0);
@@ -22,9 +21,9 @@ function InputExampleIconChild() {
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
       date: moment(Date.now()).format("DD.MM.YYYY"),
-      time:moment(Date.now()).format("HH:mm")
+      time: moment(Date.now()).format("HH:mm")
     },
-    reValidateMode:onSubmit
+    reValidateMode: onSubmit
   });
   const { latitude, longitude, error } = usePosition(false, {
     enableHighAccuracy: true
@@ -49,24 +48,28 @@ function InputExampleIconChild() {
     history.push(`/home_card`);
     alert.success("Натальная карта созданна");
   }
-useEffect(()=>{
+  useEffect(() => {
+    if(none.geolocation!==undefined){
+    setValue("lng", none.geolocation.location.lng);
+    setValue("lat", none.geolocation.location.lat);
+    }
+  }, [localStorage.getItem("city")]);
 
- if (errors.date!==undefined) {
-    alert.error("Введите корректно дату");
-  }
-  if(errors.time!==undefined){
-    alert.error("Введите корректно время");
-  }
+  useEffect(() => {
+    if (errors.date !== undefined) {
+      alert.error("Введите корректно дату");
+    }
+    if (errors.time !== undefined) {
+      alert.error("Введите корректно время");
+    }
 
-  if (errors.lng!==undefined) {
-    alert.error("Введите долготу");
-  }
-  if(errors.lat!==undefined){
-    alert.error("Введите широту");
-  }
-
-},[errors])
- 
+    if (errors.lng !== undefined) {
+      alert.error("Введите долготу");
+    }
+    if (errors.lat !== undefined) {
+      alert.error("Введите широту");
+    }
+  }, [errors]);
 
   return (
     <Form className="forms_create" onSubmit={handleSubmit(onSubmit)}>
@@ -96,9 +99,13 @@ useEffect(()=>{
             required: true,
             pattern: /^([0-2][0-9]|(3)[0-1])(.)(((0)[0-9])|((1)[0-2]))(.)\d{4}$/i
           }}
-          className={"" + (errors.date ? "date active" : "")}
+          className={"" + (errors.text ? "date active" : "")}
           control={control}
-          defaultValue={SaveData!==null?SaveData.date:moment(Date.now()).format("DD:MM:YYYY")}
+          defaultValue={
+            SaveData !== null
+              ? SaveData.date
+              : moment(Date.now()).format("DD.MM.YYYY")
+          }
         />
 
         {errors.date && errors.date.message}
@@ -120,7 +127,11 @@ useEffect(()=>{
             type="text"
             name="time"
             placeholder="21:34"
-            defaultValue={SaveData!==null?SaveData.time:moment(Date.now()).format("HH:mm")}
+            defaultValue={
+              SaveData !== null
+                ? SaveData.time
+                : moment(Date.now()).format("HH:mm")
+            }
             className={"" + (errors.time ? "active" : "")}
             rules={{
               required: true,

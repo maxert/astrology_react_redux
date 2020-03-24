@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback
+} from "react";
 import Search from "../addElement/search";
 import { Button, Dimmer, Loader, Segment } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
@@ -26,27 +32,32 @@ function PersonsHome() {
     isLoading
   } = useContext(ReduceContext);
   const [isFavorite, setFavorite] = useState(false);
+  const [isClick, setClick] = useState(false);
   const { state_persons, Fetch_data_persons } = useContext(PersonsContext);
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
+    Fetch_data_persons(Value._targetInst.pendingProps.value, none.sorted);
+    isLoading(false);
   }
   function FavoriteClick() {
     isFavorite ? setFavorite(false) : setFavorite(true);
     Fetch_data_favorite(none.data_link_favorite.type_id);
   }
+  const hooks = useRef();
   useEffect(() => {
-    debugger;
-
     Fetch_data_persons(
       none.pagination !== 1 ? none.pagination : 1,
       none.sorted
     );
     isLoading(false);
-  }, [
-    none.pagination === 1 ? 1 : none.pagination,
-    none.sorted,
-    none.data_number !== undefined ? none.data_number : false
-  ]);
+  }, [none.sorted]);
+
+  useEffect(() => {
+    Fetch_data_persons(
+      none.pagination !== 1 ? none.pagination : 1,
+      none.sorted
+    );
+  }, [none.data_number]);
 
   let { url } = useRouteMatch();
   return (
@@ -148,7 +159,9 @@ function PersonsHome() {
                             </SvgLoader>
                           </div>
                           <div className="container_info_persons_name">
-                            {person.firstname + " " + person.lastname}
+                            {person.firstname +
+                              " " +
+                              (person.lastname !== null ? person.lastname : "")}
                           </div>
                         </div>
                         <div className="persons_edit">
@@ -173,10 +186,18 @@ function PersonsHome() {
                           {person.birth_date}
                         </div>
                       </div>
-                      <div className="d_flex_center adress_persons">
-                        <div className="persons_text_left">Город:</div>
-                        <div className="persons_text_right">{person.city}</div>
-                      </div>
+
+                      {person.city !== null ? (
+                        <div className="d_flex_center adress_persons">
+                          <div className="persons_text_left">Город:</div>
+                          <div className="persons_text_right">
+                            {person.city}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="d_flex_center adress_persons"></div>
+                      )}
+
                       <div className="d_flex_center page_persons">
                         <NavLink
                           className="text_link d_flex_center"
@@ -210,7 +231,9 @@ function PersonsHome() {
                             </SvgLoader>
                           </div>
                           <div className="container_info_persons_name">
-                            {person.firstname + " " + person.lastname}
+                            {person.firstname +
+                              " " +
+                              (person.lastname !== null ? person.lastname : "")}
                           </div>
                         </div>
                         <div className="persons_edit">
@@ -235,10 +258,16 @@ function PersonsHome() {
                           {person.birth_date}
                         </div>
                       </div>
-                      <div className="d_flex_center adress_persons">
-                        <div className="persons_text_left">Город:</div>
-                        <div className="persons_text_right">{person.city}</div>
-                      </div>
+                      {person.city !== null ? (
+                        <div className="d_flex_center adress_persons">
+                          <div className="persons_text_left">Город:</div>
+                          <div className="persons_text_right">
+                            {person.city}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="d_flex_center adress_persons"></div>
+                      )}
                       <div className="d_flex_center page_persons">
                         <NavLink
                           className="text_link d_flex_center"
@@ -269,62 +298,82 @@ function PersonsHome() {
                 </Dimmer>
               ) : none.data_favorite !== null &&
                 none.data_value.isSearch === false ? (
-                none.data_favorite.map(person => (
-                  <div className="persons_items" key={person.id}>
-                    <div className="persons_items_head d_flex_center">
-                      <div className="container_info_persons d_flex_center">
-                        <div className={"icon_image  active"}>
-                          {person.firstname[0]}
-                          <SvgLoader
-                            className="favorite_svg"
-                            path="../../img/favorites_21.svg"
-                          >
+                none.isLoading === false ? (
+                  <Dimmer className="invert_none" active inverted>
+                    <Loader active size="massive">
+                      Loading
+                    </Loader>
+                  </Dimmer>
+                ) : (
+                  none.data_favorite.map(favorite => (
+                    <div className="persons_items" key={favorite.id}>
+                      <div className="persons_items_head d_flex_center">
+                        <div className="container_info_persons d_flex_center">
+                          <div className={"icon_image  active"}>
+                            {favorite.firstname[0]}
+                            <SvgLoader
+                              className="favorite_svg"
+                              path="../../img/favorites_21.svg"
+                            >
+                              <SvgProxy selector="#co" />
+                            </SvgLoader>
+                          </div>
+                          <div className="container_info_persons_name">
+                            {favorite.firstname +
+                              " " +
+                              (favorite.lastname !== null
+                                ? favorite.lastname
+                                : "")}
+                          </div>
+                        </div>
+                        <div className="persons_edit">
+                          <EditDrop
+                            key={favorite.id}
+                            ID={favorite.id}
+                            Type={
+                              none.data_link_favorite
+                                ? none.data_link_favorite.type_id
+                                : "person"
+                            }
+                            Favorite={favorite.fav}
+                          ></EditDrop>
+                          <SvgLoader path="../../img/Group5.svg">
                             <SvgProxy selector="#co" />
                           </SvgLoader>
                         </div>
-                        <div className="container_info_persons_name">
-                          {person.firstname + " " + person.lastname}
+                      </div>
+                      <div className="d_flex_center date_persons">
+                        <div className="persons_text_left">День рождения:</div>
+                        <div className="persons_text_right">
+                          {favorite.birth_date}
                         </div>
                       </div>
-                      <div className="persons_edit">
-                        <EditDrop
-                          key={person.id}
-                          ID={person.id}
-                          Type={
-                            none.data_link_favorite
-                              ? none.data_link_favorite.type_id
-                              : "person"
-                          }
-                          Favorite={person.fav}
-                        ></EditDrop>
-                        <SvgLoader path="../../img/Group5.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
+
+                      {favorite.city !== null ? (
+                        <div className="d_flex_center adress_persons">
+                          <div className="persons_text_left">Город:</div>
+                          <div className="persons_text_right">
+                            {favorite.city}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="d_flex_center adress_persons"></div>
+                      )}
+
+                      <div className="d_flex_center page_persons">
+                        <NavLink
+                          className="text_link d_flex_center"
+                          to={`${url}/id/${favorite.id}`}
+                        >
+                          Перейти{" "}
+                          <SvgLoader path="../../img/Arrow_21.svg">
+                            <SvgProxy selector="#co" />
+                          </SvgLoader>
+                        </NavLink>
                       </div>
                     </div>
-                    <div className="d_flex_center date_persons">
-                      <div className="persons_text_left">День рождения:</div>
-                      <div className="persons_text_right">
-                        {person.birth_date}
-                      </div>
-                    </div>
-                    <div className="d_flex_center adress_persons">
-                      <div className="persons_text_left">Город:</div>
-                      <div className="persons_text_right">{person.city}</div>
-                    </div>
-                    <div className="d_flex_center page_persons">
-                      <NavLink
-                        className="text_link d_flex_center"
-                        to={`${url}/id/${person.id}`}
-                      >
-                        Перейти{" "}
-                        <SvgLoader path="../../img/Arrow_21.svg">
-                          <SvgProxy selector="#co" />
-                        </SvgLoader>
-                      </NavLink>
-                    </div>
-                  </div>
-                ))
+                  ))
+                )
               ) : (
                 none.data_value.value.map(person => (
                   <div className="persons_items" key={person.id}>
@@ -344,7 +393,9 @@ function PersonsHome() {
                           </SvgLoader>
                         </div>
                         <div className="container_info_persons_name">
-                          {person.firstname + " " + person.lastname}
+                          {person.firstname +
+                            " " +
+                            (person.lastname !== null ? person.lastname : "")}
                         </div>
                       </div>
                       <div className="persons_edit">
@@ -369,10 +420,16 @@ function PersonsHome() {
                         {person.birth_date}
                       </div>
                     </div>
-                    <div className="d_flex_center adress_persons">
-                      <div className="persons_text_left">Город:</div>
-                      <div className="persons_text_right">{person.city}</div>
-                    </div>
+
+                    {person.city !== null ? (
+                      <div className="d_flex_center adress_persons">
+                        <div className="persons_text_left">Город:</div>
+                        <div className="persons_text_right">{person.city}</div>
+                      </div>
+                    ) : (
+                      <div className="d_flex_center adress_persons"></div>
+                    )}
+
                     <div className="d_flex_center page_persons">
                       <NavLink
                         className="text_link d_flex_center"
@@ -429,7 +486,11 @@ function PersonsHome() {
                           </div>
                           <div className="container_info_persons_column">
                             <div className="container_info_persons_name">
-                              {person.firstname + " " + person.lastname}
+                              {person.firstname +
+                                " " +
+                                (person.lastname !== null
+                                  ? person.lastname
+                                  : "")}
                             </div>
                             <NavLink
                               className="text_link d_flex_center"
@@ -449,7 +510,13 @@ function PersonsHome() {
                         </div>
                       </div>
                       <div className="d_flex_center adress_persons">
-                        <div className="persons_text_right">{person.city}</div>
+                        {person.city !== null ? (
+                          <div className="persons_text_right">
+                            {person.city}
+                          </div>
+                        ) : (
+                          <div className="persons_text_right"></div>
+                        )}
                       </div>
 
                       {person.fav > 0 ? (
@@ -538,7 +605,11 @@ function PersonsHome() {
                           </div>
                           <div className="container_info_persons_column">
                             <div className="container_info_persons_name">
-                              {favorite.firstname + " " + favorite.lastname}
+                              {favorite.firstname +
+                                " " +
+                                (favorite.lastname !== null
+                                  ? favorite.lastname
+                                  : "")}
                             </div>
                             <NavLink
                               className="text_link d_flex_center"
@@ -558,9 +629,13 @@ function PersonsHome() {
                         </div>
                       </div>
                       <div className="d_flex_center adress_persons">
-                        <div className="persons_text_right">
-                          {favorite.city}
-                        </div>
+                        {favorite.city !== null ? (
+                          <div className="persons_text_right">
+                            {favorite.city}
+                          </div>
+                        ) : (
+                          <div className="persons_text_right"></div>
+                        )}
                       </div>
 
                       <div

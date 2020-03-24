@@ -230,6 +230,7 @@ body {
   font-size: 14px !important;
   line-height: 16px !important;
 }
+
 .footer_menu_text {
   font-family: Source Sans Pro;
   font-style: normal;
@@ -237,7 +238,21 @@ body {
   font-size: 14px;
   line-height: 16px;
 }
-
+.smartblock-custom-menu,
+.smartblock-menu-top {
+  display: flex;
+}
+.smartblock-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.smartblock-container {
+  border: 1px solid #b3b3be;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 0px !important;
+}
 .modal_open {
   height: 100vh;
   width: 100vw;
@@ -300,9 +315,15 @@ body {
   width: max-content;
   color: #ffffff;
 }
+.grid_forms {
+  display: grid;
+  grid-gap: 1em;
+}
 .personal_date {
+  .ui.checkbox {
+    margin-bottom: 0px;
+  }
   .ui.checkbox.time_location {
-    margin: 24px 0px;
     label {
       margin: 0px !important;
     }
@@ -620,10 +641,10 @@ i.icon.search:before {
   margin-top: 20px;
 }
 .numbers input {
-  -moz-appearance: textfield!important;
+  -moz-appearance: textfield !important;
 }
 .numbers input::-webkit-inner-spin-button {
-  display: none!important;
+  display: none !important;
 }
 .header_card {
   margin-bottom: 24px;
@@ -1007,12 +1028,17 @@ body ::-webkit-scrollbar-thumb {
 
   color: #3f3356;
 }
-.container_persons{
+.notal_card_community,
+.note_list,
+.create_note {
+  margin-bottom: 28px;
+}
+.container_persons {
   position: relative;
   min-height: 553px;
 }
-.ui.dimmer.invert_none{
-  background-color: transparent!important;
+.ui.dimmer.invert_none {
+  background-color: transparent !important;
 }
 .persons_list_grid {
   position: relative;
@@ -1142,7 +1168,7 @@ body ::-webkit-scrollbar-thumb {
   border-radius: 0px !important;
 }
 .ui.dropdown.edit_drop .menu > .item {
-  >div{
+  > div {
     display: flex;
     align-items: center;
   }
@@ -1482,13 +1508,17 @@ body ::-webkit-scrollbar-thumb {
     display: none;
   }
 }
-.notal_items{
+.slider_center {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.element_continer .notal_items {
   min-height: 500px;
 }
-.container_loading{
+.container_loading {
   position: relative;
 }
-.table_persons_overflow{
+.table_persons_overflow {
   position: relative;
 }
 .persons_items {
@@ -1527,7 +1557,7 @@ body ::-webkit-scrollbar-thumb {
 }
 .aynamsha {
   > div {
-    transition: .5s all;
+    transition: 0.5s all;
     display: flex;
     justify-content: center;
     position: absolute;
@@ -1623,7 +1653,7 @@ body ::-webkit-scrollbar-thumb {
 }
 .none_aynamsha {
   > div {
-    transition: .5s all;
+    transition: 0.5s all;
     display: flex;
     justify-content: center;
     position: absolute;
@@ -1911,7 +1941,7 @@ body ::-webkit-scrollbar-thumb {
 .image_notal > .block_info > div {
   height: 20%;
 }
-.favorites{
+.favorites {
   cursor: pointer;
 }
 .notalPersons_right {
@@ -1927,7 +1957,7 @@ body ::-webkit-scrollbar-thumb {
     height: 482px;
     overflow-y: scroll;
   }
-  .table_persons_left_text{
+  .table_persons_left_text {
     white-space: nowrap;
   }
   .table_persons {
@@ -2116,14 +2146,43 @@ body ::-webkit-scrollbar-thumb {
   background: #f8f7fb;
   border: 1px solid #b3b3be;
 }
-
+.persons_items_head {
+  .smartblock-edit-menu,
+  .smartblock-menu{
+    display: none;
+  }
+}
 .note_list_container {
-  height: 460px;
+  .container_info_persons {
+    width: 100%;
+    > div {
+      width: 100%;
+    }
+  }
+  .smartblock-container {
+    border: none;
+  }
+  .ProseMirror {
+    background: transparent;
+    p {
+      padding: 5px 0px;
+      margin-bottom: 5px;
+    }
+    padding: 5px 0px;
+    > *:nth-last-child(1) > br {
+      display: none;
+    }
+    margin-bottom: 5px;
+  }
+}
+.note_list_container {
+  max-height: 460px;
   overflow-y: scroll;
 }
 .container_create {
   .input_all {
     width: 100%;
+    position: relative;
   }
   .field {
     display: flex;
@@ -2172,7 +2231,7 @@ body ::-webkit-scrollbar-thumb {
 .ui.checkbox {
   margin-bottom: 1em;
 }
-.text_localisation,
+
 label {
   margin-bottom: 8px !important;
 }
@@ -2582,7 +2641,7 @@ label {
   cursor: pointer;
 }
 .ui.page.dimmer {
-  .button_footer{
+  .button_footer {
     display: flex;
   }
   .ui.modal {
@@ -2863,15 +2922,15 @@ label {
     overflow-y: scroll;
   }
 }
-#__react-alert__{
-  >div>div>div{
-    width: 100%!important;
+#__react-alert__ {
+  > div > div > div {
+    width: 100% !important;
   }
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

@@ -27,7 +27,7 @@ function Home() {
           <ShowState>
             <FormsPosition></FormsPosition>
           </ShowState>
-          <History></History>
+          {/* <History></History> */}
         </div>
       </div>
     </div>

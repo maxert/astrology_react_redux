@@ -1,23 +1,27 @@
 import React, { useContext, useEffect } from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, useHistory } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
 import ResultCardPersons from "../addElement/resultcardpersons";
 import { ReduceContext } from "../context/reducerContext";
-
-
+import CreateNote from "../addElement/createNote";
+import NoteList from "../addElement/NoteList";
+import {NoteState} from "../context/noteReducer/noteState"
 //Страница Персоны
 function PersonsUnit() {
   const { url } = useRouteMatch();
-  const { number_all, Fetch_one_persons, none, add_notal_card,update_notal_card } = useContext(
-    ReduceContext
-  );
-
+  const {
+    number_all,
+    Fetch_one_persons,
+    none,
+    add_notal_card,
+    update_notal_card
+  } = useContext(ReduceContext);
+  const history = useHistory();
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
-
   }, [url]);
 
   function handleClick() {
@@ -28,15 +32,14 @@ function PersonsUnit() {
   return (
     <div className="container_list">
       <div className="button_header">
-        <NavLink to="/person">
-          <div className="purple">
-            <SvgLoader path="../../img/Arrow2.svg">
-              <SvgProxy selector="#cst" />
-            </SvgLoader>
-            Назад
-          </div>
-        </NavLink>
+        <div className="purple" onClick={() => history.goBack()}>
+          <SvgLoader path="../../img/Arrow2.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          Назад
+        </div>
       </div>
+
       {none.one_persons && (
         <div>
           <div className="header_unite">
@@ -55,7 +58,7 @@ function PersonsUnit() {
               </NavLink>
             </div>
             <div className="unit_button_right">
-              {none.data_notal===undefined ? (
+              {none.data_notal === undefined ? (
                 <Button
                   onClick={() => {
                     add_notal_card(none.one_persons.type, none.one_persons.id);
@@ -113,6 +116,10 @@ function PersonsUnit() {
           ></ResultCardPersons>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
+          <NoteState>
+            <CreateNote ID={none.one_persons.id} Type={none.data_id!==undefined?none.data_id.type_link:false}></CreateNote>
+            <NoteList ID={none.one_persons.id} Type={none.data_id!==undefined?none.data_id.type_link:false}></NoteList>
+          </NoteState>
         </div>
       )}
     </div>

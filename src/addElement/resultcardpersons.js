@@ -2,8 +2,6 @@ import React, { useContext, useState } from "react";
 import EditDrop from "./editDropDown";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
-import CreateNote from "./createNote";
-import NoteList from "./NoteList";
 
 import { ReduceContext } from "../context/reducerContext";
 
@@ -532,8 +530,6 @@ function ResultCardPersons({ Birthday, Time }) {
           </div>
         </div>
       </div>
-      <CreateNote></CreateNote>
-      <NoteList></NoteList>
     </div>
   );
 }
