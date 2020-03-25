@@ -8,7 +8,7 @@ import ResultCardPersons from "../addElement/resultcardpersons";
 import { ReduceContext } from "../context/reducerContext";
 import CreateNote from "../addElement/createNote";
 import NoteList from "../addElement/NoteList";
-import {NoteState} from "../context/noteReducer/noteState"
+import { NoteState } from "../context/noteReducer/noteState";
 //Страница Персоны
 function PersonsUnit() {
   const { url } = useRouteMatch();
@@ -45,10 +45,14 @@ function PersonsUnit() {
           <div className="header_unite">
             <div className="unit_left">
               <div className="elipse_profiler">
-                {none.one_persons.firstname[0]}
+                {none.one_persons.image!==null? <img src={"http://1690550.masgroup.web.hosting-test.net"+none.one_persons.image} alt="Картинка"/>:<div className="text_all_image">{none.one_persons.firstname[0]}</div>}
               </div>
               <div className="text_big_all name_profile">
-                {none.one_persons.firstname + " " + none.one_persons.lastname}
+                {none.one_persons.firstname +
+                  " " +
+                  (none.one_persons.lastname !== null
+                    ? none.one_persons.lastname
+                    : "")}
               </div>
               <NavLink
                 to={`/person/${none.one_persons.id}/edit`}
@@ -78,18 +82,33 @@ function PersonsUnit() {
             </div>
           </div>
           <div className="unit_grid">
-            <div className="unit_info_contact">
-              <div className="d_flex_center">
-                <div className="unit_info_left">Телефон:</div>
-                <div className="unit_info_right">
-                  {none.one_persons.telephone}
-                </div>
+            {none.one_persons.email !== null &&
+            none.one_persons.telephone !== null ? (
+              <div className="unit_info_contact">
+                {none.one_persons.telephone !== null ? (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">Телефон:</div>
+                    <div className="unit_info_right">
+                      {none.one_persons.telephone}
+                    </div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+
+                {none.one_persons.email !== null ? (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">Email:</div>
+                    <div className="unit_info_right">
+                      {none.one_persons.email}
+                    </div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
-              <div className="d_flex_center">
-                <div className="unit_info_left">Email:</div>
-                <div className="unit_info_right">{none.one_persons.email}</div>
-              </div>
-            </div>
+            ) : null}
+
             <div className="unit_info_adress">
               <div className="d_flex_center">
                 <div className="unit_info_left">День рождения:</div>
@@ -97,10 +116,13 @@ function PersonsUnit() {
                   {none.one_persons.birth_date}
                 </div>
               </div>
-              <div className="d_flex_center">
-                <div className="unit_info_left">Город:</div>
-                <div className="unit_info_right">{none.one_persons.city}</div>
-              </div>
+              {none.one_persons.city !== null ? (
+                <div className="d_flex_center">
+                  <div className="unit_info_left">Город:</div>
+                  <div className="unit_info_right">{none.one_persons.city}</div>
+                </div>
+              ) : null}
+
               <div className="d_flex_center">
                 <div className="unit_info_left">Часовой пояс:</div>
                 <div className="unit_info_right">
@@ -117,8 +139,14 @@ function PersonsUnit() {
           <Community></Community>
           <NotalCommunity></NotalCommunity>
           <NoteState>
-            <CreateNote ID={none.one_persons.id} Type={none.data_id!==undefined?none.data_id.type_link:false}></CreateNote>
-            <NoteList ID={none.one_persons.id} Type={none.data_id!==undefined?none.data_id.type_link:false}></NoteList>
+            <CreateNote
+              ID={none.one_persons.id}
+              Type={none.data_id !== undefined ? none.data_id.type_link : false}
+            ></CreateNote>
+            <NoteList
+              ID={none.one_persons.id}
+              Type={none.data_id !== undefined ? none.data_id.type_link : false}
+            ></NoteList>
           </NoteState>
         </div>
       )}

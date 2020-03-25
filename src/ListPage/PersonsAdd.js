@@ -36,7 +36,8 @@ function PersonsAdd() {
   const d = new Date();
 
   function onSubmit(values) {
-  
+    values["birth_date"]=moment(values.birth_date,"DD.MM.YYYY").format("YYYY-MM-DD")
+    values["city"]=none.geolocation.city!==null?none.geolocation.city:null;
     values["timezone"] = none.option_value;
     values["letnee"] = isChekbox;
     console.log(values);
@@ -302,7 +303,7 @@ function PersonsAdd() {
           <div className="create_persons_right">
             <div className="block_image">
               <div className="image_contaner_perons">
-                <img src={ImageSrc} alt=" " />
+                <img  class="default_image" src={ImageSrc} alt=" " />
               </div>
               <div className="button_add">
                 <SvgLoader path="../../img/Photosm.svg">

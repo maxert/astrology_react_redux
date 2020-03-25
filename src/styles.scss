@@ -1046,6 +1046,34 @@ body ::-webkit-scrollbar-thumb {
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 28px;
 }
+.text_persons {
+  background: green;
+  width: 47px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hidden_all {
+  overflow: hidden;
+  width: 47px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  /* identical to box height, or 100% */
+
+  text-align: center;
+
+  /* FFFFFF */
+
+  color: #ffffff;
+  border-radius: 50px;
+}
 .container_info_persons {
   .icon_image {
     text-transform: uppercase;
@@ -1070,7 +1098,6 @@ body ::-webkit-scrollbar-thumb {
     /* FFFFFF */
 
     color: #ffffff;
-    background: green;
     border-radius: 50px;
   }
   .container_info_persons_name {
@@ -1244,11 +1271,25 @@ body ::-webkit-scrollbar-thumb {
   align-items: center;
   justify-content: space-between;
 }
-.elipse_profiler {
+
+.text_all_image {
+  width: 80px;
+  height: 80px;
+  background: green;
   display: flex;
-  background: #55c492;
   justify-content: center;
   align-items: center;
+}
+.elipse_profiler {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   font-style: normal;
   font-weight: bold;
   font-size: 36px;
@@ -1512,6 +1553,22 @@ body ::-webkit-scrollbar-thumb {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
+.image_contaner_perons {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: 256px;
+}
+.image_contaner_perons > img {
+  max-width: 256px;
+}
+.ui.page.dimmer {
+  .element_continer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0px;
+  }
+}
 .element_continer .notal_items {
   min-height: 500px;
 }
@@ -1761,9 +1818,11 @@ body ::-webkit-scrollbar-thumb {
   }
 }
 .notal_card_community_container {
+  overflow-x: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 28px;
+  padding-bottom: 20px;
 }
 .image_notal {
   display: flex;
@@ -2148,7 +2207,7 @@ body ::-webkit-scrollbar-thumb {
 }
 .persons_items_head {
   .smartblock-edit-menu,
-  .smartblock-menu{
+  .smartblock-menu {
     display: none;
   }
 }
@@ -2231,10 +2290,10 @@ body ::-webkit-scrollbar-thumb {
 .ui.checkbox {
   margin-bottom: 1em;
 }
-
 label {
   margin-bottom: 8px !important;
 }
+
 .ui.form .fields.center_grid {
   margin: 0px;
   display: grid;
@@ -2275,7 +2334,7 @@ label {
   /* 6F51FF */
 
   color: #6f51ff;
-  padding: 20px 52px;
+  padding: 20px 40px;
   svg {
     margin-right: 8px;
     background: white;
@@ -2301,6 +2360,12 @@ label {
   color: #6f51ff;
   padding: 4px 8px;
 }
+.ProseMirror img {
+  width: 200px;
+}
+figure img {
+  width: 200px;
+}
 .block_image {
   background: #e5e7fa;
   border-radius: 16px;
@@ -2308,7 +2373,7 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 248px;
+    border-radius: 16px 16px 0px 0px;
     font-style: normal;
     font-weight: bold;
     font-size: 60px;
@@ -2640,13 +2705,17 @@ label {
   left: 0;
   cursor: pointer;
 }
+
+.ui.modal.close_modal {
+  width: 100%;
+  max-width: 500px;
+}
+
 .ui.page.dimmer {
   .button_footer {
     display: flex;
   }
   .ui.modal {
-    width: 100%;
-    max-width: 500px;
     .block_info div {
       font-size: 0.8vw;
     }

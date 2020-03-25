@@ -18,7 +18,7 @@ function NotalCommunity() {
           <div className="notal_card_community_container">
             {none.data_fetch_links.map(items => (
               items.natal!==null&&
-              <div className="persons_items notal_items">
+              <div className="persons_items notal_items" key={items.id}>
                 <div className="persons_items_head d_flex_center">
                   <div className="container_info_persons d_flex_center">
                     <div className="container_info_persons_name">

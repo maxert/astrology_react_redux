@@ -34,12 +34,12 @@ function ResultCardPersons({ Birthday, Time }) {
                   {Birthday + " " + Time}
                 </div>
               </div>
-              <div className="persons_edit">
+              {/* <div className="persons_edit">
                 <EditDrop></EditDrop>
                 <SvgLoader path="../../img/Group5.svg">
                   <SvgProxy selector="#co" />
                 </SvgLoader>
-              </div>
+              </div> */}
             </div>
 
             {select === "0" ? (

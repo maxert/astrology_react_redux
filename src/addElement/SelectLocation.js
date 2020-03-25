@@ -30,12 +30,13 @@ const countryOptions = [
   { key: "-12", value: -12, text: "GMT-12" }
 ];
 
-function SelectLocation({ValueOptions}) {
-  const { SelectLocationNew,none } = useContext(ReduceContext);
+function SelectLocation({ValueOptions,ValueDefault}) {
+  const { SelectLocationNew } = useContext(ReduceContext);
   return (
     <Select
 
       options={countryOptions}
+      defaultValue={ValueDefault}
       value={ValueOptions}
       onChange={(e, { value }) => {SelectLocationNew(value)}}
     />

@@ -22,28 +22,27 @@ export const PersonState = ({ children }) => {
   const alert = useAlert();
   const history = useHistory();
   const Update_persons = async (values, id) => {
-    var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
-    const res = await Axios.put(
+    let formData = new FormData();
+    Object.keys(values).map(key => {
+      if(key==="upload_image"){
+      formData.append(key, values[key][0]);
+      }else{
+        formData.append(key, values[key]);
+      }
+    });
+    
+    const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/persons/${id}`,
-      {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.birth_time,
-        timezone: parseFloat(time[0]),
-        longtitude: parseFloat(values.longtitude),
-        latitude: parseFloat(values.latitude),
-        city: values.city,
-        upload_image: values.upload_image
-      },
+      formData,
       {
         headers: {
+
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
+    alert.success("Персона обновленна");
     debugger;
     dispatch({
       type: UPDATE_PERSONS,
@@ -52,12 +51,8 @@ export const PersonState = ({ children }) => {
   };
 
   const Add_persons = async values => {
-    var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
     let formData = new FormData();
-    /*
-      Iteate over any file sent over appending the files
-      to the form data.
-    */
+  
     Object.keys(values).map(key => {
       if(key==="upload_image"){
       formData.append(key, values[key][0]);
@@ -65,10 +60,7 @@ export const PersonState = ({ children }) => {
         formData.append(key, values[key]);
       }
     });
-    // for( var i = 0; i <  values.upload_image.length; i++ ){
-    //   let file =  values.upload_image[i];
-    //   formData.append('files[' + i + ']', file);
-    // }
+   
 
     console.log(formData);
     debugger;

@@ -201,7 +201,7 @@ export const ReducerState = ({ children }) => {
           res.data.persons[key].name === undefined
             ? res.data.persons[key].firstname +
               " " +
-              res.data.persons[key].lastname
+              (res.data.persons[key].lastname!==null?res.data.persons[key].lastname:"")
             : res.data.persons[key].name,
         content: url,
         type_id: res.data.persons[key].id
@@ -262,7 +262,7 @@ export const ReducerState = ({ children }) => {
           res.data[Object.keys(res.data)[0]][key].name === undefined
             ? res.data[Object.keys(res.data)[0]][key].firstname +
               " " +
-              res.data[Object.keys(res.data)[0]][key].lastname
+              (res.data[Object.keys(res.data)[0]][key].lastname!==null?res.data[Object.keys(res.data)[0]][key].lastname:"")
             : res.data[Object.keys(res.data)[0]][key].name
       };
     });
@@ -303,7 +303,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const create_links = async value => {
-    const res = await Axios.post(
+    await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type&obj_id&link_obj_type=&link_obj_id=&name=`,
       {
         obj_type: value.obj_type,
@@ -317,12 +317,19 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    );
-    Fetch_links(value.obj_type, value.obj_id);
-    dispatch({
-      type: CREATE_LINKS,
-      create_links: res.data
-    });
+    ).then(res=>{
+      Fetch_links(value.obj_type, value.obj_id);
+      alert.success("Связь созданна")
+      dispatch({
+        type: CREATE_LINKS,
+        create_links: res.data
+      });
+    }).catch(error=>{
+      console.log(error.response)
+      debugger
+    })
+    
+   
   };
 
   const createNotals = async value => {
@@ -374,6 +381,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    console.log(res.data)
     dispatch({
       type: FETCH_LINKS,
       payload: res.data
@@ -580,6 +588,7 @@ export const ReducerState = ({ children }) => {
         dispatch({
           type: GEOLOCATION,
           payload: {
+            city:city,
             location: response.results[0].geometry.location,
             timezone: parseInt(res.data.rawOffset / 3600),
             letnee: res.data.dstOffset > 0 ? true : false

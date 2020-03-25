@@ -150,7 +150,21 @@ function PersonsHome() {
                                 : "icon_image"
                             }
                           >
-                            {person.firstname[0]}
+                            <div className="hidden_all">
+                              {person.image !== null ? (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    person.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              ) : (
+                                <div className="text_persons">
+                                  {person.firstname[0]}
+                                </div>
+                              )}
+                            </div>
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"
@@ -222,7 +236,22 @@ function PersonsHome() {
                                 : "icon_image"
                             }
                           >
-                            {person.firstname[0]}
+                            <div className="hidden_all">
+                              {person.image !== null ? (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    person.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              ) : (
+                                <div className="text_persons">
+                                  {person.firstname[0]}
+                                </div>
+                              )}
+                            </div>
+
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"
@@ -310,7 +339,21 @@ function PersonsHome() {
                       <div className="persons_items_head d_flex_center">
                         <div className="container_info_persons d_flex_center">
                           <div className={"icon_image  active"}>
-                            {favorite.firstname[0]}
+                            <div className="hidden_all">
+                              {favorite.image !== null ? (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    favorite.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              ) : (
+                                <div className="text_persons">
+                                  {favorite.firstname[0]}
+                                </div>
+                              )}
+                            </div>
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"
@@ -384,7 +427,21 @@ function PersonsHome() {
                             person.fav > 0 ? "icon_image  active" : "icon_image"
                           }
                         >
-                          {person.firstname[0]}
+                          <div className="hidden_all">
+                            {person.image !== null ? (
+                              <img
+                                src={
+                                  "http://1690550.masgroup.web.hosting-test.net" +
+                                  person.image
+                                }
+                                alt="Картинка"
+                              />
+                            ) : (
+                              <div className="text_persons">
+                                {person.firstname[0]}
+                              </div>
+                            )}
+                          </div>
                           <SvgLoader
                             className="favorite_svg"
                             path="../../img/favorites_21.svg"
@@ -476,7 +533,21 @@ function PersonsHome() {
                                 : "icon_image"
                             }
                           >
-                            {person.firstname[0]}
+                            <div className="hidden_all">
+                              {person.image !== null ? (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    person.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              ) : (
+                                <div className="text_persons">
+                                  {person.firstname[0]}
+                                </div>
+                              )}
+                            </div>
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"
@@ -595,7 +666,19 @@ function PersonsHome() {
                       <div className="persons_items_head ">
                         <div className="container_info_persons d_flex_center">
                           <div className={"icon_image  active"}>
-                            {favorite.firstname[0]}
+                            {favorite.image !== null ? (
+                              <img
+                                src={
+                                  "http://1690550.masgroup.web.hosting-test.net" +
+                                  favorite.image
+                                }
+                                alt="Картинка"
+                              />
+                            ) : (
+                              <div className="text_persons">
+                                {favorite.firstname[0]}
+                              </div>
+                            )}
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"

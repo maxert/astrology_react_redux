@@ -31,8 +31,7 @@ function Favorite() {
     }
   }
   useEffect(() => {
-    Fetch_data_favorite(none.data_link_favorite!==undefined?none.data_link_favorite.type_id:false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    Fetch_data_favorite("persons");
   }, []);
 
   return (
@@ -77,7 +76,6 @@ function Favorite() {
         </div>
         
         {display.visible === false && (
-          
           <div className="persons_list_grid">
             {none.data_favorite !== null &&
               none.data_favorite

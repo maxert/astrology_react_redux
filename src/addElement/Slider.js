@@ -18,7 +18,7 @@ function ModalExampleSize() {
   const [result, setResult] = useState([]);
   const { url } = useRouteMatch();
   const { none, create_links, Fetch_links } = useContext(ReduceContext);
-
+  const [ close, setCloseNew ] = useState(false);
   useEffect(() => {
     Fetch_links(none.data_id.type_link, none.data_id.type_id);
   }, [url]);
@@ -34,13 +34,15 @@ function ModalExampleSize() {
     debugger;
     values["link_obj_id"] = result.id;
     console.log(values);
-
+    setCloseNew(false);
     create_links(values);
   };
   return (
     <Modal
+      open={close}
+      onClose={()=>setCloseNew(false)}
       trigger={
-        <div className="communication_slider_add">
+        <div className="communication_slider_add" onClick={()=>setCloseNew(true)}>
           <SvgLoader path="../../img/Group 15.svg">
             <SvgProxy selector="#cst" />
           </SvgLoader>
@@ -66,7 +68,7 @@ function ModalExampleSize() {
               className={"" + (errors.name ? "active" : "")}
               ref={register({
                 required: true,
-                pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,26}$/i
               })}
             />
             {errors.name && errors.name.message}

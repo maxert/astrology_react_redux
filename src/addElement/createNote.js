@@ -1,31 +1,42 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 // import { SvgLoader, SvgProxy } from "react-svgmt";
-import { SmartBlock, Extensions } from "smartblock";
+import { SmartBlock, Extensions, Image, Heading1 } from "smartblock";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { NoteContext } from "../context/noteReducer/noteContext";
-import { ReduceContext } from "../context/reducerContext";
-
+Extensions.push(
+  new Image({
+    group: "blocks",
+    parseDOM: [{ tag: "img" }, { style: "width=200px" }],
+    toDOM: () => [
+      "img",
+      {
+        style: "width:200px"
+      }
+    ]
+  })
+);
 //Создание заметки
-function CreateNote({ID,Type}) {
-  const {add_note} = useContext(NoteContext);
-  const alert=useAlert();
-  const [htmlDesc,setHtml]=useState("<p></p>")
+function CreateNote({ ID, Type }) {
+  const { add_note } = useContext(NoteContext);
+  const alert = useAlert();
+  const [htmlDesc, setHtml] = useState("<p></p>");
   const { handleSubmit, register, errors } = useForm({
     reValidateMode: onSubmit
   });
+
   useEffect(() => {
     if (errors.name !== undefined) {
       alert.error("Введите название");
     }
   }, [errors]);
   function onSubmit(values) {
-    values['description']=htmlDesc;
-    values['obj_type']=Type;
-    values["obj_id"]=ID
+    values["description"] = htmlDesc;
+    values["obj_type"] = Type;
+    values["obj_id"] = ID;
     console.log(values);
-    add_note(values)
+    add_note(values);
   }
   return (
     <div className="create_note">
@@ -83,7 +94,7 @@ function CreateNote({ID,Type}) {
           </div>
           <SmartBlock
             extensions={Extensions}
-            html={"<p> </p>"}
+            html={htmlDesc}
             onChange={({ html }) => {
               setHtml(html);
             }}
@@ -91,7 +102,13 @@ function CreateNote({ID,Type}) {
           {/* <Form.TextArea rows="8"/> */}
           <div className="button_footer">
             <Button>Создать</Button>
-            <Button className="clear_buttton">Очистить</Button>
+            <Button
+              className="clear_buttton"
+              type="reset"
+              onClick={() => setHtml("<p></p>")}
+            >
+              Очистить
+            </Button>
           </div>
         </div>
       </Form>

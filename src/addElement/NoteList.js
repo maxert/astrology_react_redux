@@ -3,7 +3,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { NoteContext } from "../context/noteReducer/noteContext";
 import EditNote from "./editNote";
 import { SmartBlock, Extensions } from "smartblock";
-
+Extensions.push(new Image({parseDOM: [{ tag: 'img' }, { style: 'width=200px' }]}));
 //Блок Заметок
 function NoteList({ Type, ID, id_node }) {
   const { Fetch_note, state_note, update_note } = useContext(NoteContext);
