@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Icon, Checkbox, Button, Form } from "semantic-ui-react";
+import { Icon, Button, Form } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
 import { useForm, Controller } from "react-hook-form";
@@ -10,12 +10,13 @@ import SearchCity from "../addElement/searchCity";
 import { usePosition } from "use-position";
 import moment from "moment";
 import { useAlert } from "react-alert";
+import { Checkbox as AntCheckbox } from "antd";
 //Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
   const [data_notal, setData] = useState([]);
   const history = useHistory();
-  const [isChekbox, setChecbox] = useState(0);
+
   const SaveData = JSON.parse(localStorage.getItem("save_natal"));
   const { none, SelectLocationNew } = useContext(ReduceContext);
   const { handleSubmit, register, errors, control, setValue } = useForm({
@@ -34,7 +35,7 @@ function InputExampleIconChild() {
 
   useEffect(() => {
     setData(SaveData);
-    setChecbox(SaveData !== null ? SaveData.letnee : 0);
+    setValue("checkbox",SaveData !== null ? SaveData.letnee : false);
     SelectLocationNew(SaveData !== null ? SaveData.timezone : 0);
   }, []);
 
@@ -42,16 +43,17 @@ function InputExampleIconChild() {
     debugger;
     values["date"] = values.date;
     values["timezone"] = none.option_value;
-    values["letnee"] = isChekbox;
+    values["letneee"] = values.checkbox===true?1:0;
     console.log(values);
     localStorage.setItem("save_natal", JSON.stringify(values));
     history.push(`/home_card`);
     alert.success("Натальная карта созданна");
   }
   useEffect(() => {
-    if(none.geolocation!==undefined){
-    setValue("lng", none.geolocation.location.lng);
-    setValue("lat", none.geolocation.location.lat);
+    if (none.geolocation !== undefined) {
+      setValue("lng", none.geolocation.location.lng);
+      setValue("lat", none.geolocation.location.lat);
+      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
     }
   }, [localStorage.getItem("city")]);
 
@@ -160,14 +162,20 @@ function InputExampleIconChild() {
             ValueOptions={none.option_value ? none.option_value : 0}
           ></SelectLocation>
         </div>
+        <Controller
+          name="checkbox"
+          rules={{
+            required: false
+          }}
+          defaultValue={SaveData !== null ? SaveData.checkbox : false}
+          as={
+            <AntCheckbox label="Летнее время" className="time_location">
+              Летнее время
+            </AntCheckbox>
+          }
+          control={control}
+        ></Controller>
 
-        <Checkbox
-          label="Летнее время"
-          className="time_location"
-          checked={isChekbox === 0 ? false : true}
-          value={1}
-          onClick={() => (isChekbox ? setChecbox(0) : setChecbox(1))}
-        ></Checkbox>
       </div>
       <div className="grid_column grid_small">
         <div className="input_all">

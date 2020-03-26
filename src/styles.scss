@@ -332,6 +332,14 @@ body {
 .notal_home {
   margin-top: 28px;
 }
+.text_edit_image {
+  height: 100%;
+  background: green;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .create_notal_card {
   .ui.checkbox.time_location {
     margin: auto 0px;
@@ -551,6 +559,11 @@ i.icon.search:before {
     margin: 0 auto;
     margin-top: 16px;
   }
+  .ant-checkbox-wrapper {
+    margin-bottom: 0px !important;
+    display: flex;
+    align-items: center;
+  }
 }
 .grid_column {
   .ui.checkbox {
@@ -638,7 +651,7 @@ i.icon.search:before {
   }
 }
 .planeta_сheckbox {
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 .numbers input {
   -moz-appearance: textfield !important;
@@ -1553,6 +1566,23 @@ body ::-webkit-scrollbar-thumb {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #6f51ff !important;
+  border-color: #6f51ff !important;
+}
+.personal_date {
+  label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: #1f222e;
+  }
+}
+.location_input_top {
+  .time_location {
+    margin-bottom: 0px !important;
+  }
+}
 .image_contaner_perons {
   overflow: hidden;
   display: flex;
@@ -1956,9 +1986,18 @@ body ::-webkit-scrollbar-thumb {
     }
   }
 }
+.loading_new {
+  position: relative;
+  min-height: 200px;
+}
+.result_notal_card {
+  position: relative;
+  min-height: 500px;
+}
 .element_continer {
   display: grid;
   grid-gap: 28px;
+
   .ui.selection.dropdown {
     width: 140px;
     background: #6f51ff;
@@ -2817,13 +2856,16 @@ figure img {
   box-sizing: border-box;
   border-radius: 4px;
 }
+.delete_comunity:hover {
+  color: #1890ff;
+}
 .icon_elipse {
   width: 60px;
   height: 60px;
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
-  background: green;
+  overflow: hidden;
   line-height: 30px;
   display: flex;
   align-items: center;
@@ -2895,6 +2937,10 @@ figure img {
   cursor: pointer;
   z-index: 1;
 }
+.ui.modal.modal_big{
+  width: auto!important;
+}
+.ui.modal i.close,
 .close_modal i.close,
 .modal_slider i.close {
   &::before {

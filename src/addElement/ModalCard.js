@@ -14,7 +14,7 @@ function ModalExampleDimmer(Houses) {
     debugger;
   }
   return (
-    <Modal trigger={<div className="modal_click"></div>}>
+    <Modal trigger={<div className="modal_click"></div>} closeIcon className="modal_big">
       <div className="notal_card_community element_continer ">
         <div className="notal_person">
           <div className="persons_items notal_items">
@@ -28,12 +28,7 @@ function ModalExampleDimmer(Houses) {
                   {/* {Birthday + " " + Time} */}
                 </div>
               </div>
-              <div className="persons_edit">
-                <EditDrop></EditDrop>
-                <SvgLoader path="../../img/Group5.svg">
-                  <SvgProxy selector="#co" />
-                </SvgLoader>
-              </div>
+             
             </div>
 
             {select === "0" ? (

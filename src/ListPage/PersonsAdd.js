@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Icon, Checkbox, Button, Form } from "semantic-ui-react";
+import { Icon, Button, Form } from "semantic-ui-react";
 import { DatePicker } from "antd";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import moment from "moment";
@@ -14,12 +14,11 @@ import SearchCity from "../addElement/searchCity";
 import { PersonsContext } from "../context/personReducer/personContext";
 import { NavLink } from "react-router-dom";
 import NumberFormat from "react-number-format";
-
+import { Checkbox as AntCheckbox } from "antd";
 //Блок Добавление Персоны
 function PersonsAdd() {
   const { none } = useContext(ReduceContext);
   const { Add_persons } = useContext(PersonsContext);
-  const [isChekbox, setChecbox] = useState(0);
   const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
@@ -31,17 +30,25 @@ function PersonsAdd() {
   const { latitude, longitude, error } = usePosition(false, {
     enableHighAccuracy: true
   });
+  useEffect(() => {
+    if(none.geolocation){
+    setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    }
+  }, [none.geolocation ? none.geolocation.city : false]);
   const alert = useAlert();
 
   const d = new Date();
 
   function onSubmit(values) {
-    values["birth_date"]=moment(values.birth_date,"DD.MM.YYYY").format("YYYY-MM-DD")
-    values["city"]=none.geolocation.city!==null?none.geolocation.city:null;
+    values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
+      "YYYY-MM-DD"
+    );
+    values["city"] =
+      none.geolocation.city !== null ? none.geolocation.city : null;
     values["timezone"] = none.option_value;
-    values["letnee"] = isChekbox;
+    values["letnee"] = values.checkbox;
     console.log(values);
-    Add_persons(values)
+    Add_persons(values);
     debugger;
   }
 
@@ -245,13 +252,23 @@ function PersonsAdd() {
                     ></SelectLocation>
                   </div>
                 </div>
-                <Checkbox
-                  label="Летнее время"
-                  className="time_location"
-                  checked={isChekbox === 0 ? false : true}
-                  value={1}
-                  onClick={() => (isChekbox ? setChecbox(0) : setChecbox(1))}
-                ></Checkbox>
+                {console.log(
+                  none.geolocation ? none.geolocation.letnee : false
+                )}
+                <Controller
+                  name="checkbox"
+                  rules={{
+                    required: false
+                  }}
+                  defaultValue={false}
+                  as={
+                    <AntCheckbox label="Летнее время" className="time_location">
+                      Летнее время
+                    </AntCheckbox>
+                  }
+                  control={control}
+                ></Controller>
+
                 <div className="grid_column grid_small">
                   <div className="input_all">
                     <label>Долгота:</label>
@@ -303,7 +320,7 @@ function PersonsAdd() {
           <div className="create_persons_right">
             <div className="block_image">
               <div className="image_contaner_perons">
-                <img  class="default_image" src={ImageSrc} alt=" " />
+                <img class="default_image" src={ImageSrc} alt=" " />
               </div>
               <div className="button_add">
                 <SvgLoader path="../../img/Photosm.svg">
@@ -314,9 +331,11 @@ function PersonsAdd() {
               <input
                 type="file"
                 name="upload_image"
-                onChange={(e)=>{setImageSrc(URL.createObjectURL(e.target.files[0]))}}
+                onChange={e => {
+                  setImageSrc(URL.createObjectURL(e.target.files[0]));
+                }}
                 ref={register({
-                  required: false,
+                  required: false
                 })}
               />
             </div>

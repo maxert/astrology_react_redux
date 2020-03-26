@@ -40,7 +40,7 @@ import { PersonsContext } from "./personReducer/personContext";
 import { useAlert } from "react-alert";
 export const ReducerState = ({ children }) => {
   const initialState = {
-    isLoading:false,
+    isLoading: false,
     isLogin: localStorage.getItem("users") ? true : false,
     token: localStorage.getItem("users"),
     option_value: "0",
@@ -70,13 +70,13 @@ export const ReducerState = ({ children }) => {
       payload: number
     });
   };
-  const isLoading = (bool) => {
+  const isLoading = bool => {
     dispatch({
       type: LOADING,
       payload: bool
     });
   };
-  const urlBack = (url) => {
+  const urlBack = url => {
     dispatch({
       type: URL_BACK,
       payload: url
@@ -115,8 +115,8 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data)
-    debugger
+    console.log(res.data);
+    debugger;
     dispatch({
       type: FETCH_DATA_FAVORITE,
       payload: res.data
@@ -155,6 +155,7 @@ export const ReducerState = ({ children }) => {
       }
     );
     Fetch_links(obj_type, obj_id);
+    alert.info("Связь удаленна");
     dispatch({
       type: DELETE_LINK
     });
@@ -193,18 +194,19 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    debugger;
     const payload = Object.keys(res.data.persons).map(key => {
       return {
         ...res.data.persons[key],
-        id: res.data.persons[key].id,
+        id: res.data[Object.keys(res.data)[0]][key].id,
         title:
-          res.data.persons[key].name === undefined
-            ? res.data.persons[key].firstname +
+          res.data[Object.keys(res.data)[0]][key].name === undefined
+            ? res.data[Object.keys(res.data)[0]][key].firstname +
               " " +
-              (res.data.persons[key].lastname!==null?res.data.persons[key].lastname:"")
-            : res.data.persons[key].name,
-        content: url,
-        type_id: res.data.persons[key].id
+              (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                ? res.data[Object.keys(res.data)[0]][key].lastname
+                : "")
+            : res.data[Object.keys(res.data)[0]][key].name
       };
     });
 
@@ -253,8 +255,8 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data.persons)
-    debugger
+    console.log(res.data.persons);
+    debugger;
     const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
         id: res.data[Object.keys(res.data)[0]][key].id,
@@ -262,7 +264,9 @@ export const ReducerState = ({ children }) => {
           res.data[Object.keys(res.data)[0]][key].name === undefined
             ? res.data[Object.keys(res.data)[0]][key].firstname +
               " " +
-              (res.data[Object.keys(res.data)[0]][key].lastname!==null?res.data[Object.keys(res.data)[0]][key].lastname:"")
+              (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                ? res.data[Object.keys(res.data)[0]][key].lastname
+                : "")
             : res.data[Object.keys(res.data)[0]][key].name
       };
     });
@@ -317,19 +321,19 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    ).then(res=>{
-      Fetch_links(value.obj_type, value.obj_id);
-      alert.success("Связь созданна")
-      dispatch({
-        type: CREATE_LINKS,
-        create_links: res.data
+    )
+      .then(res => {
+        Fetch_links(value.obj_type, value.obj_id);
+        alert.success("Связь созданна");
+        dispatch({
+          type: CREATE_LINKS,
+          create_links: res.data
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+        debugger;
       });
-    }).catch(error=>{
-      console.log(error.response)
-      debugger
-    })
-    
-   
   };
 
   const createNotals = async value => {
@@ -349,7 +353,6 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-     
     );
 
     const date = value.date.split("-");
@@ -381,7 +384,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data)
+    console.log(res.data);
     dispatch({
       type: FETCH_LINKS,
       payload: res.data
@@ -425,7 +428,6 @@ export const ReducerState = ({ children }) => {
       });
   };
   const Fetch_one_persons = async id => {
-     
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
       {
@@ -438,7 +440,6 @@ export const ReducerState = ({ children }) => {
     Fetch_notal_card(res.data.type, res.data.id);
     Fetch_links(res.data.type, res.data.id);
 
-    
     dispatch({
       type: FETCH_ONE_PERSONS,
       payload: res.data
@@ -493,12 +494,13 @@ export const ReducerState = ({ children }) => {
         }
       }
     )
-      .then(res =>
+      .then(res => {
         dispatch({
           type: ADD_NOTAL_CARD,
           payload: res.data
-        })
-      )
+        });
+        alert.success("Нотальная карта созданна");
+      })
       .catch(error => {
         error.response.data.error.forEach(none => {
           alert.error(none);
@@ -516,6 +518,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
+    alert.info("Нотальная карта обновленна");
     Fetch_notal_card(res.data.obj_type, res.data.obj_id);
     dispatch({
       type: UPDATE_PERSONS,
@@ -532,6 +535,9 @@ export const ReducerState = ({ children }) => {
       }
     ).then(
       response => {
+        setTimeout(() => {
+          isLoading(true);
+        }, 500);
         dispatch({
           type: FETCH_NOTAL_CARD,
           payload: response.data
@@ -549,7 +555,6 @@ export const ReducerState = ({ children }) => {
   };
 
   const online_card = (int_d, int_type, int, refresh) => {
-
     Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
       {
@@ -563,7 +568,6 @@ export const ReducerState = ({ children }) => {
         type: ONLINE_CARD,
         payload: res.data
       });
-    
     });
   };
 
@@ -588,7 +592,7 @@ export const ReducerState = ({ children }) => {
         dispatch({
           type: GEOLOCATION,
           payload: {
-            city:city,
+            city: city,
             location: response.results[0].geometry.location,
             timezone: parseInt(res.data.rawOffset / 3600),
             letnee: res.data.dstOffset > 0 ? true : false

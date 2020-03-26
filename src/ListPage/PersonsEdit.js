@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Icon, Checkbox, Button, Form } from "semantic-ui-react";
+import { Icon, Button, Form } from "semantic-ui-react";
 import { DatePicker } from "antd";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import moment from "moment";
-import { usePosition } from "use-position";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { ReduceContext } from "../context/reducerContext";
@@ -14,13 +13,12 @@ import SearchCity from "../addElement/searchCity";
 import { PersonsContext } from "../context/personReducer/personContext";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import NumberFormat from "react-number-format";
-
+import { Checkbox as AntCheckbox } from "antd";
 //Блок Добавление Персоны
 function PersonsEdit() {
   const history = useHistory();
   const { none, Fetch_one_persons } = useContext(ReduceContext);
   const { Update_persons } = useContext(PersonsContext);
-  const [isChekbox, setChecbox] = useState(1);
   const { url } = useRouteMatch();
   const [ImageSrc, setImageSrc] = useState();
   const { handleSubmit, register, errors, control, setValue } = useForm({
@@ -32,13 +30,22 @@ function PersonsEdit() {
   const d = new Date();
 
   function onSubmit(values) {
-    values["birth_date"]=moment(values.birth_date,"DD.MM.YYYY").format("YYYY-MM-DD")
+    values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
+      "YYYY-MM-DD"
+    );
+    values["city"] = none.geolocation ? none.geolocation.city : "";
     values["timezone"] = none.option_value;
-    values["letnee"] = isChekbox;
-    console.log(values);
+    values["letnee"] = values.checkbox === true ? 0 : 1;
     Update_persons(values, none.data_id.type_id);
     debugger;
   }
+  useEffect(() => {
+    if (none.geolocation) {
+      setValue("longtitude", none.geolocation.location.lng);
+      setValue("latitude", none.geolocation.location.lat);
+      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    }
+  }, [none.geolocation ? none.geolocation.city : false]);
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
   }, []);
@@ -236,9 +243,12 @@ function PersonsEdit() {
                           required: true,
                           pattern: /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/i
                         }}
-                        defaultValue={moment(none.one_persons.birth_time,"HH:mm:ss").format("HH:mm")}
+                        defaultValue={moment(
+                          none.one_persons.birth_time,
+                          "HH:mm:ss"
+                        ).format("HH:mm")}
                       />
-    
+
                       {errors.birth_time && errors.birth_time.message}
                     </div>
                   </div>
@@ -259,27 +269,28 @@ function PersonsEdit() {
                     <div className="input_all location_input">
                       <div className="text_localisation">Часовой пояс:</div>
                       <SelectLocation
-                        ValueDefault={
-                          none.one_persons.timezone
-                            ? Number(none.one_persons.timezone)
-                            : 0
+                        ValueOptions={
+                          Number(none.option_value) !== 0 ? Number(none.option_value) : none.one_persons.timezone
                         }
                       ></SelectLocation>
                     </div>
                   </div>
-
-                  <Checkbox
-                    label="Летнее время"
-                    className="time_location"
-                    defaultChecked={
-                      none.one_persons.letnee !== 0 ? true : false
+                  <Controller
+                    name="checkbox"
+                    rules={{
+                      required: false
+                    }}
+                    defaultValue={none.one_persons.letnee === 0 ? true : false}
+                    as={
+                      <AntCheckbox
+                        label="Летнее время"
+                        className="time_location"
+                      >
+                        Летнее время
+                      </AntCheckbox>
                     }
-                    onClick={() =>
-                      none.one_persons.letnee !== 0
-                        ? setChecbox(0)
-                        : setChecbox(1)
-                    }
-                  ></Checkbox>
+                    control={control}
+                  ></Controller>
 
                   <div className="grid_column grid_small">
                     <div className="input_all">
@@ -320,7 +331,7 @@ function PersonsEdit() {
             <div className="create_persons_right">
               <div className="block_image">
                 <div className="image_contaner_perons">
-                  <img
+                  {ImageSrc !== undefined||none.one_persons.image !== null? <img
                     src={
                       ImageSrc !== undefined
                         ? ImageSrc
@@ -330,7 +341,8 @@ function PersonsEdit() {
                         : "../../img/Photo 1.svg"
                     }
                     alt=" "
-                  />
+                  />:<div className="text_edit_image">{none.one_persons.firstname[0]}</div>}
+                 
                 </div>
                 {none.one_persons.image === null ? (
                   <div className="button_add">
@@ -352,8 +364,9 @@ function PersonsEdit() {
                   type="file"
                   name="upload_image"
                   onChange={e => {
-                    e.target.files.length!==0?setImageSrc(URL.createObjectURL(e.target.files[0])):setImageSrc("../../img/Photo 1.svg");
-                    debugger
+                    e.target.files.length !== 0
+                      ? setImageSrc(URL.createObjectURL(e.target.files[0]))
+                      : setImageSrc("../../img/Photo 1.svg");
                   }}
                   ref={register({
                     required: false

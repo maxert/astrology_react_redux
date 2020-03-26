@@ -4,6 +4,7 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 
 import { ReduceContext } from "../context/reducerContext";
+import { Dimmer, Loader } from "semantic-ui-react";
 
 //Блок скрытой натальной карты персоны
 function ResultCardPersons({ Birthday, Time }) {
@@ -11,7 +12,7 @@ function ResultCardPersons({ Birthday, Time }) {
   const { none } = useContext(ReduceContext);
 
   function selectNew(event, data) {
-    setSelect(data.value)
+    setSelect(data.value);
     debugger;
   }
   if (none.data_notal === undefined) {
@@ -42,7 +43,11 @@ function ResultCardPersons({ Birthday, Time }) {
               </div> */}
             </div>
 
-            {select === "0" ? (
+            {none.isLoading === false ? (
+              <Dimmer active={true} inverted>
+                <Loader size="massive">Loading</Loader>
+              </Dimmer>
+            ) : select === "0" ? (
               <div className="notal_table_persons">
                 <div className="d_flex_center image_notal notalPersons_left">
                   <SvgLoader path="../../img/Натальная карта.svg">
@@ -335,13 +340,15 @@ function ResultCardPersons({ Birthday, Time }) {
                     <div className="block_info">
                       <div className="grid_column_two">
                         <div>
-                          {none.data_notal.data.houses_ay[2].pl.map((items, i) => (
-                            <div
-                              className="OneOne"
-                              key={i}
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[2].pl.map(
+                            (items, i) => (
+                              <div
+                                className="OneOne"
+                                key={i}
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
                           {none.data_notal.data.houses_ay[12].pl.map(
@@ -357,22 +364,26 @@ function ResultCardPersons({ Birthday, Time }) {
                       </div>
                       <div className="grid_column_three">
                         <div>
-                          {none.data_notal.data.houses_ay[3].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[3].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
-                          {none.data_notal.data.houses_ay[1].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[1].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
                           {none.data_notal.data.houses_ay[11].pl.map(
@@ -388,13 +399,15 @@ function ResultCardPersons({ Birthday, Time }) {
                       </div>
                       <div className="grid_column_two">
                         <div>
-                          {none.data_notal.data.houses_ay[4].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[4].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
                           {none.data_notal.data.houses_ay[10].pl.map(
@@ -410,51 +423,61 @@ function ResultCardPersons({ Birthday, Time }) {
                       </div>
                       <div className="grid_column_three">
                         <div>
-                          {none.data_notal.data.houses_ay[5].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[5].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
-                          {none.data_notal.data.houses_ay[7].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[7].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
-                          {none.data_notal.data.houses_ay[9].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[9].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                       </div>
                       <div className="grid_column_two">
                         <div>
-                          {none.data_notal.data.houses_ay[6].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[6].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                         <div>
-                          {none.data_notal.data.houses_ay[8].pl.map((items, i) => (
-                            <div
-                              key={i}
-                              className="OneOne"
-                              dangerouslySetInnerHTML={{ __html: items }}
-                            ></div>
-                          ))}
+                          {none.data_notal.data.houses_ay[8].pl.map(
+                            (items, i) => (
+                              <div
+                                key={i}
+                                className="OneOne"
+                                dangerouslySetInnerHTML={{ __html: items }}
+                              ></div>
+                            )
+                          )}
                         </div>
                       </div>
                     </div>

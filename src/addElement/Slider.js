@@ -18,7 +18,7 @@ function ModalExampleSize() {
   const [result, setResult] = useState([]);
   const { url } = useRouteMatch();
   const { none, create_links, Fetch_links } = useContext(ReduceContext);
-  const [ close, setCloseNew ] = useState(false);
+  const [close, setCloseNew] = useState(false);
   useEffect(() => {
     Fetch_links(none.data_id.type_link, none.data_id.type_id);
   }, [url]);
@@ -40,9 +40,12 @@ function ModalExampleSize() {
   return (
     <Modal
       open={close}
-      onClose={()=>setCloseNew(false)}
+      onClose={() => setCloseNew(false)}
       trigger={
-        <div className="communication_slider_add" onClick={()=>setCloseNew(true)}>
+        <div
+          className="communication_slider_add"
+          onClick={() => setCloseNew(true)}
+        >
           <SvgLoader path="../../img/Group 15.svg">
             <SvgProxy selector="#cst" />
           </SvgLoader>
@@ -100,7 +103,19 @@ function SimpleSlider() {
             {none.data_fetch_links.map((items, i) => (
               <div key={i}>
                 <div className="items_slider">
-                  <div className="icon_elipse">{items.name[0]}</div>
+                  <div className="icon_elipse">
+                    {items.obj.image !== null ? (
+                      <img
+                        src={
+                          "http://1690550.masgroup.web.hosting-test.net" +
+                          items.obj.image
+                        }
+                        alt="Картинка"
+                      />
+                    ) : (
+                      <div className="text_all_image">{items.name[0]}</div>
+                    )}
+                  </div>
                   <div className="icon_text">{items.name}</div>
                   <DropdownSlider
                     Content={
@@ -122,10 +137,9 @@ function SimpleSlider() {
                         >
                           Удалить связь
                         </div>
-                        <div className="add_notal">
-                          {" "}
+                        {/* <div className="add_notal">
                           Добавить натальную карту
-                        </div>
+                        </div> */}
                       </div>
                     }
                   ></DropdownSlider>
@@ -138,7 +152,20 @@ function SimpleSlider() {
             {none.data_fetch_links.map((items, i) => (
               <div key={i}>
                 <div className="items_slider">
-                  <div className="icon_elipse">{items.name[0]}</div>
+                  <div className="icon_elipse">
+                    {" "}
+                    {items.obj.image !== null ? (
+                      <img
+                        src={
+                          "http://1690550.masgroup.web.hosting-test.net" +
+                          items.obj.image
+                        }
+                        alt="Картинка"
+                      />
+                    ) : (
+                      <div className="text_all_image">{items.name[0]}</div>
+                    )}
+                  </div>
                   <div className="icon_text">{items.name}</div>
                   <DropdownSlider
                     Content={

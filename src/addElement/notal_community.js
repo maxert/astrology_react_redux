@@ -8,7 +8,7 @@ import { Item } from "semantic-ui-react";
 //Блок натальной карты связи
 function NotalCommunity() {
   const { none } = useContext(ReduceContext);
-  if(none.data_fetch_links === null){
+  if(none.data_fetch_links===undefined){
     return null
   }
   return (
@@ -16,7 +16,7 @@ function NotalCommunity() {
         <div>
           <div className="text_big_all">натальные карты Связей</div>
           <div className="notal_card_community_container">
-            {none.data_fetch_links.map(items => (
+            {none.data_fetch_links&&none.data_fetch_links.map(items => (
               items.natal!==null&&
               <div className="persons_items notal_items" key={items.id}>
                 <div className="persons_items_head d_flex_center">
@@ -25,12 +25,12 @@ function NotalCommunity() {
                       {items.name}
                     </div>
                   </div>
-                  <div className="persons_edit">
+                  {/* <div className="persons_edit">
                     <EditDrop></EditDrop>
                     <SvgLoader path="../../img/Group5.svg">
                       <SvgProxy selector="#co" />
                     </SvgLoader>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="d_flex_center date_persons">
                   <div className="persons_text_left">На дату:</div>

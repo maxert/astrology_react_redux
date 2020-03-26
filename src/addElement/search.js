@@ -41,8 +41,8 @@ function SearchExampleStandard({ handleResultSelect }) {
   );
   const [dataSearch, setSearch] = useState({ isLoading: false });
 
-  const resultRenderer = ({ title, type_id, content }) => (
-    <Link to={`/${content}/id/${type_id}`}>{title}</Link>
+  const resultRenderer = ({ title }) => (
+    <div>{title}</div>
   );
 
   resultRenderer.propTypes = {
@@ -65,7 +65,10 @@ function SearchExampleStandard({ handleResultSelect }) {
     }, 300);
     console.log(value);
   }
-
+function resultSubmite(value){
+  search_data(none.data_link.type_link, value.result.title, none.data_link.type_id);
+  debugger
+}
   return (
     <Grid>
       <Grid.Column width={6}>
@@ -73,6 +76,7 @@ function SearchExampleStandard({ handleResultSelect }) {
           onChangeElement={(event, data) => onChangeElement(event, data)}
         ></SelectExample>
         <Search
+          onResultSelect={(e,data)=>resultSubmite(data)}
           loading={dataSearch.isLoading}
           onSearchChange={_.debounce(handleSearchChange, 500, {
             isLoading: true

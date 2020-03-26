@@ -30,6 +30,7 @@ export const NoteState = ({ children }) => {
         }
       }
     );
+    alert.info("Заметка обновленна");
     Fetch_note(obj_id,obj_type);
     dispatch({
       type: UPDATE_NOTE,
@@ -68,7 +69,7 @@ export const NoteState = ({ children }) => {
       }
     );
     const payload = dataItems.filter(i => i.id !== id_note);
-    alert.success("Заметка удаленна");
+    alert.info("Заметка удаленна");
     dispatch({
       type: DELETE_NOTE,
       payload

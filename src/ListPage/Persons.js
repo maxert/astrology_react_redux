@@ -666,19 +666,21 @@ function PersonsHome() {
                       <div className="persons_items_head ">
                         <div className="container_info_persons d_flex_center">
                           <div className={"icon_image  active"}>
-                            {favorite.image !== null ? (
-                              <img
-                                src={
-                                  "http://1690550.masgroup.web.hosting-test.net" +
-                                  favorite.image
-                                }
-                                alt="Картинка"
-                              />
-                            ) : (
-                              <div className="text_persons">
-                                {favorite.firstname[0]}
-                              </div>
-                            )}
+                           <div className="hidden_all">
+                              {favorite.image !== null ? (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    favorite.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              ) : (
+                                <div className="text_persons">
+                                  {favorite.firstname[0]}
+                                </div>
+                              )}
+                            </div>
                             <SvgLoader
                               className="favorite_svg"
                               path="../../img/favorites_21.svg"

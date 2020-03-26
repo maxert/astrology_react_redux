@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState,  } from "react";
 import {
   Input,
   Button,
-  Checkbox,
-  Form,
-  Ref,
-  Segment,
+
   Dimmer,
   Loader
 } from "semantic-ui-react";
@@ -16,6 +13,8 @@ import { TableList } from "../addElement/Table";
 import { useForm } from "react-hook-form";
 import { ShowContext } from "../context/show/showContext";
 import { ReduceContext } from "../context/reducerContext";
+import { Checkbox as AntCheckbox } from "antd";
+
 
 //Форма натальной карты на главной странице
 export const FormsPosition = () => {
@@ -57,17 +56,18 @@ export const FormsPosition = () => {
         Положение планет в реальном времени{" "}
         <span>{none.online_data && none.online_data.in_date}</span>
       </div>
-      <Checkbox
+
+      
+      <AntCheckbox
         type="checkbox"
         name="new"
-        label="Непрерывное"
         className="planeta_сheckbox"
         onClick={() =>
           isPlay
             ? (setPlay(false), setRefresh(0))
             : (setPlay(true), setRefresh(0))
         }
-      />
+      >Непрерывное</AntCheckbox>
       <div className="header_card">
         <div className="select_submit">
           <button className="prev_button" onClick={() => setint_d(-1)}></button>
