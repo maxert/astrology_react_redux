@@ -5,11 +5,10 @@ import { Search, Grid } from "semantic-ui-react";
 import SelectExample from "./Select.js";
 import { ReduceContext } from "../context/reducerContext.js";
 import { useRouteMatch } from "react-router";
-import { Link } from "react-router-dom";
-import { ShowContext } from "../context/show/showContext.js";
+import { Link, NavLink } from "react-router-dom";
 
 //Блок плашки поиска
-function SearchExampleStandard({ handleResultSelect }) {
+function SearchHome({ handleResultSelect }) {
   const { url } = useRouteMatch();
   useEffect(() => {
     let urls = {
@@ -37,15 +36,14 @@ function SearchExampleStandard({ handleResultSelect }) {
     favorite_select(urls.type_link, urls.type_id);
     search_select(urls.type_link, urls.type_id);
   }, []);
-  const { search_bool,search_data,display } = useContext(ShowContext);
-  
-  const { search_select, favorite_select, none } = useContext(
+  const { search_select, favorite_select, search_data_home, none } = useContext(
     ReduceContext
   );
   const [dataSearch, setSearch] = useState({ isLoading: false });
-  const [values, setValue] = useState("");
-  
-  const resultRenderer = ({ title }) => <div>{title}</div>;
+
+  const resultRenderer = ({ title, type_id, content }) => (
+    <Link to={`/${content}/id/${type_id}`}>{title}</Link>
+  );
 
   resultRenderer.propTypes = {
     title: PropTypes.string,
@@ -58,34 +56,19 @@ function SearchExampleStandard({ handleResultSelect }) {
     search_select(data.value, key[0].key);
     console.log(key[0].key);
   }
-  useEffect(()=>{
-    search_data(none.data_link.type_link, values, none.data_link.type_id);
-  },[none.data_value!==undefined?none.data_value.value.fav:false])
-
-
 
   function handleSearchChange(e, { value }) {
-    if (value.length === 0) {
-      search_bool(false);
-    } else {
-      search_bool(true);
-    }
-    setValue(value);
     setSearch({ isLoading: true });
-    search_data(none.data_link.type_link, value, none.data_link.type_id);
+    search_data_home(none.data_link.type_link, value, none.data_link.type_id);
     setTimeout(() => {
       setSearch({ isLoading: false });
     }, 300);
     console.log(value);
   }
-  function resultSubmite(value) {
-    search_data(
-      none.data_link.type_link,
-      value.result.title,
-      none.data_link.type_id
-    );
-    debugger;
-  }
+function resultSubmite(value){
+    search_data_home(none.data_link.type_link, value.result.title, none.data_link.type_id);
+  debugger
+}
   return (
     <Grid>
       <Grid.Column width={6}>
@@ -93,12 +76,12 @@ function SearchExampleStandard({ handleResultSelect }) {
           onChangeElement={(event, data) => onChangeElement(event, data)}
         ></SelectExample>
         <Search
-          onResultSelect={(e, data) => resultSubmite(data)}
+          onResultSelect={(e,data)=>resultSubmite(data)}
           loading={dataSearch.isLoading}
           onSearchChange={_.debounce(handleSearchChange, 500, {
             isLoading: true
           })}
-          results={display.data_value.value}
+          results={none.data_value_home.value}
           className="search_new"
           placeholder="Что-то ищете..."
           resultRenderer={resultRenderer}
@@ -108,4 +91,4 @@ function SearchExampleStandard({ handleResultSelect }) {
   );
 }
 
-export default SearchExampleStandard;
+export default SearchHome;

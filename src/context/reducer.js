@@ -30,6 +30,7 @@ import {
   SORTED,
   LOADING,
   URL_BACK,
+  SEARCH_HOME,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -78,9 +79,9 @@ const handlers = {
     ...state,
     number_all: payload
   }),
-  [SEARCH]: (state, { payload }) => ({
+  [SEARCH_HOME]: (state, { payload }) => ({
     ...state,
-    data_value:payload
+    data_value_home:payload
   }),
   [SELECT_HOME]: (state, { payload }) => ({
     ...state,

@@ -1,6 +1,9 @@
 import {
     SHOW_ELEMENT,
     HIDE_ELEMENT,
+    SEARCH_BOOL,
+    SEARCH,
+    SEARCH_DELETE
   } from "../types";
   const handlers = {
    
@@ -14,7 +17,18 @@ import {
       ...state,
       visible: true
     }),
-    
+    [SEARCH_BOOL]: (state, { payload }) => ({
+      ...state,
+      isSearch: payload
+    }),
+    [SEARCH_DELETE]: (state, { payload }) => ({
+      ...state,
+      data_value: payload
+    }),
+    [SEARCH]: (state, { payload }) => ({
+      ...state,
+      data_value:payload
+    }),
     DEFAULT: state => state
   };
   export const ShowReducer = (state, action) => {

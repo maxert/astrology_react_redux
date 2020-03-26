@@ -31,6 +31,7 @@ import {
   SEARCH_CITY,
   FETCH_NUMBER,
   PAGINATION_NUMBER,
+  SEARCH_HOME,
   SORTED,
   LOADING,
   URL_BACK
@@ -58,6 +59,7 @@ export const ReducerState = ({ children }) => {
     },
     pagination: 1,
     data_fetch_value: [],
+    data_value_home: [],
     data_value_select: [],
     data_link: "/api/companies",
     data_link_favorite: "/api/companies"
@@ -180,10 +182,8 @@ export const ReducerState = ({ children }) => {
   };
 
   const search_data = async (type, value, url) => {
-    var bool = true;
     if (value.length === 0 || value === " ") {
       value = "a";
-      bool = false;
     }
 
     const res = await Axios.get(
@@ -195,9 +195,9 @@ export const ReducerState = ({ children }) => {
       }
     );
     debugger;
-    const payload = Object.keys(res.data.persons).map(key => {
+    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
-        ...res.data.persons[key],
+        ...res.data[Object.keys(res.data)[0]][key],
         id: res.data[Object.keys(res.data)[0]][key].id,
         title:
           res.data[Object.keys(res.data)[0]][key].name === undefined
@@ -213,8 +213,7 @@ export const ReducerState = ({ children }) => {
     dispatch({
       type: SEARCH,
       payload: {
-        value: payload,
-        isSearch: bool
+        value: payload
       }
     });
   };
@@ -255,8 +254,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data.persons);
-    debugger;
+
     const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
         id: res.data[Object.keys(res.data)[0]][key].id,
@@ -270,7 +268,8 @@ export const ReducerState = ({ children }) => {
             : res.data[Object.keys(res.data)[0]][key].name
       };
     });
-
+    console.log(payload);
+    debugger;
     dispatch({
       type: SELECT_HOME,
       payload
@@ -385,6 +384,7 @@ export const ReducerState = ({ children }) => {
       }
     );
     console.log(res.data);
+    debugger;
     dispatch({
       type: FETCH_LINKS,
       payload: res.data
@@ -553,6 +553,46 @@ export const ReducerState = ({ children }) => {
       }
     );
   };
+  const search_data_home = async (type, value, url) => {
+    var bool = true;
+    if (value.length === 0 || value === " ") {
+      value = "a";
+      bool = false;
+    }
+
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+
+    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
+      return {
+        id: res.data[Object.keys(res.data)[0]][key].id,
+        title:
+          res.data[Object.keys(res.data)[0]][key].name === undefined
+            ? res.data[Object.keys(res.data)[0]][key].firstname +
+              " " +
+              (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                ? res.data[Object.keys(res.data)[0]][key].lastname
+                : "")
+            : res.data[Object.keys(res.data)[0]][key].name,
+        content: url,
+        type_id: res.data[Object.keys(res.data)[0]][key].id
+      };
+    });
+
+    dispatch({
+      type: SEARCH_HOME,
+      payload: {
+        value: payload,
+        isSearch: bool
+      }
+    });
+  };
 
   const online_card = (int_d, int_type, int, refresh) => {
     Axios.get(
@@ -635,6 +675,7 @@ export const ReducerState = ({ children }) => {
         pagination_number,
         Order_by,
         isLoading,
+        search_data_home,
         none: state
       }}
     >

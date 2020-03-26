@@ -4,12 +4,13 @@ import FormsCreate from "../forms/formsCreate";
 import { FormsPosition } from "../forms/formsPosition";
 import { History } from "../addElement/History";
 import { ShowState } from "../context/show/showState";
+import SearchHome from "../addElement/SearchHome";
 //Блок Главной страниццы
 function Home() {
   return (
     <div className="container_list">
-      <div className="search_container">
-        <Search />
+      <div className="search_container_home">
+        <SearchHome />
       </div>
      
       <div className="container_grid">

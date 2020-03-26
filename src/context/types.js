@@ -48,3 +48,6 @@ export const DELETE_NOTE = "DELETE_NOTE";
 export const UPDATE_NOTE = "UPDATE_NOTE";
 export const ADD_NOTE = "ADD_NOTE";
 export const EDIT_NOTE = "EDIT_NOTE";
+export const SEARCH_HOME = "SEARCH_HOME";
+export const SEARCH_BOOL = "SEARCH_BOOL";
+export const SEARCH_DELETE = "SEARCH_DELETE";

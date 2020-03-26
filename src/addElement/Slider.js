@@ -10,14 +10,19 @@ import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
 import { useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
+import { useAlert } from "react-alert";
 
 //Блок с слайдером
 
 function ModalExampleSize() {
+  const [dataSearch, setSearch] = useState({ isLoading: false });
   const { handleSubmit, register, errors } = useForm();
   const [result, setResult] = useState([]);
   const { url } = useRouteMatch();
-  const { none, create_links, Fetch_links } = useContext(ReduceContext);
+  const alert = useAlert();
+  const { none, create_links, Fetch_links, search_data_links } = useContext(
+    ReduceContext
+  );
   const [close, setCloseNew] = useState(false);
   useEffect(() => {
     Fetch_links(none.data_id.type_link, none.data_id.type_id);
@@ -26,16 +31,33 @@ function ModalExampleSize() {
   const newSubmite = (e, { result }) => {
     setResult(result);
   };
-
-  const onSubmit = values => {
-    values["obj_type"] = none.data_id.type_link;
-    values["obj_id"] = none.data_id.type_id;
-    values["link_obj_type"] = none.data_link.type_id;
+  function handleSearchChange(e, value) {
+    setResult(value.result);
+    setSearch({ isLoading: true });
+    search_data_links(
+      none.data_link.type_link,
+      value.value,
+      none.data_link.type_id
+    );
     debugger;
-    values["link_obj_id"] = result.id;
-    console.log(values);
-    setCloseNew(false);
-    create_links(values);
+    setTimeout(() => {
+      setSearch({ isLoading: false });
+    }, 300);
+    console.log(value);
+  }
+  const onSubmit = values => {
+    debugger;
+    if (result !== undefined) {
+      values["obj_type"] = none.data_id.type_link;
+      values["obj_id"] = none.data_id.type_id;
+      values["link_obj_type"] = none.data_link.type_id;
+      values["link_obj_id"] = result.id;
+      console.log(values);
+      setCloseNew(false);
+      create_links(values);
+    } else {
+      alert.error("Выбирете данные из поля");
+    }
   };
   return (
     <Modal
@@ -56,8 +78,10 @@ function ModalExampleSize() {
     >
       <Form className="modal_slider_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="text_all">Создать связь</div>
-        <div className="search_container">
+        <div className="search_container_home">
           <SearchLinks
+            isLoading={dataSearch.isLoading}
+            handleSearchChange={(e, data) => handleSearchChange(e, data)}
             handleResultSelect={(e, resulte) => newSubmite(e, resulte)}
           />
         </div>
@@ -85,7 +109,7 @@ function ModalExampleSize() {
 
 function SimpleSlider() {
   const { none, delete_link } = useContext(ReduceContext);
-
+  const [isOpen, setOpen] = useState(false);
   const setting = {
     infinite: true,
     arrow: true,
@@ -104,7 +128,7 @@ function SimpleSlider() {
               <div key={i}>
                 <div className="items_slider">
                   <div className="icon_elipse">
-                    {items.obj.image !== null ? (
+                    {items.obj !== null ? (
                       <img
                         src={
                           "http://1690550.masgroup.web.hosting-test.net" +
@@ -137,9 +161,9 @@ function SimpleSlider() {
                         >
                           Удалить связь
                         </div>
-                        {/* <div className="add_notal">
+                        <div className="add_notal">
                           Добавить натальную карту
-                        </div> */}
+                        </div>
                       </div>
                     }
                   ></DropdownSlider>
@@ -153,8 +177,7 @@ function SimpleSlider() {
               <div key={i}>
                 <div className="items_slider">
                   <div className="icon_elipse">
-                    {" "}
-                    {items.obj.image !== null ? (
+                    {items.obj !== null ? (
                       <img
                         src={
                           "http://1690550.masgroup.web.hosting-test.net" +
@@ -177,13 +200,13 @@ function SimpleSlider() {
                         </Link>
                         <div
                           className="delete_comunity"
-                          onClick={() =>
+                          onClick={() => {
                             delete_link(
                               items.id,
                               none.data_id.type_link,
                               none.data_id.type_id
-                            )
-                          }
+                            );
+                          }}
                         >
                           Удалить связь
                         </div>

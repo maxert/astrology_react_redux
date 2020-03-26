@@ -6,7 +6,7 @@ import { ReduceContext } from "../context/reducerContext.js";
 import { useRouteMatch } from "react-router";
 
 //Блок плашки поиска
-function SearchLinks({handleResultSelect}) {
+function SearchLinks({ handleResultSelect, handleSearchChange, isLoading }) {
   const { url } = useRouteMatch();
   useEffect(() => {
     let urls = {
@@ -31,25 +31,18 @@ function SearchLinks({handleResultSelect}) {
     favorite_select(urls.type_link, urls.type_id);
     search_select(urls.type_link, urls.type_id);
   }, []);
-  const { search_select,favorite_select, search_data_links, none } = useContext(ReduceContext);
-  const [dataSearch, setSearch] = useState({ isLoading: false });
+  const {
+    search_select,
+    favorite_select,
+    none
+  } = useContext(ReduceContext);
 
   function onChangeElement(event, data) {
     const key = data.options.filter(x => x.value === data.value);
     search_select(data.value, key[0].key);
     console.log(key[0].key);
+    debugger;
   }
-
-  function handleSearchChange(e, { value }) {
-    setSearch({ isLoading: true });
-    search_data_links(none.data_link.type_link, value,none.data_link.type_id);
-    setTimeout(() => {
-      setSearch({ isLoading: false });
-    }, 300);
-    console.log(value);
-  }
- 
-
 
   return (
     <Grid>
@@ -58,11 +51,10 @@ function SearchLinks({handleResultSelect}) {
           onChangeElement={(event, data) => onChangeElement(event, data)}
         ></SelectExample>
         <Search
-          loading={dataSearch.isLoading}
+          selectFirstResult={true}
+          loading={isLoading}
           onResultSelect={handleResultSelect}
-          onSearchChange={_.debounce(handleSearchChange, 500, {
-            isLoading: true
-          })}
+          onSearchChange={(e, data) => handleSearchChange(e, data)}
           results={none.data_value_select}
           className="search_new"
           placeholder="Что-то ищете..."
