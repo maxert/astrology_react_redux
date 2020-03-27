@@ -108,7 +108,7 @@ function ModalExampleSize() {
 }
 
 function SimpleSlider() {
-  const { none, delete_link } = useContext(ReduceContext);
+  const { none, delete_link, show_notal_card } = useContext(ReduceContext);
   const [isOpen, setOpen] = useState(false);
   const setting = {
     infinite: true,
@@ -128,7 +128,7 @@ function SimpleSlider() {
               <div key={i}>
                 <div className="items_slider">
                   <div className="icon_elipse">
-                    {items.obj !== null ? (
+                    {items.obj.image !== null ? (
                       <img
                         src={
                           "http://1690550.masgroup.web.hosting-test.net" +
@@ -161,9 +161,26 @@ function SimpleSlider() {
                         >
                           Удалить связь
                         </div>
-                        <div className="add_notal">
-                          Добавить натальную карту
-                        </div>
+                        {items.isDisplay === null ? null : items.isDisplay ===
+                          false ? (
+                          <div
+                            className="add_notal"
+                            onClick={() =>
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }
+                          >
+                            Показать натальную карту
+                          </div>
+                        ) : (
+                          <div
+                            className="add_notal"
+                            onClick={() =>
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }
+                          >
+                            Скрыть натальную карту
+                          </div>
+                        )}
                       </div>
                     }
                   ></DropdownSlider>
@@ -177,7 +194,7 @@ function SimpleSlider() {
               <div key={i}>
                 <div className="items_slider">
                   <div className="icon_elipse">
-                    {items.obj !== null ? (
+                    {items.obj.image !== null ? (
                       <img
                         src={
                           "http://1690550.masgroup.web.hosting-test.net" +
@@ -210,10 +227,26 @@ function SimpleSlider() {
                         >
                           Удалить связь
                         </div>
-                        <div className="add_notal">
-                          {" "}
-                          Добавить натальную карту
-                        </div>
+                        {items.isDisplay === null ? null : items.isDisplay ===
+                          false ? (
+                          <div
+                            className="add_notal"
+                            onClick={() =>
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }
+                          >
+                            Показать натальную карту
+                          </div>
+                        ) : (
+                          <div
+                            className="add_notal"
+                            onClick={() =>
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }
+                          >
+                            Скрыть натальную карту
+                          </div>
+                        )}
                       </div>
                     }
                   ></DropdownSlider>

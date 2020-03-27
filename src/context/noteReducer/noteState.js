@@ -105,7 +105,6 @@ export const NoteState = ({ children }) => {
           isEdit: true
         };
       });
-      console.log(edit);
       dispatch({
         type: FETCH_NOTE,
         payload: edit

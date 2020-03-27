@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
 import Geocode from "react-geocode";
@@ -34,10 +34,11 @@ import {
   SEARCH_HOME,
   SORTED,
   LOADING,
-  URL_BACK
+  URL_BACK,
+  SHOW_NOTAL_CARD
 } from "./types";
 import Axios from "axios";
-import { PersonsContext } from "./personReducer/personContext";
+
 import { useAlert } from "react-alert";
 export const ReducerState = ({ children }) => {
   const initialState = {
@@ -108,7 +109,7 @@ export const ReducerState = ({ children }) => {
   };
 
   const Fetch_data_favorite = async obj_type => {
-    isLoading(false);
+
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
       {
@@ -123,7 +124,7 @@ export const ReducerState = ({ children }) => {
       type: FETCH_DATA_FAVORITE,
       payload: res.data
     });
-    isLoading(true);
+
   };
 
   const Order_by = async order_by => {
@@ -373,7 +374,21 @@ export const ReducerState = ({ children }) => {
     });
     isLoading(true);
   };
-
+  const show_notal_card = async (id,data) => {
+   
+    const payload=data.map(items=>{
+      if(items.id===id){
+        items.isDisplay=items.isDisplay===false?true:false;
+      }
+      return items
+    })
+    
+   
+    dispatch({
+      type: SHOW_NOTAL_CARD,
+      payload
+    });
+  };
   const Fetch_links = async (type, id) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
@@ -383,11 +398,17 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    console.log(res.data);
+    const payload=Object.keys(res.data).map(key=>{
+      return{
+        ...res.data[key],
+        isDisplay:res.data[key].natal===null?null:false
+      }
+    })
+    console.log(payload);
     debugger;
     dispatch({
       type: FETCH_LINKS,
-      payload: res.data
+      payload
     });
   };
   const number_all = async (numbers, type) => {
@@ -499,7 +520,8 @@ export const ReducerState = ({ children }) => {
           type: ADD_NOTAL_CARD,
           payload: res.data
         });
-        alert.success("Нотальная карта созданна");
+        isLoading(false)
+        alert.success("Натальная карта созданна");
       })
       .catch(error => {
         error.response.data.error.forEach(none => {
@@ -518,7 +540,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    alert.info("Нотальная карта обновленна");
+    alert.info("Натальная карта обновленна");
     Fetch_notal_card(res.data.obj_type, res.data.obj_id);
     dispatch({
       type: UPDATE_PERSONS,
@@ -657,6 +679,7 @@ export const ReducerState = ({ children }) => {
         add_type_links,
         number_all,
         search_select,
+        show_notal_card,
         delete_link,
         delete_favorite,
         Fetch_data_favorite,

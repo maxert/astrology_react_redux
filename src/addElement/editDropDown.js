@@ -5,7 +5,7 @@ import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { PersonsContext } from "../context/personReducer/personContext";
 //Функциональный Блок изменений карточки
-function DropdownExampleInline({ ID, Type, Favorite }) {
+function DropdownExampleInline({ ID, Type, Favorite,ClickDelete }) {
   const { url } = useRouteMatch();
   const {delete_persons} = useContext(PersonsContext);
   const { none, delete_favorite, Add_favorite } = useContext(
@@ -51,7 +51,7 @@ function DropdownExampleInline({ ID, Type, Favorite }) {
         </Dropdown.Item>
         <Dropdown.Item
           data-index="2"
-          onClick={() => {delete_persons(ID,none.pagination!==1?none.pagination:1,none.sorted)}}
+          onClick={(e,data)=>ClickDelete(e,data)}
         >
           <SvgLoader path="../../img/Delete1.svg">
             <SvgProxy selector="#cst" />

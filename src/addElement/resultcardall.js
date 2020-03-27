@@ -7,7 +7,7 @@ import { ReduceContext } from "../context/reducerContext";
 import { Dimmer, Loader } from "semantic-ui-react";
 
 //Блок скрытой натальной карты персоны
-function ResultCardPersons({ Birthday, Time }) {
+function ResultCardAll({ Birthday, Time }) {
   const [select, setSelect] = useState("0");
   const { none } = useContext(ReduceContext);
 
@@ -556,4 +556,4 @@ function ResultCardPersons({ Birthday, Time }) {
     </div>
   );
 }
-export default ResultCardPersons;
+export default ResultCardAll;

@@ -13,18 +13,19 @@ import ModalExit from "./addElement/modalExit";
 import { ShowState } from "./context/show/showState";
 import NotalHome from "./ListPage/NotalHome";
 import { PersonsContext } from "./context/personReducer/personContext";
+import { CompanyContext } from "./context/companyReducer/companyContext";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
   const { none, fetch_number} = useContext(ReduceContext);
   const {state_persons} = useContext(PersonsContext);
-
+  const {state_company} = useContext(CompanyContext);
 
   useEffect(() => {
     debugger
     fetch_number();
     
-  }, [state_persons.data_persons!==undefined?state_persons.data_persons.count:false]);
+  }, [state_persons.data_persons!==undefined?state_persons.data_persons.count:false,state_company.data_company!==undefined?state_company.data_company.count:false]);
 
 
   return (

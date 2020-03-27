@@ -4,7 +4,7 @@ import { NavLink, useRouteMatch, matchPath } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import ResultCardPersons from "../addElement/resultcardpersons";
+import ResultCardAll from "../addElement/resultcardall";
 import { ShowContext } from "../context/show/showContext";
 
 import { ReduceContext } from "../context/reducerContext";
@@ -106,7 +106,7 @@ function CompanyList() {
             </div>
           </div>
 
-          <ResultCardPersons></ResultCardPersons>
+          <ResultCardAll></ResultCardAll>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
         </div>

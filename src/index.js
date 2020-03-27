@@ -27,6 +27,7 @@ import { PersonState } from "./context/personReducer/personState";
 import { positions, Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { createBrowserHistory } from "history";
+import { CompanyState } from "./context/companyReducer/companyState";
 const options = {
   timeout: 5000,
   position: positions.TOP_CENTER
@@ -43,6 +44,7 @@ ReactDOM.render(
       <Router history={history}>
         <ReducerState store={store}>
           <PersonState>
+          <CompanyState>
             <Switch>
               <Route path="/login">
                 <Forms></Forms>
@@ -54,6 +56,7 @@ ReactDOM.render(
                 <Astrology />
               </Route>
             </Switch>
+            </CompanyState>
           </PersonState>
         </ReducerState>
       </Router>

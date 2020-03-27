@@ -31,6 +31,7 @@ import {
   LOADING,
   URL_BACK,
   SEARCH_HOME,
+  SHOW_NOTAL_CARD,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -68,6 +69,10 @@ const handlers = {
     ...state
   }),
   [FETCH_LINKS]: (state, { payload }) => ({
+    ...state,
+    data_fetch_links: payload
+  }),
+  [SHOW_NOTAL_CARD]: (state, { payload }) => ({
     ...state,
     data_fetch_links: payload
   }),

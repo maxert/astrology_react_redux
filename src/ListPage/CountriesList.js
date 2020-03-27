@@ -5,7 +5,7 @@ import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
 import {ReduceContext} from "../context/reducerContext";
-import ResultCardPersons from "../addElement/resultcardpersons";
+import ResultCardAll from "../addElement/resultcardall";
 
 
 //Страница страны
@@ -52,7 +52,7 @@ function CompanyList() {
           </div>
         </div>
       </div>
-      <ResultCardPersons></ResultCardPersons>
+      <ResultCardAll></ResultCardAll>
       <Community></Community>
       <NotalCommunity></NotalCommunity>
     </div>

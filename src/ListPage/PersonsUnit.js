@@ -4,7 +4,7 @@ import { NavLink, useRouteMatch, useHistory } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
-import ResultCardPersons from "../addElement/resultcardpersons";
+import ResultCardAll from "../addElement/resultcardall";
 import { ReduceContext } from "../context/reducerContext";
 import CreateNote from "../addElement/createNote";
 import NoteList from "../addElement/NoteList";
@@ -132,10 +132,10 @@ function PersonsUnit() {
             </div>
           </div>
 
-          <ResultCardPersons
+          <ResultCardAll
             Birthday={none.one_persons.birth_date}
             Time={none.one_persons.birth_time}
-          ></ResultCardPersons>
+          ></ResultCardAll>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
           <NoteState>

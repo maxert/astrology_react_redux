@@ -4,18 +4,24 @@ import {
   HIDE_ELEMENT,
   SEARCH_BOOL,
   SEARCH_DELETE,
-  SEARCH
+  SEARCH,
+  SEARCH_ADD_FAVORITE,
+  SEARCH_DELETE_FAVORITE,
+  SEARCH_SORT,
+  SEARCH_SORT_FAVORITE
 } from "../types";
 import { ShowContext } from "./showContext";
 import { ShowReducer } from "./showReducer";
 import Axios from "axios";
+import { useAlert } from "react-alert";
 
 export const ShowState = ({ children }) => {
   const initialState = {
     visible: false,
-    isSearch:false,
-    data_value:[],
+    isSearch: false,
+    data_value: []
   };
+  const alert = useAlert();
   const [state, dispatch] = useReducer(ShowReducer, initialState);
 
   const show = (text, type = "warning") => {
@@ -27,24 +33,77 @@ export const ShowState = ({ children }) => {
   const hide = () => {
     dispatch({ type: HIDE_ELEMENT, visible: false });
   };
-
-  const search_bool = (bool) => {
+  const search_sort_favorite = (bool, data) => {
+    const copy = Object.assign([], data);
+    if (bool) { 
+      const payload = copy.filter(i => i.isFav !== false);
+      dispatch({ type: SEARCH_SORT_FAVORITE, payload });
+    } else {
+      dispatch({ type: SEARCH_SORT_FAVORITE, payload: data });
+    }
+  };
+  const search_sort = (bool, data) => {
+    const payload = bool
+      ? data.sort((a, b) => a.firstname.localeCompare(b.firstname))
+      : data.sort((a, b) => b.firstname.localeCompare(a.firstname));
+    console.log(payload);
+    debugger;
+    dispatch({ type: SEARCH_SORT, payload });
+  };
+  const search_bool = bool => {
     dispatch({ type: SEARCH_BOOL, payload: bool });
   };
-  const search_delete = async (type,id,data) => {
-      const res = await Axios.delete(
-        `http://1690550.masgroup.web.hosting-test.net${type}` + id,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("users")}`
-          }
+  const search_add_favorite = async (id, type, data, fav) => {
+    const res = await Axios.post(
+      `http://1690550.masgroup.web.hosting-test.net/api/favorites`,
+      {
+        obj_type: type,
+        obj_id: id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("users")}`
         }
-      );
-      console.log(res.data)
-      const payload = data.filter(i => i.id !== id);
-      alert.info("Заметка удаленна");
-       console.log(payload)
-  
+      }
+    );
+    const payload = data.map(Items => {
+      if (Items.id === id) {
+        Items.isFav = true;
+      }
+      return Items;
+    });
+
+    console.log(payload);
+    dispatch({ type: SEARCH_ADD_FAVORITE, payload });
+  };
+  const search_delete_favorite = async (id, type, data, fav) => {
+    const res = await Axios.delete(
+      `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${type}&obj_id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("users")}`
+        }
+      }
+    );
+    const payload = data.map(Items => {
+      if (Items.id === id) {
+        Items.isFav = false;
+      }
+      return Items;
+    });
+    dispatch({ type: SEARCH_DELETE_FAVORITE, payload });
+  };
+  const search_delete = async (id, type, data) => {
+    const res = await Axios.delete(
+      `http://1690550.masgroup.web.hosting-test.net${type}/` + id,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("users")}`
+        }
+      }
+    );
+    console.log(res.data);
+    const payload = data.filter(i => i.id !== id);
     dispatch({ type: SEARCH_DELETE, payload });
   };
 
@@ -73,16 +132,17 @@ export const ShowState = ({ children }) => {
               (res.data[Object.keys(res.data)[0]][key].lastname !== null
                 ? res.data[Object.keys(res.data)[0]][key].lastname
                 : "")
-            : res.data[Object.keys(res.data)[0]][key].name
+            : res.data[Object.keys(res.data)[0]][key].name,
+        isFav:
+          res.data[Object.keys(res.data)[0]][key].fav === null ? false : true
       };
     });
-
+    payload.sort((a, b) =>  a.firstname!==undefined?a.firstname.localeCompare(b.firstname):a.name.localeCompare(b.name));
     dispatch({
       type: SEARCH,
       payload
     });
   };
-
 
   return (
     <ShowContext.Provider
@@ -92,6 +152,10 @@ export const ShowState = ({ children }) => {
         hide,
         search_data,
         search_delete,
+        search_delete_favorite,
+        search_add_favorite,
+        search_sort,
+        search_sort_favorite,
         display: state
       }}
     >

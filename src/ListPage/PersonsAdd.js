@@ -31,8 +31,8 @@ function PersonsAdd() {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if(none.geolocation){
-    setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (none.geolocation) {
+      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
     }
   }, [none.geolocation ? none.geolocation.city : false]);
   const alert = useAlert();
@@ -44,9 +44,9 @@ function PersonsAdd() {
       "YYYY-MM-DD"
     );
     values["city"] =
-      none.geolocation.city !== null ? none.geolocation.city : null;
+    none.geolocation.city !== null ? none.geolocation.city : null;
     values["timezone"] = none.option_value;
-    values["letnee"] = values.checkbox;
+    values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
     Add_persons(values);
     debugger;
