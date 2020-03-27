@@ -59,8 +59,10 @@ function SearchExampleStandard({ handleResultSelect }) {
     console.log(key[0].key);
   }
   useEffect(()=>{
+    if (none.data_link.type_link !== undefined) {
     search_data(none.data_link.type_link, values, none.data_link.type_id);
-  },[none.data_value!==undefined?none.data_value.value.fav:false])
+    }
+  },[display.data_value!==undefined?display.data_value.fav:false])
 
 
 
@@ -98,7 +100,7 @@ function SearchExampleStandard({ handleResultSelect }) {
           onSearchChange={_.debounce(handleSearchChange, 500, {
             isLoading: true
           })}
-          results={display.data_value.value}
+          results={display.data_value}
           className="search_new"
           placeholder="Что-то ищете..."
           resultRenderer={resultRenderer}

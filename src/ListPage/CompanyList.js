@@ -1,54 +1,71 @@
 import React, { useContext, useEffect } from "react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { NavLink, useRouteMatch, matchPath } from "react-router-dom";
+import {
+  NavLink,
+  useRouteMatch,
+  matchPath,
+  useHistory
+} from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import Community from "../addElement/community";
 import NotalCommunity from "../addElement/notal_community";
 import ResultCardAll from "../addElement/resultcardall";
 import { ShowContext } from "../context/show/showContext";
-
+import NoteList from "../addElement/NoteList";
+import { NoteState } from "../context/noteReducer/noteState";
 import { ReduceContext } from "../context/reducerContext";
-
+import CreateNote from "../addElement/createNote";
 //Страница компании
 function CompanyList() {
+ 
   const { url } = useRouteMatch();
-  const { none, number_all, Fetch_one_company } = useContext(ReduceContext);
-
-  const { hide, display, show } = useContext(ShowContext);
-
-  const match = matchPath({
-    path: "/id/:id",
-    exact: true,
-    strict: false
-  });
-  if (match) {
-    console.log(match.params.topicId);
-  }
-
+  const {
+    number_all,
+    Fetch_one_company,
+    none,
+    add_notal_card,
+    update_notal_card
+  } = useContext(ReduceContext);
+  const history = useHistory();
   useEffect(() => {
     Fetch_one_company(url.replace(/\D+/g, ""));
   }, [url]);
+
   function handleClick() {
     let numbers = url.replace(/\D+/g, "");
     number_all(numbers, url);
   }
+
   return (
     <div className="container_list">
       <div className="button_header">
-        <NavLink to={"/company"}>
-          <div className="purple">
-            <SvgLoader path="../../img/Arrow2.svg">
-              <SvgProxy selector="#cst" />
-            </SvgLoader>
-            Назад
-          </div>
-        </NavLink>
+        <div className="purple" onClick={() => history.goBack()}>
+          <SvgLoader path="../../img/Arrow2.svg">
+            <SvgProxy selector="#cst" />
+          </SvgLoader>
+          Назад
+        </div>
       </div>
+
       {none.one_company && (
         <div>
           <div className="header_unite">
             <div className="unit_left">
-              <div className="elipse_profiler">{none.one_company.name[0]}</div>
+              <div className="elipse_profiler">
+                {none.one_company.image !== null ? (
+                  <img
+                    src={
+                      "http://1690550.masgroup.web.hosting-test.net" +
+                      none.one_company.image
+                    }
+                    alt="Картинка"
+                  />
+                ) : (
+                  <div className="text_all_image">
+                    {none.one_company.name[0]}
+                  </div>
+                )}
+              </div>
               <div className="text_big_all name_profile">
                 {none.one_company.name}
               </div>
@@ -60,24 +77,53 @@ function CompanyList() {
               </NavLink>
             </div>
             <div className="unit_button_right">
-              <Button onClick={display.visible ? show : hide}>
-                Расчитать натальную карту
-              </Button>
+              {none.data_notal === undefined ? (
+                <Button
+                  onClick={() => {
+                    add_notal_card(none.one_company.type, none.one_company.id);
+                  }}
+                >
+                  Расчитать натальную карту
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    update_notal_card(none.data_notal.id);
+                  }}
+                >
+                  Перерасчитать натальную карту
+                </Button>
+              )}
             </div>
           </div>
           <div className="unit_grid">
-            <div className="unit_info_contact">
-              <div className="d_flex_center">
-                <div className="unit_info_left">Телефон:</div>
-                <div className="unit_info_right">
-                  {none.one_company.telephone}
-                </div>
+            {none.one_company.email !== null &&
+            none.one_company.telephone !== null ? (
+              <div className="unit_info_contact">
+                {none.one_company.telephone !== null ? (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">Телефон:</div>
+                    <div className="unit_info_right">
+                      {none.one_company.telephone}
+                    </div>
+                  </div>
+                ) : (
+                  null
+                )}
+
+                {none.one_company.email !== null ? (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">Email:</div>
+                    <div className="unit_info_right">
+                      {none.one_company.email}
+                    </div>
+                  </div>
+                ) : (
+                  null
+                )}
               </div>
-              <div className="d_flex_center">
-                <div className="unit_info_left">Email:</div>
-                <div className="unit_info_right">{none.one_company.email}</div>
-              </div>
-            </div>
+            ) : null}
+
             <div className="unit_info_adress">
               <div className="d_flex_center">
                 <div className="unit_info_left">Дата основания:</div>
@@ -85,30 +131,56 @@ function CompanyList() {
                   {none.one_company.birth_date}
                 </div>
               </div>
-              <div className="d_flex_center">
-                <div className="unit_info_left">Город:</div>
-                <div className="unit_info_right">{none.one_company.city}</div>
-              </div>
-            </div>
-            <div className="unit_info_company">
-              <div className="d_flex_center">
-                <div className="unit_info_left">Основатель:</div>
-                <div className="unit_info_right">
-                  {none.one_company.osnovatel}
+              {none.one_company.city && (
+                <div className="d_flex_center">
+                  <div className="unit_info_left">Город:</div>
+                  <div className="unit_info_right">{none.one_company.city}</div>
                 </div>
-              </div>
-              <div className="d_flex_center">
-                <div className="unit_info_left">Количестов сотрудников:</div>
-                <div className="unit_info_right">
-                  {none.one_company.cnt_workers} чел.
-                </div>
-              </div>
+              )}
             </div>
+            {none.one_company.osnovatel !== null &&
+            none.one_company.cnt_workers!==null ? (
+              <div className="unit_info_company">
+                {none.one_company.osnovatel && (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">Основатель:</div>
+                    <div className="unit_info_right">
+                      {none.one_company.osnovatel}
+                    </div>
+                  </div>
+                )}
+
+                {none.one_company.cnt_workers && (
+                  <div className="d_flex_center">
+                    <div className="unit_info_left">
+                      Количестов сотрудников:
+                    </div>
+                    <div className="unit_info_right">
+                      {none.one_company.cnt_workers} чел.
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
 
-          <ResultCardAll></ResultCardAll>
+          <ResultCardAll
+            Birthday={none.one_company.birth_date}
+            Time={none.one_company.birth_time}
+            NameNotal={"НАТАЛЬНАЯ КАРТА КОМПАНИИ"}
+          ></ResultCardAll>
           <Community></Community>
           <NotalCommunity></NotalCommunity>
+          <NoteState>
+            <CreateNote
+              ID={none.one_company.id}
+              Type={none.data_id !== undefined ? none.data_id.type_link : false}
+            ></CreateNote>
+            <NoteList
+              ID={none.one_company.id}
+              Type={none.data_id !== undefined ? none.data_id.type_link : false}
+            ></NoteList>
+          </NoteState>
         </div>
       )}
     </div>

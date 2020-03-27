@@ -7,7 +7,9 @@ import {
   SEARCH_ADD_FAVORITE,
   SEARCH_DELETE_FAVORITE,
   SEARCH_SORT,
-  SEARCH_SORT_FAVORITE
+  SEARCH_SORT_FAVORITE,
+  FETCH_FAVORITE_LIST,
+  FETCH_FAVORITE_ORDER
 } from "../types";
 const handlers = {
   //Показать элемент
@@ -48,7 +50,15 @@ const handlers = {
     ...state,
     data_value_favorite: payload
   }),
+  [FETCH_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
 
+  [FETCH_FAVORITE_ORDER]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
   DEFAULT: state => state
 };
 export const ShowReducer = (state, action) => {

@@ -1,47 +1,48 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import { EventContext } from "./eventContext";
 import { EventReducer } from "./eventReducer";
 import {
   ADD_EVENTS,
   FETCH_DATA_EVENTS,
   DELETE_EVENTS,
-  UPDATE_EVENTS,
+  UPDATE_EVENTS
 } from "../types";
 import Axios from "axios";
+import { useAlert } from "react-alert";
+import { useHistory } from "react-router";
+import { ReduceContext } from "../reducerContext";
 
 export const EventState = ({ children }) => {
   const initialState = {
     token: localStorage.getItem("users"),
-    data_events: null,
+    data_events: []
   };
   const [state, dispatch] = useReducer(EventReducer, initialState);
+  const alert = useAlert();
+  const history = useHistory();
+  const { isLoading, fetch_number } = useContext(ReduceContext);
 
-
-
-
-  const Fetch_data_events = async number => {
+  const Fetch_data_events = async (number, order_by) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
         number === undefined ? 1 : number
-      }`,
+      }&order_direction=${order_by}`,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
-
+    fetch_number();
     console.log(res.data);
     dispatch({
       type: FETCH_DATA_EVENTS,
       payload: res.data
     });
+    isLoading(true);
   };
-  
 
- 
- 
-  const delete_events = async id => {
+  const delete_events = async (id, id_pagination, order_by) => {
     await Axios.delete(
       "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
       {
@@ -50,69 +51,74 @@ export const EventState = ({ children }) => {
         }
       }
     );
-    Fetch_data_events();
+    isLoading(false);
 
+    Fetch_data_events(id_pagination, order_by);
+    fetch_number();
     dispatch({
       type: DELETE_EVENTS
     });
   };
-  
 
   const Update_events = async (values, id) => {
-    var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/events/${id}?name&description&event_date&event_time&timezone&latitude&longtitude&city`,
-      {
-        name: values.name,
-        description: values.description,
-        email: values.email,
-        telephone: values.telephone,
-        event_date: values.event_date,
-        event_time: values.event_time,
-        timezone: parseFloat(time[0]),
-        longtitude: parseFloat(values.longtitude),
-        latitude: parseFloat(values.latitude),
-        city: values.city
-      },
+    let formData = new FormData();
+
+    Object.keys(values).map(key => {
+      if (key === "upload_image") {
+        formData.append(key, values[key][0]);
+      } else {
+        formData.append(key, values[key]);
+      }
+    });
+
+    console.log(formData);
+    debugger;
+    const res = await Axios.post(
+      "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
+      formData,
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
+    alert.success("Событие обновленно");
     dispatch({
       type: UPDATE_EVENTS,
-      add_update_json: res.data
+      payload: res.data
     });
-    console.log(res);
   };
   const Add_events = async values => {
-    var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
+    let formData = new FormData();
+
+    Object.keys(values).map(key => {
+      if (key === "upload_image") {
+        formData.append(key, values[key][0]);
+      } else {
+        formData.append(key, values[key]);
+      }
+    });
+
+    console.log(formData);
+    debugger;
     const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/events?name&description&event_date&event_time&timezone&latitude&longtitude&city",
-      {
-        name: values.name,
-        description: values.description,
-        email: values.email,
-        telephone: values.telephone,
-        event_date: values.event_date,
-        event_time: values.event_time,
-        timezone: time[0],
-        longtitude: parseFloat(values.longtitude),
-        latitude: parseFloat(values.latitude),
-        city: values.city
-      },
+      "http://1690550.masgroup.web.hosting-test.net/api/events",
+      formData,
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
+    alert.success("Событие созданно");
+    fetch_number();
+    history.goBack();
     dispatch({
       type: ADD_EVENTS,
-      add_events_json: res.data
+      payload: res.data
     });
-    console.log(res);
   };
 
   return (

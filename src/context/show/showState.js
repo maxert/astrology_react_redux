@@ -8,7 +8,9 @@ import {
   SEARCH_ADD_FAVORITE,
   SEARCH_DELETE_FAVORITE,
   SEARCH_SORT,
-  SEARCH_SORT_FAVORITE
+  SEARCH_SORT_FAVORITE,
+  FETCH_FAVORITE_LIST,
+  FETCH_FAVORITE_ORDER
 } from "../types";
 import { ShowContext } from "./showContext";
 import { ShowReducer } from "./showReducer";
@@ -34,9 +36,9 @@ export const ShowState = ({ children }) => {
     dispatch({ type: HIDE_ELEMENT, visible: false });
   };
   const search_sort_favorite = (bool, data) => {
-    const copy = Object.assign([], data);
+ 
     if (bool) { 
-      const payload = copy.filter(i => i.isFav !== false);
+      const payload = data.filter(i => i.isFav !== false);
       dispatch({ type: SEARCH_SORT_FAVORITE, payload });
     } else {
       dispatch({ type: SEARCH_SORT_FAVORITE, payload: data });
@@ -53,6 +55,39 @@ export const ShowState = ({ children }) => {
   const search_bool = bool => {
     dispatch({ type: SEARCH_BOOL, payload: bool });
   };
+
+
+
+  
+  const Fetch_favorite_list = async obj_type => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("users")}`
+        }
+      }
+    );
+    console.log(res.data);
+    debugger;
+    dispatch({
+      type: FETCH_FAVORITE_LIST,
+      payload: res.data
+    });
+
+  };
+
+
+  const Fetch_favorite_order = (bool, data) => {
+    const payload = bool
+      ? data.sort((a, b) => a.firstname.localeCompare(b.firstname))
+      : data.sort((a, b) => b.firstname.localeCompare(a.firstname));
+    console.log(payload);
+    debugger;
+    dispatch({ type: FETCH_FAVORITE_ORDER, payload });
+  };
+
+
   const search_add_favorite = async (id, type, data, fav) => {
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites`,
@@ -108,9 +143,7 @@ export const ShowState = ({ children }) => {
   };
 
   const search_data = async (type, value, url) => {
-    if (value.length === 0 || value === " ") {
-      value = "a";
-    }
+   
 
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
@@ -138,6 +171,7 @@ export const ShowState = ({ children }) => {
       };
     });
     payload.sort((a, b) =>  a.firstname!==undefined?a.firstname.localeCompare(b.firstname):a.name.localeCompare(b.name));
+    console.log(payload)
     dispatch({
       type: SEARCH,
       payload
@@ -156,6 +190,8 @@ export const ShowState = ({ children }) => {
         search_add_favorite,
         search_sort,
         search_sort_favorite,
+        Fetch_favorite_order,
+        Fetch_favorite_list,
         display: state
       }}
     >

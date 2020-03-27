@@ -15,7 +15,7 @@ import { useHistory } from "react-router";
 export const PersonState = ({ children }) => {
   const initialState = {
     token: localStorage.getItem("users"),
-    data_perons: []
+    data_persons: []
   };
   const [state, dispatch] = useReducer(PersonsReducer, initialState);
   const { isLoading } = useContext(ReduceContext);

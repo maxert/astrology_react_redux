@@ -36,7 +36,7 @@ function CompanyAdd() {
     if (none.geolocation) {
       setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
     }
-  }, [none.geolocation ? none.geolocation.city : false]);
+  }, [localStorage.getItem("city")]);
   const alert = useAlert();
 
   const d = new Date();
@@ -66,7 +66,7 @@ function CompanyAdd() {
       "YYYY-MM-DD"
     );
     debugger;
-    values["city"] = none.geolocation !== undefined ? none.geolocation.city : null;
+    values["city"] = none.geolocation !== undefined ? none.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
@@ -147,6 +147,7 @@ function CompanyAdd() {
                     getInputRef={register({
                       required: false
                     })}
+                    
                   />
                   {errors.telephone && errors.telephone.message}
                 </Form.Field>

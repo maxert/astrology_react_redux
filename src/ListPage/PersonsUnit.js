@@ -135,6 +135,7 @@ function PersonsUnit() {
           <ResultCardAll
             Birthday={none.one_persons.birth_date}
             Time={none.one_persons.birth_time}
+            NameNotal={"НАТАЛЬНАЯ КАРТА ПЕРСОНЫ"}
           ></ResultCardAll>
           <Community></Community>
           <NotalCommunity></NotalCommunity>

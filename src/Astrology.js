@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Switch, Route, NavLink, Redirect, useRouteMatch } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  NavLink,
+  Redirect,
+  useRouteMatch
+} from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
 import Company from "./ListPage/Company";
@@ -14,19 +20,28 @@ import { ShowState } from "./context/show/showState";
 import NotalHome from "./ListPage/NotalHome";
 import { PersonsContext } from "./context/personReducer/personContext";
 import { CompanyContext } from "./context/companyReducer/companyContext";
+import { EventContext } from "./context/eventReducer/eventContext";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
-  const { none, fetch_number} = useContext(ReduceContext);
-  const {state_persons} = useContext(PersonsContext);
-  const {state_company} = useContext(CompanyContext);
-
+  const { none, fetch_number } = useContext(ReduceContext);
+  const { state_persons } = useContext(PersonsContext);
+  const { state_company } = useContext(CompanyContext);
+  const { state_event } = useContext(EventContext);
   useEffect(() => {
-    debugger
-    fetch_number();
-    
-  }, [state_persons.data_persons!==undefined?state_persons.data_persons.count:false,state_company.data_company!==undefined?state_company.data_company.count:false]);
 
+    fetch_number();
+  }, [
+    state_persons.data_persons !== undefined
+      ? state_persons.data_persons.count
+      : false,
+    state_company.data_company !== undefined
+      ? state_company.data_company.count
+      : false,
+    state_event.data_events !== undefined
+      ? state_event.data_events.count
+      : false
+  ]);
 
   return (
     <div className="container_home">

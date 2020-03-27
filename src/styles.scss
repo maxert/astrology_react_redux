@@ -466,8 +466,8 @@ i.icon.search:before {
   display: grid;
   grid-gap: 28px;
 }
-#__react-alert__{
-  z-index: 99999999999!important;
+#__react-alert__ {
+  z-index: 99999999999 !important;
   position: fixed;
 }
 .create_notal_card {
@@ -476,7 +476,7 @@ i.icon.search:before {
 
   box-shadow: 0px 7px 64px rgba(31, 34, 46, 0.07);
 }
-.container_persons .ui.dimmer{
+.container_persons .ui.dimmer {
   position: relative;
   min-height: 438px;
 }
@@ -598,8 +598,26 @@ i.icon.search:before {
   box-shadow: 0px 7px 64px rgba(31, 34, 46, 0.07);
   border-radius: 16px;
 }
+.container_favorites {
+  .container_persons_head {
+    .ui.selection.dropdown {
+      padding-right: 30px;
+    }
+    .ui.selection.dropdown > .dropdown.icon {
+      right: 10px;
+    }
+    .ui.selection.dropdown > .text {
+      z-index: 1;
+      border: none;
+      font-weight: 600;
+      background: transparent;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
 .text_planetary {
-  max-width: 417px;
+  max-width: 353px;
 }
 .planetary_position .text_planetary {
   span {
@@ -1750,15 +1768,18 @@ body ::-webkit-scrollbar-thumb {
 }
 .none_aynamsha {
   > div {
-    transition: 0.5s all;
+    // transition: 0.5s all;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
     position: absolute;
     border: 1px solid #e5e7fa;
     border-radius: 400px;
     > div {
       position: relative;
-      top: -10px;
+      /* top: -10px; */
+      right: -10px;
+      transform: rotate(90deg);
     }
   }
   .pl {
@@ -2904,7 +2925,7 @@ figure img {
     box-sizing: border-box;
     border-radius: 4px 4px 4px 4px;
   }
-  
+
   .search_container_home .ui.input > input {
     background: #f8f7fb;
   }

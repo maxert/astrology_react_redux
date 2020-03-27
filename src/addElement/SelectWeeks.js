@@ -10,6 +10,6 @@ const countryOptions = [
 ]
 
 export const SelectWeeks = ({SelectSubmite}) => (
-  <Select placeholder='Неделя' name="type" options={countryOptions} onChange={(event,data)=>SelectSubmite(event,data)}  />
+  <Select placeholder='Неделя' name="type" defaultValue={"hour"} options={countryOptions} onChange={(event,data)=>SelectSubmite(event,data)}  />
 )
 

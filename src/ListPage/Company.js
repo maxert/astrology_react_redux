@@ -12,7 +12,6 @@ import PaginationExamplePagination from "../addElement/pagination";
 import { ShowState } from "../context/show/showState";
 import { ShowContext } from "../context/show/showContext";
 import { CompanyContext } from "../context/companyReducer/companyContext";
-import { CompanyState } from "../context/companyReducer/companyState";
 import SearchAll from "./SearchAll";
 
 //Страница списка компаний
@@ -64,8 +63,8 @@ function CompanyHome() {
         <Search />
       </div>
       <h2>Копании</h2>
-      {display.isSearch == true ? (
-        <SearchAll></SearchAll>
+      {display.isSearch === true ? (
+        <SearchAll NameButton={"Создать новую компанию"}></SearchAll>
       ) : (
         <div className="container_persons">
           <div className="container_persons_head">
@@ -139,7 +138,7 @@ function CompanyHome() {
                 </Dimmer>
               ) : (
                 <div className="persons_list_grid">
-                  {state_company.data_company !== undefined &&
+                  {state_company.data_company.companies !== undefined &&
                     state_company.data_company.companies.map(company => (
                       <div className="persons_items" key={company.id}>
                         <div className="persons_items_head d_flex_center">
@@ -209,7 +208,7 @@ function CompanyHome() {
                           </div>
                         </div>
 
-                        {company.city !== "null" ? (
+                        {company.city !== null ? (
                           <div className="d_flex_center adress_persons">
                             <div className="persons_text_left">Город:</div>
                             <div className="persons_text_right">
@@ -313,7 +312,7 @@ function CompanyHome() {
                         </div>
                       </div>
 
-                      {favorite.city !== "null" ? (
+                      {favorite.city !== null ? (
                         <div className="d_flex_center adress_persons">
                           <div className="persons_text_left">Город:</div>
                           <div className="persons_text_right">
@@ -347,151 +346,158 @@ function CompanyHome() {
             <div className="persons_list_grid persons_list_column">
               <div className="header_persons_list">
                 <div className="header_persons_list_name">Имя</div>
-                <div className="header_persons_list_date">Дата рождения</div>
+                <div className="header_persons_list_date">Дата основания</div>
                 <div className="header_persons_list_city">Город</div>
               </div>
 
               {!isFavorite ? (
-                <div className="persons_list_column">
-                  {state_company.data_company !== undefined &&
-                    state_company.data_company.companies.map((company, i) => (
-                      <div className="persons_items" key={i}>
-                        <div className="persons_items_head ">
-                          <div className="container_info_persons d_flex_center">
-                            <div
-                              className={
-                                company.fav > 0
-                                  ? "icon_image  active"
-                                  : "icon_image"
-                              }
-                            >
-                              <div className="hidden_all">
-                                {company.image !== null ? (
-                                  <img
-                                    src={
-                                      "http://1690550.masgroup.web.hosting-test.net" +
-                                      company.image
-                                    }
-                                    alt="Картинка"
-                                  />
-                                ) : (
-                                  <div className="text_persons">
-                                    {company.name[0]}
-                                  </div>
-                                )}
-                              </div>
-                              <SvgLoader
-                                className="favorite_svg"
-                                path="../../img/favorites_21.svg"
+                none.isLoading === false ? (
+                  <Dimmer className="invert_none" active inverted>
+                    <Loader size="massive">Loading</Loader>
+                  </Dimmer>
+                ) : (
+                  <div className="persons_list_column">
+                    {state_company.data_company &&
+                      state_company.data_company.companies.map((company, i) => (
+                        <div className="persons_items" key={i}>
+                          <div className="persons_items_head ">
+                            <div className="container_info_persons d_flex_center">
+                              <div
+                                className={
+                                  company.fav > 0
+                                    ? "icon_image  active"
+                                    : "icon_image"
+                                }
                               >
-                                <SvgProxy selector="#co" />
-                              </SvgLoader>
-                            </div>
-                            <div className="container_info_persons_column">
-                              <div className="container_info_persons_name">
-                                {company.name}
-                              </div>
-                              <NavLink
-                                className="text_link d_flex_center"
-                                to={`${url}/id/${company.id}`}
-                              >
-                                Перейти{" "}
-                                <SvgLoader path="../../img/Arrow_21.svg">
+                                <div className="hidden_all">
+                                  {company.image !== null ? (
+                                    <img
+                                      src={
+                                        "http://1690550.masgroup.web.hosting-test.net" +
+                                        company.image
+                                      }
+                                      alt="Картинка"
+                                    />
+                                  ) : (
+                                    <div className="text_persons">
+                                      {company.name[0]}
+                                    </div>
+                                  )}
+                                </div>
+                                <SvgLoader
+                                  className="favorite_svg"
+                                  path="../../img/favorites_21.svg"
+                                >
                                   <SvgProxy selector="#co" />
                                 </SvgLoader>
-                              </NavLink>
+                              </div>
+                              <div className="container_info_persons_column">
+                                <div className="container_info_persons_name">
+                                  {company.name}
+                                </div>
+                                <NavLink
+                                  className="text_link d_flex_center"
+                                  to={`${url}/id/${company.id}`}
+                                >
+                                  Перейти{" "}
+                                  <SvgLoader path="../../img/Arrow_21.svg">
+                                    <SvgProxy selector="#co" />
+                                  </SvgLoader>
+                                </NavLink>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="d_flex_center date_persons">
-                          <div className="persons_text_right">
-                            {company.birth_date}
-                          </div>
-                        </div>
-                        <div className="d_flex_center adress_persons">
-                          {company.city !== "null" ? (
+                          <div className="d_flex_center date_persons">
                             <div className="persons_text_right">
-                              {company.city}
+                              {company.birth_date}
+                            </div>
+                          </div>
+                          <div className="d_flex_center adress_persons">
+                            {company.city !== null ? (
+                              <div className="persons_text_right">
+                                {company.city}
+                              </div>
+                            ) : (
+                              <div className="persons_text_right"></div>
+                            )}
+                          </div>
+
+                          {company.fav > 0 ? (
+                            <div
+                              className="d_flex_center favorite_persons"
+                              onClick={() =>
+                                delete_favorite(
+                                  company.id,
+                                  none.data_link_favorite
+                                    ? none.data_link_favorite.type_id
+                                    : "person",
+                                  none.pagination !== 1 ? none.pagination : 1,
+                                  none.sorted
+                                )
+                              }
+                            >
+                              <SvgLoader path="../../img/favorites_21.svg">
+                                <SvgProxy selector="#co" />
+                              </SvgLoader>
+                              <div className="persons_text_right">
+                                В избранных
+                              </div>
                             </div>
                           ) : (
-                            <div className="persons_text_right"></div>
+                            <div
+                              className="d_flex_center favorite_persons"
+                              onClick={() =>
+                                Add_favorite(
+                                  none.data_link_favorite
+                                    ? none.data_link_favorite.type_id
+                                    : "person",
+                                  company.id,
+                                  none.pagination !== 1 ? none.pagination : 1,
+                                  none.sorted
+                                )
+                              }
+                            >
+                              <SvgLoader path="../../img/favorites.svg">
+                                <SvgProxy selector="#co" />
+                              </SvgLoader>
+                              <div className="persons_text_right">
+                                В избранные
+                              </div>
+                            </div>
                           )}
-                        </div>
 
-                        {company.fav > 0 ? (
-                          <div
-                            className="d_flex_center favorite_persons"
-                            onClick={() =>
-                              delete_favorite(
-                                company.id,
-                                none.data_link_favorite
-                                  ? none.data_link_favorite.type_id
-                                  : "person",
-                                none.pagination !== 1 ? none.pagination : 1,
-                                none.sorted
-                              )
-                            }
+                          <NavLink
+                            to={`/person/${company.id}/edit`}
+                            className="d_flex_center edit_persons"
                           >
-                            <SvgLoader path="../../img/favorites_21.svg">
+                            <SvgLoader path="../../img/Edit1.svg">
                               <SvgProxy selector="#co" />
                             </SvgLoader>
                             <div className="persons_text_right">
-                              В избранных
+                              Редактировать
                             </div>
-                          </div>
-                        ) : (
-                          <div
-                            className="d_flex_center favorite_persons"
-                            onClick={() =>
-                              Add_favorite(
-                                none.data_link_favorite
-                                  ? none.data_link_favorite.type_id
-                                  : "person",
-                                company.id,
-                                none.pagination !== 1 ? none.pagination : 1,
-                                none.sorted
-                              )
-                            }
-                          >
-                            <SvgLoader path="../../img/favorites.svg">
+                          </NavLink>
+                          <div className="d_flex_center delete_persons">
+                            <SvgLoader path="../../img/Delete1.svg">
                               <SvgProxy selector="#co" />
                             </SvgLoader>
-                            <div className="persons_text_right">
-                              В избранные
+                            <div
+                              className="persons_text_right"
+                              onClick={() =>
+                                delete_company(
+                                  company.id,
+                                  none.pagination !== 1 ? none.pagination : 1,
+                                  none.sorted
+                                )
+                              }
+                            >
+                              Удалить
                             </div>
                           </div>
-                        )}
-
-                        <NavLink
-                          to={`/person/${company.id}/edit`}
-                          className="d_flex_center edit_persons"
-                        >
-                          <SvgLoader path="../../img/Edit1.svg">
-                            <SvgProxy selector="#co" />
-                          </SvgLoader>
-                          <div className="persons_text_right">
-                            Редактировать
-                          </div>
-                        </NavLink>
-                        <div className="d_flex_center delete_persons">
-                          <SvgLoader path="../../img/Delete1.svg">
-                            <SvgProxy selector="#co" />
-                          </SvgLoader>
-                          <div
-                            className="persons_text_right"
-                            onClick={() =>
-                              delete_company(
-                                none.data_link_favorite.type_link,
-                                company.id
-                              )
-                            }
-                          >
-                            Удалить
-                          </div>
                         </div>
-                      </div>
-                    ))}
-                </div>
+                      ))}
+                  </div>
+                )
               ) : (
                 <div className="persons_list_column">
                   {none.data_favorite !== null &&
@@ -613,7 +619,7 @@ function CompanyHome() {
               )}
             </div>
           )}
-          {isFavorite === false ? (
+          {isFavorite === false&&state_company.data_company.count!==0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={
@@ -645,11 +651,6 @@ function Company() {
         </ShowState>
       </Route>
       <Route exact path={`${path}/id/:id?`}>
-        <ShowState>
-          <CompanyList></CompanyList>
-        </ShowState>
-      </Route>
-      <Route strict path={`${path}/link/:id`}>
         <ShowState>
           <CompanyList></CompanyList>
         </ShowState>

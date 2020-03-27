@@ -27,8 +27,6 @@ function PersonsEdit() {
 
   const alert = useAlert();
 
-  const d = new Date();
-
   function onSubmit(values) {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
@@ -40,12 +38,14 @@ function PersonsEdit() {
     debugger;
   }
   useEffect(() => {
-    if (none.geolocation) {
+    if (none.geolocation !== undefined) {
       setValue("longtitude", none.geolocation.location.lng);
       setValue("latitude", none.geolocation.location.lat);
       setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
     }
   }, [none.geolocation ? none.geolocation.city : false]);
+
+  
   useEffect(() => {
     Fetch_one_persons(url.replace(/\D+/g, ""));
   }, []);
@@ -72,15 +72,7 @@ function PersonsEdit() {
     }
   }, [errors]);
 
-  // const onSubmit = values => {
-  //   console.log(values);
-  //   values["timezone"] = none.option_value;
-  //   const birth_date = values.birth_date.split(".");
-  //   let new_data= birth_date[2]+"-"+birth_date[1]+"-"+birth_date[0];
-  //   values["birth_date"] = new_data;
-  //   Add_persons(values);
-  //   debugger;
-  // };
+
   return (
     <div className="container_add">
       <div className="button_header">
@@ -176,6 +168,7 @@ function PersonsEdit() {
                       getInputRef={register({
                         required: false
                       })}
+                    
                     />
                     {errors.telephone && errors.telephone.message}
                   </Form.Field>

@@ -4,7 +4,7 @@ import SelectLocation from "../addElement/SelectLocation";
 import { DatePicker } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
-import { useHistory, Router } from "react-router";
+import { useHistory } from "react-router";
 import Cleave from "cleave.js/react";
 import SearchCity from "../addElement/searchCity";
 import { usePosition } from "use-position";
@@ -18,7 +18,7 @@ function InputExampleIconChild() {
   const history = useHistory();
 
   const SaveData = JSON.parse(localStorage.getItem("save_natal"));
-  const { none, SelectLocationNew } = useContext(ReduceContext);
+  const { none, SelectLocationNew, createNotals } = useContext(ReduceContext);
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
       date: moment(Date.now()).format("DD.MM.YYYY"),
@@ -26,34 +26,35 @@ function InputExampleIconChild() {
     },
     reValidateMode: onSubmit
   });
-  const { latitude, longitude, error } = usePosition(false, {
+  const { latitude, longitude } = usePosition(false, {
     enableHighAccuracy: true
   });
   const alert = useAlert();
 
-  const d = new Date();
-
   useEffect(() => {
     setData(SaveData);
-    setValue("checkbox",SaveData !== null ? SaveData.letnee : false);
     SelectLocationNew(SaveData !== null ? SaveData.timezone : 0);
+    setValue("checkboxing", SaveData !== null ? SaveData.checkboxing : false);
+    debugger
   }, []);
 
   function onSubmit(values) {
     debugger;
     values["date"] = values.date;
     values["timezone"] = none.option_value;
-    values["letneee"] = values.checkbox===true?1:0;
-    console.log(values);
+    values["letnee"] = values.checkboxing === true ? 1 : 0;
+
     localStorage.setItem("save_natal", JSON.stringify(values));
+    console.log(values);
     history.push(`/home_card`);
     alert.success("Натальная карта созданна");
   }
   useEffect(() => {
-    if (none.geolocation !== undefined) {
+    if (none.geolocation) {
       setValue("lng", none.geolocation.location.lng);
       setValue("lat", none.geolocation.location.lat);
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+      setValue("checkboxing", SaveData===null? SaveData.checkboxing:none.geolocation.letnee === 0 ? true : false);
+      debugger
     }
   }, [localStorage.getItem("city")]);
 
@@ -149,6 +150,7 @@ function InputExampleIconChild() {
           <SearchCity
             type="text"
             name="city"
+         
             ValueData={
               localStorage.getItem("city") ? localStorage.getItem("city") : ""
             }
@@ -163,11 +165,11 @@ function InputExampleIconChild() {
           ></SelectLocation>
         </div>
         <Controller
-          name="checkbox"
+          name="checkboxing"
           rules={{
             required: false
           }}
-          defaultValue={SaveData !== null ? SaveData.checkbox : false}
+          defaultValue={SaveData!==null?SaveData.checkboxing:false}
           as={
             <AntCheckbox label="Летнее время" className="time_location">
               Летнее время
@@ -175,7 +177,6 @@ function InputExampleIconChild() {
           }
           control={control}
         ></Controller>
-
       </div>
       <div className="grid_column grid_small">
         <div className="input_all">

@@ -1,45 +1,90 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useRouteMatch } from "react-router-dom";
-import { SvgLoader, SvgProxy } from "react-svgmt";
-import { Form, Button, Input, Icon, Checkbox } from "semantic-ui-react";
-import SelectLocation from "../addElement/SelectLocation";
-import { useForm } from "react-hook-form";
-import { ReduceContext } from "../context/reducerContext";
-import { EventContext } from "../context/eventReducer/eventContext";
+import React, { useState, useContext, useEffect } from "react";
+import { Icon, Button, Form } from "semantic-ui-react";
 import { DatePicker } from "antd";
+import { SvgLoader, SvgProxy } from "react-svgmt";
+import moment from "moment";
+import { useForm } from "react-hook-form";
+import { useAlert } from "react-alert";
+import { ReduceContext } from "../context/reducerContext";
+import SelectLocation from "../addElement/SelectLocation";
+import { Controller } from "react-hook-form";
+import Cleave from "cleave.js/react";
+import SearchCity from "../addElement/searchCity";
+import { PersonsContext } from "../context/personReducer/personContext";
+import { useHistory, useRouteMatch, NavLink } from "react-router-dom";
 import NumberFormat from "react-number-format";
+import { Checkbox as AntCheckbox } from "antd";
+import { EventContext } from "../context/eventReducer/eventContext";
 
 //Страница Добавления Событий
 
 function EventsEdit() {
-  const { handleSubmit, register, errors } = useForm();
+  const alert = useAlert();
+  const { handleSubmit, register, errors, control, setValue } = useForm({
+    reValidateMode: onSubmit
+  });
   const { url } = useRouteMatch();
   const { none, Fetch_one_events } = useContext(ReduceContext);
-  const [count, setCount] = useState("");
   const { Update_events } = useContext(EventContext);
   useEffect(() => {
     Fetch_one_events(url.replace(/\D+/g, ""));
   }, []);
 
-  const onSubmit = values => {
+
+  function onSubmit(values) {
+    values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
+      "YYYY-MM-DD"
+    );
+    values["city"] = none.geolocation ? none.geolocation.city : "";
     values["timezone"] = none.option_value;
-    Update_events(values, none.one_event.id);
-  };
+    values["letnee"] = values.checkbox === true ? 0 : 1;
+    Update_events(values, none.data_id.type_id);
+    debugger;
+  }
+  const history = useHistory();
+  useEffect(() => {
+    if (errors.birth_date !== undefined) {
+      alert.error("Введите корректно дату");
+    }
+    if (errors.event_time !== undefined) {
+      alert.error("Введите корректно время");
+    }
+
+    if (errors.lng !== undefined) {
+      alert.error("Введите долготу");
+    }
+    if (errors.lat !== undefined) {
+      alert.error("Введите широту");
+    }
+    if (errors.name !== undefined) {
+      alert.error("Введите название события");
+    }
+    if (errors.email !== undefined) {
+      alert.error("Введите корректно email");
+    }
+  }, [errors]);
+  useEffect(() => {
+    if (none.geolocation) {
+      setValue("longtitude", none.geolocation.location.lng);
+      setValue("latitude", none.geolocation.location.lat);
+      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    }
+  }, [none.geolocation ? none.geolocation.city : false]);
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to={`/event/id/${none.one_event && none.one_event.id}`}>
+        <div onClick={() => history.goBack()}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
           </div>
-        </NavLink>
+        </div>
       </div>
       {none.one_event && (
         <div className="container_list container_create">
-          <h2>Создание события</h2>
+          <h2>Редактирование события</h2>
           <Form
             className="create_persons create_events"
             onSubmit={handleSubmit(onSubmit)}
@@ -53,8 +98,8 @@ function EventsEdit() {
                     <input
                       type="text"
                       name="name"
-                      defaultValue={none.one_event.name}
                       className={"" + (errors.name ? "active" : "")}
+                      defaultValue={none.one_event.name}
                       ref={register({
                         required: true,
                         pattern: /^([а-яё]+|[a-z]+){3,16}$/i
@@ -72,8 +117,8 @@ function EventsEdit() {
                     defaultValue={none.one_event.description}
                     className={"" + (errors.description ? "active" : "")}
                     ref={register({
-                      required: true,
-                      pattern: /^([а-яё]+|[a-z]+){1,16}$/i
+                      required: false
+                      // pattern: /^([а-яё]+|[a-z]+){1,16}$/i
                     })}
                   />
                   {errors.description && errors.description.message}
@@ -82,131 +127,150 @@ function EventsEdit() {
                 <Button>Сохранить</Button>
               </div>
               <div className="personal_date all_box">
-                <div className="text_all">Место и время основания события</div>
-                <div className="grid_column center_grid">
-                  <div className="input_all">
-                    <Form.Field>
-                      <Input placeholder="дд . мм . гггг">
-                        <label>Дата</label>
-                        <Icon className="icon_date">
-                          <DatePicker
-                            format={"DD.MM.YYYY"}
-                            onChange={(data, dataString) =>
-                              setCount(dataString)
-                            }
-                          ></DatePicker>
-                        </Icon>
-                        <NumberFormat
-                          type="text"
-                          name="birth_date"
-                          placeholder="дд . мм . гггг"
-                          mask="_"
-                          value={
-                            count === "" ? none.one_event.event_date : count
+                <div className="text_all">Место и время рождения</div>
+                <div className="grid_forms">
+                  <div className="grid_column">
+                    <div className="input_all">
+                      <label>Дата</label>
+                      <Icon className="icon_date">
+                        <DatePicker
+                          format={"DD.MM.YYYY"}
+                          onChange={(data, dataString) =>
+                            setValue("event_date", dataString)
                           }
-                          format="##.##.####"
-                          className={
-                            "" + (errors.birth_date ? "date active" : "")
-                          }
-                          getInputRef={register({
-                            required: true,
-                            pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                          })}
-                        />
-                        {errors.event_date && errors.event_date.message}
-                      </Input>
-                    </Form.Field>
+                        ></DatePicker>
+                      </Icon>
+
+                      <Controller
+                        as={
+                          <Cleave
+                            options={{
+                              date: true,
+                              delimiter: ".",
+                              datePattern: ["d", "m", "Y"]
+                            }}
+                          />
+                        }
+                        type="text"
+                        name="event_date"
+                        placeholder="дд . мм . гггг"
+                        rules={{
+                          required: true,
+                          pattern: /^([0-2][0-9]|(3)[0-1])(.)(((0)[0-9])|((1)[0-2]))(.)\d{4}$/i
+                        }}
+                        className={
+                          "" + (errors.event_date ? "date active" : "")
+                        }
+                        control={control}
+                        defaultValue={none.one_event.event_date}
+                      />
+
+                      {errors.event_date && errors.event_date.message}
+                    </div>
+                    <div className="input_all">
+                      <label>Время</label>
+                      <Controller
+                        as={
+                          <Cleave
+                            options={{
+                              time: true,
+                              timePattern: ["h", "m"]
+                            }}
+                          />
+                        }
+                        control={control}
+                        type="text"
+                        name="event_time"
+                        placeholder="21:34"
+                        defaultValue={moment(
+                          none.one_event.event_time,
+                          "HH:mm:ss"
+                        ).format("HH:mm")}
+                        className={"" + (errors.event_time ? "active" : "")}
+                        rules={{
+                          required: true,
+                          pattern: /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/i
+                        }}
+                      />
+
+                      {errors.event_time && errors.event_time.message}
+                    </div>
                   </div>
-                  <Form.Field>
-                    <label>Время рождения</label>
-                    <NumberFormat
-                      type="text"
-                      name="event_time"
-                      mask="_"
-                      format="##:##"
-                      placeholder="пример: 21:34"
-                      defaultValue={none.one_event.event_time}
-                      className={"" + (errors.event_time ? "active" : "")}
-                      getInputRef={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.event_time && errors.event_time.message}
-                  </Form.Field>
-                </div>
-                <div className="grid_column center_grid location_input_top">
-                  <Form.Field>
-                    <label>Место рождения</label>
-                    <input
-                      type="text"
-                      name="city"
-                      defaultValue={none.one_event.city}
-                      placeholder="г. Киев"
-                      className={"" + (errors.city ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.city && errors.city.message}
-                  </Form.Field>
-                  <div className="input_all location_input">
-                    <div className="text_localisation">Часовой пояс:</div>
-                    <SelectLocation></SelectLocation>
+                  <div className="grid_column center_grid location_input_top">
+                    <div className="input_all">
+                      <label>Место рождения</label>
+                      <SearchCity
+                        type="text"
+                        name="city"
+                        ValueData={
+                          none.one_event.city !== null
+                            ? none.one_event.city
+                            : ""
+                        }
+                        className={"" + (errors.city ? "active" : "")}
+                      />
+                    </div>
+                    <div className="input_all location_input">
+                      <div className="text_localisation">Часовой пояс:</div>
+                      <SelectLocation
+                        ValueOptions={
+                          Number(none.option_value) !== 0 ? Number(none.option_value) : none.one_event.timezone
+                        }
+                      ></SelectLocation>
+                    </div>
                   </div>
-                </div>
-                <Checkbox
-                  label="Летнее время"
-                  className="time_location"
-                ></Checkbox>
-                <div className="grid_column grid_small">
-                  <Form.Field>
-                    <label>Долгота:</label>
-                    <input
-                      type="text"
-                      name="longtitude"
-                      placeholder="36.6666"
-                      defaultValue={none.one_event.longtitude}
-                      className={"" + (errors.longtitude ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.longtitude && errors.longtitude.message}
-                  </Form.Field>
-                  <Form.Field>
-                    <label>Широта:</label>
-                    <input
-                      type="text"
-                      name="latitude"
-                      placeholder="49.6666"
-                      defaultValue={none.one_event.latitude}
-                      className={"" + (errors.latitude ? "active" : "")}
-                      ref={register({
-                        required: true,
-                        pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
-                      })}
-                    />
-                    {errors.latitude && errors.latitude.message}
-                  </Form.Field>
+                 
+                  <Controller
+                    name="checkbox"
+                    rules={{
+                      required: false
+                    }}
+                    defaultValue={none.one_event.letnee === 0 ? true : false}
+                    as={
+                      <AntCheckbox
+                        label="Летнее время"
+                        className="time_location"
+                      >
+                        Летнее время
+                      </AntCheckbox>
+                    }
+                    control={control}
+                  ></Controller>
+
+                  <div className="grid_column grid_small">
+                    <div className="input_all">
+                      <label>Долгота:</label>
+                      <input
+                        type="text"
+                        name="longtitude"
+                        defaultValue={none.one_event.longtitude}
+                        placeholder="36.6666"
+                        className={"" + (errors.longtitude ? "active" : "")}
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.longtitude && errors.longtitude.message}
+                    </div>
+                    <div className="input_all">
+                      <label>Широта:</label>
+                      <input
+                        type="text"
+                        name="latitude"
+                        placeholder="49.6666"
+                        className={"" + (errors.latitude ? "active" : "")}
+                        defaultValue={none.one_event.latitude}
+                        ref={register({
+                          required: true,
+                          pattern: /[0-9a-zA-Z!@#$%^&*]{0,}/i
+                        })}
+                      />
+                      {errors.latitude && errors.latitude.message}
+                    </div>
+                  </div>
                 </div>
                 <Button>Сохранить</Button>
-              </div>
-            </div>
-            <div className="create_persons_right">
-              <div className="block_image">
-                <div className="image_contaner_perons">
-                  <img src="../../img/Photo 1.svg" alt=" " />
-                </div>
-                <div className="button_add">
-                  <SvgLoader path="../../img/Photosm.svg">
-                    <SvgProxy selector="#cst" />
-                  </SvgLoader>{" "}
-                  Добавить аватар
-                </div>
-                <input type="file" name="file" />
               </div>
             </div>
           </Form>

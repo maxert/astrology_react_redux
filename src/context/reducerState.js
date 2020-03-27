@@ -85,8 +85,8 @@ export const ReducerState = ({ children }) => {
       payload: url
     });
   };
-  const LogIn = values => {
-    Axios.post("http://1690550.masgroup.web.hosting-test.net/api/login", {
+  const LogIn = async values => {
+    await Axios.post("http://1690550.masgroup.web.hosting-test.net/api/login", {
       email: values.email,
       password: values.password
     })
@@ -98,10 +98,15 @@ export const ReducerState = ({ children }) => {
         });
       })
       .catch(error => {
-        alert.error(error.response);
+        if (error.response.status === 401) {
+          LogOut();
+          alert.error("Некорректно введенны данные.");
+        } else {
+          console.log(error);
+        }
       });
   };
-  const SelectLocationNew = async value => {
+  const SelectLocationNew = value => {
     dispatch({
       type: SELECT_LOCATION,
       payload: value
@@ -109,7 +114,6 @@ export const ReducerState = ({ children }) => {
   };
 
   const Fetch_data_favorite = async obj_type => {
-
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
       {
@@ -119,15 +123,14 @@ export const ReducerState = ({ children }) => {
       }
     );
     console.log(res.data);
-    debugger;
+
     dispatch({
       type: FETCH_DATA_FAVORITE,
       payload: res.data
     });
-
   };
 
-  const Order_by = async order_by => {
+  const Order_by = order_by => {
     dispatch({
       type: SORTED,
       payload: order_by
@@ -183,10 +186,6 @@ export const ReducerState = ({ children }) => {
   };
 
   const search_data = async (type, value, url) => {
-    if (value.length === 0 || value === " ") {
-      value = "a";
-    }
-
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
       {
@@ -195,7 +194,7 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    debugger;
+
     const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
         ...res.data[Object.keys(res.data)[0]][key],
@@ -243,10 +242,6 @@ export const ReducerState = ({ children }) => {
   };
 
   const search_data_links = async (type, value, url) => {
-    if (value.length === 0 || value === " ") {
-      value = "a";
-    }
-
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
       {
@@ -270,14 +265,14 @@ export const ReducerState = ({ children }) => {
       };
     });
     console.log(payload);
-    debugger;
+
     dispatch({
       type: SELECT_HOME,
       payload
     });
   };
 
-  const add_type_links = async (type, id) => {
+  const add_type_links = (type, id) => {
     dispatch({
       type: ADD_TYPE_LINKS,
       payload: {
@@ -286,7 +281,7 @@ export const ReducerState = ({ children }) => {
       }
     });
   };
-  const search_select = async (type, id) => {
+  const search_select = (type, id) => {
     dispatch({
       type: SEARCH_SELECT,
       payload: {
@@ -296,7 +291,7 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const favorite_select = async (type, id) => {
+  const favorite_select = (type, id) => {
     dispatch({
       type: FAVORITE_SELECT,
       payload: {
@@ -332,12 +327,13 @@ export const ReducerState = ({ children }) => {
       })
       .catch(error => {
         console.log(error.response);
-        debugger;
       });
   };
 
   const createNotals = async value => {
     isLoading(false);
+    console.log(value);
+    debugger;
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
       {
@@ -355,35 +351,20 @@ export const ReducerState = ({ children }) => {
       }
     );
 
-    const date = value.date.split("-");
-    let new_date = date[2] + "." + date[1] + "." + date[0];
-    console.log(new_date);
-    let data = {
-      date: new_date,
-      time: value.time,
-      lat: parseFloat(value.lat),
-      lng: parseFloat(value.lng),
-      timezone: parseFloat(value.timezone),
-      letnee: parseInt(value.letnee)
-    };
-
-    debugger;
     dispatch({
       type: CREATE_NOTAL_HOME,
       payload: res.data
     });
     isLoading(true);
   };
-  const show_notal_card = async (id,data) => {
-   
-    const payload=data.map(items=>{
-      if(items.id===id){
-        items.isDisplay=items.isDisplay===false?true:false;
+  const show_notal_card = (id, data) => {
+    const payload = data.map(items => {
+      if (items.id === id) {
+        items.isDisplay = items.isDisplay === false ? true : false;
       }
-      return items
-    })
-    
-   
+      return items;
+    });
+
     dispatch({
       type: SHOW_NOTAL_CARD,
       payload
@@ -398,20 +379,20 @@ export const ReducerState = ({ children }) => {
         }
       }
     );
-    const payload=Object.keys(res.data).map(key=>{
-      return{
+    const payload = Object.keys(res.data).map(key => {
+      return {
         ...res.data[key],
-        isDisplay:res.data[key].natal===null?null:false
-      }
-    })
+        isDisplay: res.data[key].natal === null ? null : false
+      };
+    });
     console.log(payload);
-    debugger;
+
     dispatch({
       type: FETCH_LINKS,
       payload
     });
   };
-  const number_all = async (numbers, type) => {
+  const number_all = (numbers, type) => {
     dispatch({
       type: NUMBER_ALL,
       payload: {
@@ -420,7 +401,7 @@ export const ReducerState = ({ children }) => {
       }
     });
   };
-  const LogOut = async () => {
+  const LogOut = () => {
     localStorage.removeItem("users");
     dispatch({
       type: LOG_OUT,
@@ -520,7 +501,7 @@ export const ReducerState = ({ children }) => {
           type: ADD_NOTAL_CARD,
           payload: res.data
         });
-        isLoading(false)
+        isLoading(false);
         alert.success("Натальная карта созданна");
       })
       .catch(error => {
@@ -578,7 +559,6 @@ export const ReducerState = ({ children }) => {
   const search_data_home = async (type, value, url) => {
     var bool = true;
     if (value.length === 0 || value === " ") {
-      value = "a";
       bool = false;
     }
 
@@ -616,8 +596,8 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const online_card = (int_d, int_type, int, refresh) => {
-    Axios.get(
+  const online_card = async (int_d, int_type, int, refresh) => {
+    await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
       {
         headers: {
@@ -633,13 +613,12 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const geolocation = async city => {
+  const geolocation = city => {
     const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
     Geocode.setApiKey(API);
     Geocode.setLanguage("ru");
     Geocode.fromAddress(city).then(
       async response => {
-        debugger;
         const res = await Axios.get(
           `https://maps.googleapis.com/maps/api/timezone/json?location=${
             response.results[0].geometry.location.lat
@@ -661,7 +640,7 @@ export const ReducerState = ({ children }) => {
           }
         });
       },
-      error => alert(`Rejected: ${error}`)
+      error => console.log(error)
     );
   };
   return (

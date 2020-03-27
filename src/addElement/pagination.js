@@ -9,7 +9,7 @@ function PaginationExamplePagination({
   return (
     <Pagination
       defaultActivePage={listpagedefault}
-      totalPages={listPageAll}
+      totalPages={listPageAll!==undefined?listPageAll:1}
       onPageChange={SelectPagination}
     />
   );

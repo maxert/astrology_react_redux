@@ -7,7 +7,7 @@ import { ReduceContext } from "../context/reducerContext";
 import { Dimmer, Loader } from "semantic-ui-react";
 
 //Блок скрытой натальной карты персоны
-function ResultCardAll({ Birthday, Time }) {
+function ResultCardAll({ Birthday, Time,NameNotal }) {
   const [select, setSelect] = useState("0");
   const { none } = useContext(ReduceContext);
 
@@ -22,7 +22,7 @@ function ResultCardAll({ Birthday, Time }) {
     <div className="element_continer">
       <div className="notal_card_community">
         <div className="notal_card_head">
-          <div className="text_big_all">Натальная карта персоны</div>
+          <div className="text_big_all">{NameNotal}</div>
         </div>
         <div className="notal_person">
           <div className="persons_items notal_items">

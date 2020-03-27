@@ -60,34 +60,32 @@ export const CompanyState = ({ children }) => {
   };
 
   const Update_company = async (values, id) => {
-    var time = values.timezone.match(/[+-]?[0-9]+(.[0-9]+)?/g);
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/companies/${id}?name&telephone&email&birth_date&birth_time&timezone&latitude&longtitude&city&image&osnovatel&cnt_workers`,
-      {
-        name: values.name,
-        osnovatel: values.osnovatel,
-        email: values.email,
-        telephone: values.telephone,
-        birth_date: values.birth_date,
-        birth_time: values.birth_time,
-        timezone: parseFloat(time[0]),
-        longtitude: parseFloat(values.longtitude),
-        latitude: parseFloat(values.latitude),
-        city: values.city,
-        cnt_workers: parseInt(values.cnt_workers.replace(/\D+/g, "")),
-        image: "asd"
-      },
+    let formData = new FormData();
+    Object.keys(values).map(key => {
+      if(key==="upload_image"){
+      formData.append(key, values[key][0]);
+      }else{
+        formData.append(key, values[key]);
+      }
+    });
+    
+    const res = await Axios.post(
+      `http://1690550.masgroup.web.hosting-test.net/api/companies/${id}`,
+      formData,
       {
         headers: {
+
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${initialState.token}`
         }
       }
     );
+    alert.success("Компания обновленна");
+    debugger;
     dispatch({
       type: UPDATE_COMPANY,
-      add_company_json: res.data
+      add_update_json: res.data
     });
-    console.log(res);
   };
 
   const Add_company = async values => {

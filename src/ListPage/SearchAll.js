@@ -7,14 +7,13 @@ import { useState } from "react";
 import { ReduceContext } from "../context/reducerContext";
 import EditDrop from "../addElement/editDropSearch";
 import { Button } from "semantic-ui-react";
-function SearchAll() {
+function SearchAll({NameButton}) {
   const url = useRouteMatch();
   const {
     Add_favorite,
     delete_favorite,
     none,
     delete_all,
-    Fetch_data_favorite
   } = useContext(ReduceContext);
   const [isFavorite, setFavorite] = useState(true);
 
@@ -26,7 +25,7 @@ function SearchAll() {
   const [displaySet, setDisplay] = useState(false);
 
   const [isSort, setSort] = useState(true);
-  const { hide, show, display, search_sort, search_sort_favorite } = useContext(
+  const {  display, search_sort, search_sort_favorite } = useContext(
     ShowContext
   );
   useEffect(() => {
@@ -36,7 +35,7 @@ function SearchAll() {
     <div className="container_persons">
       <div className="container_persons_head">
         <NavLink to={`${url}/add`}>
-          <Button>Создать новую персону</Button>
+          <Button>{NameButton}</Button>
         </NavLink>
         <div className="container_persons_head_right">
           <div className="filter_abc">

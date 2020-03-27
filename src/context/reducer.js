@@ -57,6 +57,7 @@ const handlers = {
     ...state,
     pagination: payload
   }),
+
   [FETCH_DATA_FAVORITE]: (state, { payload }) => ({
     ...state,
     data_favorite: payload

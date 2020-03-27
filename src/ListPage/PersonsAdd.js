@@ -31,20 +31,20 @@ function PersonsAdd() {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if (none.geolocation) {
+    if (none.geolocation !== undefined) {
       setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
     }
   }, [none.geolocation ? none.geolocation.city : false]);
-  const alert = useAlert();
 
-  const d = new Date();
+
+  const alert = useAlert();
 
   function onSubmit(values) {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
     values["city"] =
-    none.geolocation.city !== null ? none.geolocation.city : null;
+      none.geolocation !== undefined ? none.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
@@ -163,6 +163,7 @@ function PersonsAdd() {
                     getInputRef={register({
                       required: false
                     })}
+                   
                   />
                   {errors.telephone && errors.telephone.message}
                 </Form.Field>
@@ -179,7 +180,7 @@ function PersonsAdd() {
                       <DatePicker
                         format={"DD.MM.YYYY"}
                         onChange={(data, dataString) =>
-                          setValue("date", dataString)
+                          setValue("birth_date", dataString)
                         }
                       ></DatePicker>
                     </Icon>

@@ -20,7 +20,7 @@ function NotalHome() {
       const date = data.date.split(".");
       let new_date = date[2] + "-" + date[1] + "-" + date[0];
       data["date"] = new_date;
-
+      console.log(data);
       createNotals(data);
     }
   }, []);

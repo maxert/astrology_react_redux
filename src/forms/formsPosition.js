@@ -1,11 +1,5 @@
-import React, { useContext, useEffect, useState,  } from "react";
-import {
-  Input,
-  Button,
-
-  Dimmer,
-  Loader
-} from "semantic-ui-react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { Input, Button, Dimmer, Loader } from "semantic-ui-react";
 import { SelectWeeks } from "../addElement/SelectWeeks";
 import { SelectNew } from "../addElement/SelectNew";
 import { SvgLoader, SvgProxy } from "react-svgmt";
@@ -15,7 +9,6 @@ import { ShowContext } from "../context/show/showContext";
 import { ReduceContext } from "../context/reducerContext";
 import { Checkbox as AntCheckbox } from "antd";
 
-
 //Форма натальной карты на главной странице
 export const FormsPosition = () => {
   const [interval, setNumber] = useState(1);
@@ -23,7 +16,6 @@ export const FormsPosition = () => {
   const [int_d, setint_d] = useState(1);
   const [selectData, setselectData] = useState("hour");
   const [refresh, setRefresh] = useState(1);
-
   const { online_card, none } = useContext(ReduceContext);
   const { hide, display, show } = useContext(ShowContext);
   const { handleSubmit } = useForm();
@@ -37,19 +29,18 @@ export const FormsPosition = () => {
   }
   function selectNew(event, data) {
     setSelect(data.value);
-    debugger;
   }
   if (isPlay) {
     online_card(int_d, selectData, interval, refresh);
-    debugger;
   }
+
   function onChangeSelect(event, data) {
     setselectData(data.value);
-    debugger;
   }
   useEffect(() => {
     online_card(int_d, selectData, interval, refresh);
-  }, [refresh]);
+  }, []);
+
   return (
     <form className="planetary_position" onSubmit={handleSubmit(onSubmit)}>
       <div className="text_planetary text_all">
@@ -57,7 +48,6 @@ export const FormsPosition = () => {
         <span>{none.online_data && none.online_data.in_date}</span>
       </div>
 
-      
       <AntCheckbox
         type="checkbox"
         name="new"
@@ -67,7 +57,9 @@ export const FormsPosition = () => {
             ? (setPlay(false), setRefresh(0))
             : (setPlay(true), setRefresh(0))
         }
-      >Непрерывное</AntCheckbox>
+      >
+        Непрерывное
+      </AntCheckbox>
       <div className="header_card">
         <div className="select_submit">
           <button className="prev_button" onClick={() => setint_d(-1)}></button>
@@ -105,15 +97,35 @@ export const FormsPosition = () => {
             <Loader size="massive">Loading</Loader>
           </Dimmer>
         ) : select === "0" ? (
+          // <div className="none_aynamsha">
+          //   {Object.keys(none.online_data.res_planet).map((key, i) => (
+          //     <div
+          //       className={`${key}`}
+          //       key={i}
+          //       style={{
+          //         transition: `.5s all`,
+          //         transform: `rotate(${
+          //           none.online_data.res_planet[key].gradus * -1 >
+          //           rotate[key].gradus * -1
+          //             ? none.online_data.res_planet[key].gradus * -1 - 360
+          //             : none.online_data.res_planet[key].gradus * -1
+          //         }deg)`
+          //       }}
+          //     >
+          //       {console.log(rotate, prevCount, 124412)}
+          //       <div>{key}</div>
+          //     </div>
+          //   ))}
+          // </div>:
           <div className="none_aynamsha">
             {Object.keys(none.online_data.res_planet).map((key, i) => (
               <div
                 className={`${key}`}
                 key={i}
                 style={{
+                  transition: `.5s all`,
                   transform: `rotate(${none.online_data.res_planet[key].gradus *
-                    -1 +
-                    90}deg)`
+                    -1}deg)`
                 }}
               >
                 <div>{key}</div>
@@ -128,9 +140,7 @@ export const FormsPosition = () => {
                 key={i}
                 style={{
                   transform: `rotate(${none.online_data.res_planet[key]
-                    .gradus_ay *
-                    -1 +
-                    90}deg)`
+                    .gradus_ay * -1}deg)`
                 }}
               >
                 <div>{key}</div>
