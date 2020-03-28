@@ -15,9 +15,11 @@ import { PersonsContext } from "../context/personReducer/personContext";
 import { NavLink } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
+import { GeoContext } from "../context/geolocation/GeoContext";
 //Блок Добавление Персоны
 function PersonsAdd() {
   const { none } = useContext(ReduceContext);
+  const { geoGet } = useContext(GeoContext);
   const { Add_persons } = useContext(PersonsContext);
   const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
   const { handleSubmit, register, errors, control, setValue } = useForm({
@@ -31,11 +33,10 @@ function PersonsAdd() {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if (none.geolocation !== undefined) {
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation !== undefined) {
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [none.geolocation ? none.geolocation.city : false]);
-
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
   const alert = useAlert();
 
@@ -43,8 +44,7 @@ function PersonsAdd() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] =
-      none.geolocation !== undefined ? none.geolocation.city : "";
+    values["city"] = geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
@@ -114,7 +114,7 @@ function PersonsAdd() {
                     className={"" + (errors.firstname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){1,16}$/i
                     })}
                   />
                   {errors.firstname && errors.firstname.message}
@@ -163,7 +163,6 @@ function PersonsAdd() {
                     getInputRef={register({
                       required: false
                     })}
-                   
                   />
                   {errors.telephone && errors.telephone.message}
                 </Form.Field>
@@ -253,9 +252,7 @@ function PersonsAdd() {
                     ></SelectLocation>
                   </div>
                 </div>
-                {console.log(
-                  none.geolocation ? none.geolocation.letnee : false
-                )}
+
                 <Controller
                   name="checkbox"
                   rules={{
@@ -277,8 +274,8 @@ function PersonsAdd() {
                       type="text"
                       name="longtitude"
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lng
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lng
                           : longitude !== undefined
                           ? longitude.toFixed(4)
                           : ""
@@ -300,8 +297,8 @@ function PersonsAdd() {
                       placeholder="49.6666"
                       className={"" + (errors.latitude ? "active" : "")}
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lat
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lat
                           : latitude !== undefined
                           ? latitude.toFixed(4)
                           : ""

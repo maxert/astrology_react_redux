@@ -13,6 +13,7 @@ import { Checkbox as AntCheckbox } from "antd";
 import Cleave from "cleave.js/react";
 import SearchCity from "../addElement/searchCity";
 import { useAlert } from "react-alert";
+import { GeoContext } from "../context/geolocation/GeoContext";
 //Страница Добавления Событий
 
 function EventsAdd() {
@@ -27,30 +28,31 @@ function EventsAdd() {
   });
   const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
   const { none } = useContext(ReduceContext);
+  const {geoGet} = useContext(GeoContext)
   const { Add_events } = useContext(EventContext);
   const { latitude, longitude, error } = usePosition(false, {
     enableHighAccuracy: true
   });
   function onSubmit(values) {
     console.log(values);
-    values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
+    values["event_date"] = moment(values.event_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
     values["city"] =
-    none.geolocation !== undefined ? none.geolocation.city : "";
+    geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Add_events(values);
   }
 
   useEffect(() => {
-    if (none.geolocation !== undefined) {
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation !== undefined) {
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
   }, [localStorage.getItem("city").city]);
 
   useEffect(() => {
-    if (errors.birth_date !== undefined) {
+    if (errors.event_date !== undefined) {
       alert.error("Введите корректно дату");
     }
     if (errors.event_time !== undefined) {
@@ -101,7 +103,7 @@ function EventsAdd() {
                     className={"" + (errors.name ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+){0,16}$/i
                     })}
                   />
                   {errors.name && errors.name.message}
@@ -228,8 +230,8 @@ function EventsAdd() {
                       type="text"
                       name="longtitude"
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lng
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lng
                           : longitude !== undefined
                           ? longitude.toFixed(4)
                           : ""
@@ -251,8 +253,8 @@ function EventsAdd() {
                       placeholder="49.6666"
                       className={"" + (errors.latitude ? "active" : "")}
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lat
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lat
                           : latitude !== undefined
                           ? latitude.toFixed(4)
                           : ""

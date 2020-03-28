@@ -13,18 +13,19 @@ import { Checkbox as AntCheckbox } from "antd";
 export const FormsPosition = () => {
   const [interval, setNumber] = useState(1);
   const [select, setSelect] = useState("0");
-  const [int_d, setint_d] = useState(1);
+  const [int_d, setint_d] = useState(0);
   const [selectData, setselectData] = useState("hour");
-  const [refresh, setRefresh] = useState(1);
+  const [refresh, setRefresh] = useState(0);
   const { online_card, none } = useContext(ReduceContext);
   const { hide, display, show } = useContext(ShowContext);
   const { handleSubmit } = useForm();
   const [isPlay, setPlay] = useState(false);
   function onSubmit(values) {
+    setRefresh(0)
     values["number"] = interval;
     values["type"] = selectData;
     values["int_d"] = int_d;
-    values["refresh"] = 0;
+    values["refresh"] = refresh;
     online_card(values.int_d, selectData, interval, values.refresh);
   }
   function selectNew(event, data) {
@@ -39,13 +40,13 @@ export const FormsPosition = () => {
   }
   useEffect(() => {
     online_card(int_d, selectData, interval, refresh);
-  }, []);
+  }, [refresh]);
 
   return (
     <form className="planetary_position" onSubmit={handleSubmit(onSubmit)}>
       <div className="text_planetary text_all">
-        Положение планет в реальном времени{" "}
-        <span>{none.online_data && none.online_data.in_date}</span>
+        Положение планет в реальном времени
+        <span>{none.online_data && none.online_data.in_date + " GMT 0"}</span>
       </div>
 
       <AntCheckbox
@@ -97,26 +98,6 @@ export const FormsPosition = () => {
             <Loader size="massive">Loading</Loader>
           </Dimmer>
         ) : select === "0" ? (
-          // <div className="none_aynamsha">
-          //   {Object.keys(none.online_data.res_planet).map((key, i) => (
-          //     <div
-          //       className={`${key}`}
-          //       key={i}
-          //       style={{
-          //         transition: `.5s all`,
-          //         transform: `rotate(${
-          //           none.online_data.res_planet[key].gradus * -1 >
-          //           rotate[key].gradus * -1
-          //             ? none.online_data.res_planet[key].gradus * -1 - 360
-          //             : none.online_data.res_planet[key].gradus * -1
-          //         }deg)`
-          //       }}
-          //     >
-          //       {console.log(rotate, prevCount, 124412)}
-          //       <div>{key}</div>
-          //     </div>
-          //   ))}
-          // </div>:
           <div className="none_aynamsha">
             {Object.keys(none.online_data.res_planet).map((key, i) => (
               <div

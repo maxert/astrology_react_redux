@@ -13,6 +13,7 @@ import { ShowState } from "../context/show/showState";
 import { ShowContext } from "../context/show/showContext";
 import { CompanyContext } from "../context/companyReducer/companyContext";
 import SearchAll from "./SearchAll";
+import { GeoState } from "../context/geolocation/GeoState";
 
 //Страница списка компаний
 function CompanyHome() {
@@ -619,7 +620,7 @@ function CompanyHome() {
               )}
             </div>
           )}
-          {isFavorite === false&&state_company.data_company.count!==0 ? (
+          {isFavorite === false && state_company.data_company.count !== 0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={
@@ -627,7 +628,7 @@ function CompanyHome() {
                     ? state_company.data_company.pages
                     : 1
                 }
-                listpagedefault={1}
+                listpagedefault={none.pagination!==undefined?none.pagination:1}
                 SelectPagination={SelectPagination =>
                   pagination(SelectPagination)
                 }
@@ -655,8 +656,16 @@ function Company() {
           <CompanyList></CompanyList>
         </ShowState>
       </Route>
-      <Route path={`${path}/add`} component={CompanyAdd} />
-      <Route path={`${path}/:id/edit`} component={CompanyEdit} />
+      <Route path={`${path}/add`}>
+        <GeoState>
+          <CompanyAdd></CompanyAdd>
+        </GeoState>
+      </Route>
+      <Route path={`${path}/:id/edit`}>
+        <GeoState>
+          <CompanyEdit></CompanyEdit>
+        </GeoState>
+      </Route>
     </Switch>
   );
 }

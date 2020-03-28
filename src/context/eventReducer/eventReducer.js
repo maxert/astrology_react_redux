@@ -3,6 +3,7 @@ import {
     DELETE_EVENTS,
     FETCH_DATA_EVENTS,
     UPDATE_EVENTS,
+    SORT_DATA_EVENTS
   } from "../types";
   const handlers = {
     [FETCH_DATA_EVENTS]: (state, { payload }) => ({
@@ -19,6 +20,10 @@ import {
     }),
     [DELETE_EVENTS]: state => ({
       ...state
+    }),
+    [SORT_DATA_EVENTS]: (state, { payload }) => ({
+      ...state,
+      data_events: payload
     }),
     DEFAULT: state => state
   };

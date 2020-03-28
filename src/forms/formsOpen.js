@@ -4,16 +4,29 @@ import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
+import { useAlert } from "react-alert";
 
 //Блок авторизации
 function FormExampleForm() {
   const { handleSubmit, register, errors } = useForm();
+  const alert = useAlert()
   const { LogIn, none } = useContext(ReduceContext);
   const history = useHistory();
   const onSubmit = values => {
     LogIn(values);
-   
   };
+
+  useEffect(() => {
+    if (errors.email !== undefined) {
+      alert.error("Введите логин");
+    }
+    if (errors.password !== undefined) {
+      alert.error("Введите пароль");
+    }
+    
+  }, [errors]);
+
+
   useEffect(()=>{
     if (none.isLogin === true) {
       history.push("/");
@@ -52,10 +65,7 @@ function FormExampleForm() {
           />
           {errors.password && errors.password.message}
         </Form.Field>
-        {/* <Form.Field className="checkbox_element">
-        <Checkbox label="Запомнить меня" />
-        <div className="send_password">Напомнить пароль</div>
-      </Form.Field> */}
+
 
         <Button type="submit">Войти</Button>
       </Form>

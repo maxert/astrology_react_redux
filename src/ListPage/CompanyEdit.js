@@ -15,14 +15,16 @@ import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
 import { NavLink, useRouteMatch } from "react-router-dom";
+import { GeoContext } from "../context/geolocation/GeoContext";
 
 //Страница редактирования компаний
 
 function CompanyEdit() {
   const { none, Fetch_one_company } = useContext(ReduceContext);
   const { url } = useRouteMatch();
+  const { geoGet } = useContext(GeoContext);
   const { Update_company } = useContext(CompanyContext);
-  const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
+  const [ImageSrc, setImageSrc] = useState();
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
       date: moment(Date.now()).format("DD.MM.YYYY"),
@@ -37,14 +39,13 @@ function CompanyEdit() {
   const alert = useAlert();
 
   useEffect(() => {
-    if (none.geolocation) {
-      setValue("longtitude", none.geolocation.location.lng);
-      setValue("latitude", none.geolocation.location.lat);
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation) {
+      setValue("longtitude", geoGet.geolocation.location.lng);
+      setValue("latitude", geoGet.geolocation.location.lat);
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [none.geolocation ? none.geolocation.city : false]);
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
- 
   const d = new Date();
   useEffect(() => {
     if (errors.date !== undefined) {
@@ -67,11 +68,10 @@ function CompanyEdit() {
       alert.error("Введите корректно email");
     }
   }, [errors]);
-  
+
   useEffect(() => {
     Fetch_one_company(url.replace(/\D+/g, ""));
   }, []);
-
 
   function onSubmit(values) {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
@@ -79,7 +79,7 @@ function CompanyEdit() {
     );
     debugger;
     values["city"] =
-      none.geolocation !== undefined ? none.geolocation.city : "";
+      geoGet.geolocation !== undefined ? geoGet.geolocation.city : none.one_company.city!==null? none.one_company.city:"";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
@@ -115,7 +115,7 @@ function CompanyEdit() {
                       className={"" + (errors.name ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
                       })}
                     />
                     {errors.name && errors.name.message}
@@ -164,7 +164,6 @@ function CompanyEdit() {
                       getInputRef={register({
                         required: false
                       })}
-                      
                     />
                     {errors.telephone && errors.telephone.message}
                   </Form.Field>
@@ -276,12 +275,14 @@ function CompanyEdit() {
                       <div className="text_localisation">Часовой пояс:</div>
                       <SelectLocation
                         ValueOptions={
-                          Number(none.option_value) !== 0 ? Number(none.option_value) : none.one_company.timezone
+                          Number(none.option_value) !== 0
+                            ? Number(none.option_value)
+                            : none.one_company.timezone
                         }
                       ></SelectLocation>
                     </div>
                   </div>
-                 
+
                   <Controller
                     name="checkbox"
                     rules={{

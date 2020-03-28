@@ -15,6 +15,7 @@ import { useHistory, useRouteMatch, NavLink } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { EventContext } from "../context/eventReducer/eventContext";
+import { GeoContext } from "../context/geolocation/GeoContext";
 
 //Страница Добавления Событий
 
@@ -23,6 +24,7 @@ function EventsEdit() {
   const { handleSubmit, register, errors, control, setValue } = useForm({
     reValidateMode: onSubmit
   });
+  const {geoGet} = useContext(GeoContext)
   const { url } = useRouteMatch();
   const { none, Fetch_one_events } = useContext(ReduceContext);
   const { Update_events } = useContext(EventContext);
@@ -32,18 +34,18 @@ function EventsEdit() {
 
 
   function onSubmit(values) {
-    values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
+    values["event_date"] = moment(values.event_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] = none.geolocation ? none.geolocation.city : "";
+    values["city"] = geoGet.geolocation ? geoGet.geolocation.city : none.one_event.city!==null? none.one_event.city:"";
     values["timezone"] = none.option_value;
-    values["letnee"] = values.checkbox === true ? 0 : 1;
+    values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_events(values, none.data_id.type_id);
     debugger;
   }
   const history = useHistory();
   useEffect(() => {
-    if (errors.birth_date !== undefined) {
+    if (errors.event_date !== undefined) {
       alert.error("Введите корректно дату");
     }
     if (errors.event_time !== undefined) {
@@ -64,12 +66,12 @@ function EventsEdit() {
     }
   }, [errors]);
   useEffect(() => {
-    if (none.geolocation) {
-      setValue("longtitude", none.geolocation.location.lng);
-      setValue("latitude", none.geolocation.location.lat);
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation) {
+      setValue("longtitude", geoGet.geolocation.location.lng);
+      setValue("latitude", geoGet.geolocation.location.lat);
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [none.geolocation ? none.geolocation.city : false]);
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
   return (
     <div className="container_add">
       <div className="button_header">
@@ -102,7 +104,7 @@ function EventsEdit() {
                       defaultValue={none.one_event.name}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+){3,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+){0,16}$/i
                       })}
                     />
                     {errors.name && errors.name.message}

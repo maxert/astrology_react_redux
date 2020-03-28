@@ -11,19 +11,17 @@ import { usePosition } from "use-position";
 import moment from "moment";
 import { useAlert } from "react-alert";
 import { Checkbox as AntCheckbox } from "antd";
+import { GeoContext } from "../context/geolocation/GeoContext";
 //Форма создания натальной карты пользователя на главной странице
 
 function InputExampleIconChild() {
   const [data_notal, setData] = useState([]);
   const history = useHistory();
-
   const SaveData = JSON.parse(localStorage.getItem("save_natal"));
-  const { none, SelectLocationNew, createNotals } = useContext(ReduceContext);
+  const {geoGet}= useContext(GeoContext);
+  const { none, SelectLocationNew } = useContext(ReduceContext);
   const { handleSubmit, register, errors, control, setValue } = useForm({
-    defaultValues: {
-      date: moment(Date.now()).format("DD.MM.YYYY"),
-      time: moment(Date.now()).format("HH:mm")
-    },
+   
     reValidateMode: onSubmit
   });
   const { latitude, longitude } = usePosition(false, {
@@ -50,10 +48,10 @@ function InputExampleIconChild() {
     alert.success("Натальная карта созданна");
   }
   useEffect(() => {
-    if (none.geolocation) {
-      setValue("lng", none.geolocation.location.lng);
-      setValue("lat", none.geolocation.location.lat);
-      setValue("checkboxing", SaveData===null? SaveData.checkboxing:none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation) {
+      setValue("lng", geoGet.geolocation.location.lng);
+      setValue("lat", geoGet.geolocation.location.lat);
+      setValue("checkboxing",geoGet.geolocation.letnee === 0 ? true : false);
       debugger
     }
   }, [localStorage.getItem("city")]);
@@ -150,7 +148,6 @@ function InputExampleIconChild() {
           <SearchCity
             type="text"
             name="city"
-         
             ValueData={
               localStorage.getItem("city") ? localStorage.getItem("city") : ""
             }
@@ -185,8 +182,8 @@ function InputExampleIconChild() {
             type="text"
             name="lng"
             defaultValue={
-              none.geolocation
-                ? none.geolocation.location.lng
+              geoGet.geolocation
+                ? geoGet.geolocation.location.lng
                 : data_notal === null
                 ? longitude !== undefined
                   ? longitude.toFixed(4)
@@ -211,8 +208,8 @@ function InputExampleIconChild() {
             placeholder="49.6666"
             className={"" + (errors.lat ? "active" : "")}
             defaultValue={
-              none.geolocation
-                ? none.geolocation.location.lat
+              geoGet.geolocation
+                ? geoGet.geolocation.location.lat
                 : data_notal === null
                 ? latitude !== undefined
                   ? latitude.toFixed(4)

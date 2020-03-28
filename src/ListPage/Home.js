@@ -2,9 +2,10 @@ import React from "react";
 import Search from "../addElement/search";
 import FormsCreate from "../forms/formsCreate";
 import { FormsPosition } from "../forms/formsPosition";
-import { History } from "../addElement/History";
+import  History  from "../addElement/History";
 import { ShowState } from "../context/show/showState";
 import SearchHome from "../addElement/SearchHome";
+import { GeoState } from "../context/geolocation/GeoState";
 //Блок Главной страниццы
 function Home() {
   return (
@@ -12,7 +13,7 @@ function Home() {
       <div className="search_container_home">
         <SearchHome />
       </div>
-     
+
       <div className="container_grid">
         <div className="container_left_two">
           <div className="create_notal_card">
@@ -20,7 +21,9 @@ function Home() {
               <div className="text_all">Создать натальную карту</div>
             </div>
             <div className="create_notal_card_container">
-              <FormsCreate></FormsCreate>
+              <GeoState>
+                <FormsCreate></FormsCreate>
+              </GeoState>
             </div>
           </div>
         </div>
@@ -28,7 +31,7 @@ function Home() {
           <ShowState>
             <FormsPosition></FormsPosition>
           </ShowState>
-          {/* <History></History> */}
+          <History></History>
         </div>
       </div>
     </div>

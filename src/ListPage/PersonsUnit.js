@@ -9,6 +9,7 @@ import { ReduceContext } from "../context/reducerContext";
 import CreateNote from "../addElement/createNote";
 import NoteList from "../addElement/NoteList";
 import { NoteState } from "../context/noteReducer/noteState";
+import { ShowContext } from "../context/show/showContext";
 //Страница Персоны
 function PersonsUnit() {
   const { url } = useRouteMatch();
@@ -131,7 +132,7 @@ function PersonsUnit() {
               </div>
             </div>
           </div>
-
+    
           <ResultCardAll
             Birthday={none.one_persons.birth_date}
             Time={none.one_persons.birth_time}

@@ -11,14 +11,14 @@ function NotalCommunity() {
   }
 
   return (
-    none.data_fetch_links.find(index => index.isDisplay === true)!==undefined && (
+    none.data_fetch_links.find(index => index.isDisplay===true&&index.natal!==null)!==undefined && (
       <div className="notal_card_community">
         <div>
           <div className="text_big_all">натальные карты Связей</div>
           <div className="notal_card_community_container">
             {none.data_fetch_links.map(
               items =>
-                items.isDisplay === true && (
+                items.isDisplay === true&&items.natal!==null ? (
                   <div className="persons_items notal_items" key={items.id}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
@@ -50,7 +50,7 @@ function NotalCommunity() {
 
                     <div className="d_flex_center image_notal notalPersons_left">
                       <ModalExampleDimmer
-                        Houses={items.natal.data}
+                      Houses={items.natal.data}
                       ></ModalExampleDimmer>
                       <SvgLoader path="../../img/Натальная карта.svg">
                         <SvgProxy selector="#co" />
@@ -217,7 +217,7 @@ function NotalCommunity() {
                       </div>
                     </div>
                   </div>
-                )
+                ):null
             )}
           </div>
         </div>

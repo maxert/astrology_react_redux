@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import Search from "../addElement/search";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { Button, Dimmer, Loader } from "semantic-ui-react";
-import { Calendar } from "antd";
+import { Calendar, Empty } from "antd";
 import moment from "moment";
 import "moment/locale/ru";
 import { SvgLoader, SvgProxy } from "react-svgmt";
@@ -16,15 +16,15 @@ import { EventState } from "../context/eventReducer/eventState";
 import { ShowState } from "../context/show/showState";
 import SearchAll from "./SearchAll";
 import { ShowContext } from "../context/show/showContext";
+import { GeoState } from "../context/geolocation/GeoState";
+import CalendarNew from "../addElement/Calendar";
 //Локализация календаря
 moment.locale("ru");
 
 //Страница списка Событий
 function EventsHome() {
   let { url } = useRouteMatch();
-  function onPanelChange(value, mode) {
-    console.log(value, mode);
-  }
+
   const { display } = useContext(ShowContext);
 
   const {
@@ -35,10 +35,14 @@ function EventsHome() {
     isLoading
   } = useContext(ReduceContext);
 
-  const { Fetch_data_events, delete_events, state_event } = useContext(
-    EventContext
-  );
+  const {
+    Fetch_data_events,
+    delete_events,
+    state_event,
+    sort_data_events
+  } = useContext(EventContext);
 
+  
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
     Fetch_data_events(Value._targetInst.pendingProps.value, none.sorted);
@@ -69,11 +73,12 @@ function EventsHome() {
           </NavLink>
           <div className="calendar_container">
             <div className="calendar_container_left">
-              <Calendar
+              <CalendarNew></CalendarNew>
+              {/* <Calendar
                 fullscreen={false}
-                onPanelChange={onPanelChange}
+                onChange={onPanelChange}
                 disabledDays={[new Date(2020, 3, 15), { daysOfWeek: [0, 6] }]}
-              />
+              /> */}
             </div>
             <div className="calendar_container_right">
               <div className="date_items">
@@ -260,19 +265,26 @@ function EventsHome() {
                 </div>
               )}
             </div>
-            {state_event.data_events.count !== 0 && (
-              <div className="d_flex_center pagination">
-                <PaginationExamplePagination
-                  listPageAll={
-                    state_event.data_events ? state_event.data_events.pages : 1
-                  }
-                  listpagedefault={1}
-                  SelectPagination={SelectPagination =>
-                    pagination(SelectPagination)
-                  }
-                />
-              </div>
-            )}
+
+            {state_event.data_events.length !== 0
+              ? state_event.data_events.events.length && (
+                  <div className="d_flex_center pagination">
+                    <PaginationExamplePagination
+                      listPageAll={
+                        state_event.data_events
+                          ? state_event.data_events.pages
+                          : 1
+                      }
+                      listpagedefault={
+                        none.pagination !== undefined ? none.pagination : 1
+                      }
+                      SelectPagination={SelectPagination =>
+                        pagination(SelectPagination)
+                      }
+                    />
+                  </div>
+                )
+              : null}
           </div>
         </div>
       )}
@@ -295,8 +307,16 @@ function Events() {
             <EventsList></EventsList>
           </ShowState>
         </Route>
-        <Route path={`${path}/add`} component={EventsAdd} />
-        <Route path={`${path}/:id/edit`} component={EventsEdit} />
+        <Route path={`${path}/add`}>
+          <GeoState>
+            <EventsAdd></EventsAdd>
+          </GeoState>
+        </Route>
+        <Route path={`${path}/:id/edit`}>
+          <GeoState>
+            <EventsEdit></EventsEdit>
+          </GeoState>
+        </Route>
       </Switch>
     </EventState>
   );

@@ -19,6 +19,7 @@ import { ShowState } from "../context/show/showState";
 import { ShowContext } from "../context/show/showContext";
 import { PersonsContext } from "../context/personReducer/personContext";
 import SearchAll from "./SearchAll";
+import { GeoState } from "../context/geolocation/GeoState";
 //Cтраница списка персон
 function PersonsHome() {
   const { hide, display, show, search_bool } = useContext(ShowContext);
@@ -618,7 +619,7 @@ function PersonsHome() {
               )}
             </div>
           )}
-          {isFavorite === false&&state_persons.data_persons.count!==0 ? (
+          {isFavorite === false && state_persons.data_persons.count !== 0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={
@@ -626,7 +627,7 @@ function PersonsHome() {
                     ? state_persons.data_persons.pages
                     : 1
                 }
-                listpagedefault={1}
+                listpagedefault={none.pagination!==undefined?none.pagination:1}
                 SelectPagination={SelectPagination =>
                   pagination(SelectPagination)
                 }
@@ -654,8 +655,16 @@ function Persons() {
           <PersonsUnit />
         </ShowState>
       </Route>
-      <Route path={`${path}/add`} component={PersonsAdd} />
-      <Route path={`${path}/:id/edit`} component={PersonsEdit} />
+      <Route path={`${path}/add`}>
+        <GeoState>
+          <PersonsAdd></PersonsAdd>
+        </GeoState>
+      </Route>
+      <Route path={`${path}/:id/edit`}>
+        <GeoState>
+          <PersonsEdit></PersonsEdit>
+        </GeoState>
+      </Route>
     </Switch>
   );
 }

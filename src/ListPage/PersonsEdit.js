@@ -14,9 +14,11 @@ import { PersonsContext } from "../context/personReducer/personContext";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
+import { GeoContext } from "../context/geolocation/GeoContext";
 //Блок Добавление Персоны
 function PersonsEdit() {
   const history = useHistory();
+  const { geoGet } = useContext(GeoContext);
   const { none, Fetch_one_persons } = useContext(ReduceContext);
   const { Update_persons } = useContext(PersonsContext);
   const { url } = useRouteMatch();
@@ -31,19 +33,19 @@ function PersonsEdit() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] = none.geolocation ? none.geolocation.city : "";
+    values["city"] = geoGet.geolocation ? geoGet.geolocation.city : none.one_persons.city!==null? none.one_persons.city:"";
     values["timezone"] = none.option_value;
-    values["letnee"] = values.checkbox === true ? 0 : 1;
+    values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_persons(values, none.data_id.type_id);
     debugger;
   }
   useEffect(() => {
-    if (none.geolocation !== undefined) {
-      setValue("longtitude", none.geolocation.location.lng);
-      setValue("latitude", none.geolocation.location.lat);
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation !== undefined) {
+      setValue("longtitude", geoGet.geolocation.location.lng);
+      setValue("latitude", geoGet.geolocation.location.lat);
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [none.geolocation ? none.geolocation.city : false]);
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
   
   useEffect(() => {
@@ -104,7 +106,7 @@ function PersonsEdit() {
                       className={"" + (errors.firstname ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
                       })}
                     />
                     {errors.firstname && errors.firstname.message}
@@ -248,6 +250,7 @@ function PersonsEdit() {
                   <div className="grid_column center_grid location_input_top">
                     <div className="input_all">
                       <label>Место рождения</label>
+                      {console.log(none.one_persons.city)}
                       <SearchCity
                         type="text"
                         name="city"

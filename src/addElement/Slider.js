@@ -56,7 +56,7 @@ function ModalExampleSize() {
       setCloseNew(false);
       create_links(values);
     } else {
-      alert.error("Выбирете данные из поля");
+      alert.error("Такой карточки нет в базе программы, создайте ее и вернитесь к созданию связи");
     }
   };
   return (
@@ -227,12 +227,12 @@ function SimpleSlider() {
                         >
                           Удалить связь
                         </div>
-                        {items.isDisplay === null ? null : items.isDisplay ===
+                        {items.natal === null ? null : items.isDisplay ===
                           false ? (
                           <div
                             className="add_notal"
                             onClick={() =>
-                              show_notal_card(items.id, none.data_fetch_links)
+                              show_notal_card(items.id, none.data_fetch_links,1)
                             }
                           >
                             Показать натальную карту
@@ -241,7 +241,7 @@ function SimpleSlider() {
                           <div
                             className="add_notal"
                             onClick={() =>
-                              show_notal_card(items.id, none.data_fetch_links)
+                              show_notal_card(items.id, none.data_fetch_links,0)
                             }
                           >
                             Скрыть натальную карту

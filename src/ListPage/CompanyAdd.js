@@ -15,12 +15,14 @@ import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
 import { NavLink } from "react-router-dom";
+import { GeoContext } from "../context/geolocation/GeoContext";
 
 //Страница добавления компаний
 
 function CompanyAdd() {
   const { none } = useContext(ReduceContext);
   const { Add_company } = useContext(CompanyContext);
+  const {geoGet} = useContext(GeoContext)
   const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
@@ -33,8 +35,8 @@ function CompanyAdd() {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if (none.geolocation) {
-      setValue("checkbox", none.geolocation.letnee === 0 ? true : false);
+    if (geoGet.geolocation) {
+      setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
   }, [localStorage.getItem("city")]);
   const alert = useAlert();
@@ -66,7 +68,7 @@ function CompanyAdd() {
       "YYYY-MM-DD"
     );
     debugger;
-    values["city"] = none.geolocation !== undefined ? none.geolocation.city : "";
+    values["city"] = geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
@@ -101,7 +103,7 @@ function CompanyAdd() {
                     className={"" + (errors.name ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
                     })}
                   />
                   {errors.name && errors.name.message}
@@ -253,9 +255,7 @@ function CompanyAdd() {
                     ></SelectLocation>
                   </div>
                 </div>
-                {console.log(
-                  none.geolocation ? none.geolocation.letnee : false
-                )}
+               
                 <Controller
                   name="checkbox"
                   rules={{
@@ -277,8 +277,8 @@ function CompanyAdd() {
                       type="text"
                       name="longtitude"
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lng
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lng
                           : longitude !== undefined
                           ? longitude.toFixed(4)
                           : ""
@@ -300,8 +300,8 @@ function CompanyAdd() {
                       placeholder="49.6666"
                       className={"" + (errors.latitude ? "active" : "")}
                       defaultValue={
-                        none.geolocation
-                          ? none.geolocation.location.lat
+                        geoGet.geolocation
+                          ? geoGet.geolocation.location.lat
                           : latitude !== undefined
                           ? latitude.toFixed(4)
                           : ""

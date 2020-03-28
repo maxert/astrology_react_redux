@@ -27,7 +27,6 @@ import {
   UPDATE_PERSONS,
   CREATE_NOTAL_HOME,
   ONLINE_CARD,
-  GEOLOCATION,
   SEARCH_CITY,
   FETCH_NUMBER,
   PAGINATION_NUMBER,
@@ -326,7 +325,9 @@ export const ReducerState = ({ children }) => {
         });
       })
       .catch(error => {
-        console.log(error.response);
+        if (error.response.status === 400) {
+          alert.error("Связь уже существует");
+        }
       });
   };
 
@@ -357,10 +358,22 @@ export const ReducerState = ({ children }) => {
     });
     isLoading(true);
   };
-  const show_notal_card = (id, data) => {
+  const show_notal_card = async (id, data, shownatal) => {
+    const res = await Axios.put(
+      `http://1690550.masgroup.web.hosting-test.net/api/links/` + id,
+      {
+        shownatal: shownatal
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+
     const payload = data.map(items => {
       if (items.id === id) {
-        items.isDisplay = items.isDisplay === false ? true : false;
+        items.isDisplay = items.isDisplay === true ? false : true;
       }
       return items;
     });
@@ -370,27 +383,33 @@ export const ReducerState = ({ children }) => {
       payload
     });
   };
+
   const Fetch_links = async (type, id) => {
-    const res = await Axios.get(
+    await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    );
-    const payload = Object.keys(res.data).map(key => {
-      return {
-        ...res.data[key],
-        isDisplay: res.data[key].natal === null ? null : false
-      };
-    });
-    console.log(payload);
+    )
+      .then(res => {
+        const payload = Object.keys(res.data).map(key => {
+          return {
+            ...res.data[key],
+            isDisplay: res.data[key].shownatal === 0 ? false : true
+          };
+        });
+        console.log(payload);
 
-    dispatch({
-      type: FETCH_LINKS,
-      payload
-    });
+        dispatch({
+          type: FETCH_LINKS,
+          payload
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
   };
   const number_all = (numbers, type) => {
     dispatch({
@@ -501,8 +520,11 @@ export const ReducerState = ({ children }) => {
           type: ADD_NOTAL_CARD,
           payload: res.data
         });
-        isLoading(false);
-        alert.success("Натальная карта созданна");
+        setTimeout(() => {
+          isLoading(true);
+        }, 500);
+
+        alert.success("Натальная карта расчитанна");
       })
       .catch(error => {
         error.response.data.error.forEach(none => {
@@ -613,41 +635,10 @@ export const ReducerState = ({ children }) => {
     });
   };
 
-  const geolocation = city => {
-    const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
-    Geocode.setApiKey(API);
-    Geocode.setLanguage("ru");
-    Geocode.fromAddress(city).then(
-      async response => {
-        const res = await Axios.get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${
-            response.results[0].geometry.location.lat
-          },${response.results[0].geometry.location.lng}&timestamp=${parseInt(
-            Date.now() / 1000
-          )}&key=${API}`
-        );
-        console.log(res);
-        SelectLocationNew(parseInt(res.data.rawOffset / 3600));
-        SelectLocationNew(parseInt(res.data.rawOffset / 3600));
-        localStorage.setItem("city", city);
-        dispatch({
-          type: GEOLOCATION,
-          payload: {
-            city: city,
-            location: response.results[0].geometry.location,
-            timezone: parseInt(res.data.rawOffset / 3600),
-            letnee: res.data.dstOffset > 0 ? true : false
-          }
-        });
-      },
-      error => console.log(error)
-    );
-  };
   return (
     <ReduceContext.Provider
       value={{
         search_data_city,
-        geolocation,
         createNotals,
         Fetch_one_company,
         online_card,

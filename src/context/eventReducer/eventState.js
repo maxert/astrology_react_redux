@@ -5,7 +5,8 @@ import {
   ADD_EVENTS,
   FETCH_DATA_EVENTS,
   DELETE_EVENTS,
-  UPDATE_EVENTS
+  UPDATE_EVENTS,
+  SORT_DATA_EVENTS
 } from "../types";
 import Axios from "axios";
 import { useAlert } from "react-alert";
@@ -21,6 +22,29 @@ export const EventState = ({ children }) => {
   const alert = useAlert();
   const history = useHistory();
   const { isLoading, fetch_number } = useContext(ReduceContext);
+
+
+  const sort_data_events = async (number, order_by,date) => {
+    const res = await Axios.get(
+      `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
+        number === undefined ? 1 : number
+      }&order_direction=${order_by}&date=`+date,
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`
+        }
+      }
+    );
+    fetch_number();
+    console.log(res.data);
+    dispatch({
+      type: SORT_DATA_EVENTS,
+      payload: res.data
+    });
+    isLoading(true);
+  };
+
+
 
   const Fetch_data_events = async (number, order_by) => {
     const res = await Axios.get(
@@ -128,6 +152,7 @@ export const EventState = ({ children }) => {
         Update_events,
         delete_events,
         Fetch_data_events,
+        sort_data_events,
         state_event: state
       }}
     >
