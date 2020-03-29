@@ -41,6 +41,7 @@ export const EventState = ({ children }) => {
     }else{
       fetch_number();
       console.log(res.data);
+      alert.info("Событие отсортированно")
       dispatch({
         type: SORT_DATA_EVENTS,
         payload: res.data
