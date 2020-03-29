@@ -3,11 +3,11 @@ import { Dropdown } from "semantic-ui-react";
 import { ReduceContext } from "../context/reducerContext";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { PersonsContext } from "../context/personReducer/personContext";
+import { ShowContext } from "../context/show/showContext";
 //Функциональный Блок изменений карточки
-function DropdownExampleInline({ ID, Type, Favorite,ClickDelete }) {
+function DropdownExampleInline({ ID, Type, Favorite,ClickDelete,Data }) {
   const { url } = useRouteMatch();
-  const {delete_persons} = useContext(PersonsContext);
+  const {delete_favorite_list} = useContext(ShowContext);
   const { none, delete_favorite, Add_favorite } = useContext(
     ReduceContext
   );
@@ -58,7 +58,7 @@ function DropdownExampleInline({ ID, Type, Favorite,ClickDelete }) {
           </SvgLoader>
           Удалить
         </Dropdown.Item>
-        <Dropdown.Item data-index="3">
+        <Dropdown.Item data-index="3" onClick={() => delete_favorite_list(ID, Type,Data)}>
           <SvgLoader path="../../img/Delete1.svg">
             <SvgProxy selector="#cst" />
           </SvgLoader>

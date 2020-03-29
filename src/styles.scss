@@ -2561,7 +2561,8 @@ figure img {
   }
   .persons_items {
     display: grid;
-    grid-template-columns: 340px 138px 189px 1fr 1fr 1fr;
+    grid-template-columns: 340px 102px 146px 1fr 1fr 1fr;
+    grid-column-gap: 10px;
   }
 }
 .row_and_column {
@@ -2592,6 +2593,7 @@ figure img {
   .header_persons_list {
     display: grid;
     grid-template-columns: 282px 138px 189px;
+    grid-column-gap: 10px;
     margin-left: 84px;
     > div {
       font-style: normal;

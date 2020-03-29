@@ -467,7 +467,8 @@ export const ReducerState = ({ children }) => {
         type: FETCH_ONE_PERSONS,
         payload: res.data
       });
-    }).catch(error=>{if(error.response.data.error==="Resource not found"){
+    }).catch(error=>{
+      if(error.response&&error.response.data.error==="Resource not found"){
       history.goBack('/');
       alert.error("Эта страница удаленна")
     }})

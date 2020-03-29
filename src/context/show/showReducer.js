@@ -9,7 +9,8 @@ import {
   SEARCH_SORT,
   SEARCH_SORT_FAVORITE,
   FETCH_FAVORITE_LIST,
-  FETCH_FAVORITE_ORDER
+  FETCH_FAVORITE_ORDER,
+  DELETE_FAVORITE_LIST
 } from "../types";
 const handlers = {
   //Показать элемент
@@ -49,6 +50,11 @@ const handlers = {
   [SEARCH_SORT_FAVORITE]: (state, { payload }) => ({
     ...state,
     data_value_favorite: payload
+  }),
+
+  [DELETE_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
   }),
   [FETCH_FAVORITE_LIST]: (state, { payload }) => ({
     ...state,
