@@ -35,13 +35,19 @@ export const EventState = ({ children }) => {
         }
       }
     );
-    fetch_number();
-    console.log(res.data);
-    dispatch({
-      type: SORT_DATA_EVENTS,
-      payload: res.data
-    });
-    isLoading(true);
+    if(res.data.events.length===0){
+      Fetch_data_events(number,order_by)
+      isLoading(true);
+    }else{
+      fetch_number();
+      console.log(res.data);
+      dispatch({
+        type: SORT_DATA_EVENTS,
+        payload: res.data
+      });
+      isLoading(true);
+    }
+ 
   };
 
 

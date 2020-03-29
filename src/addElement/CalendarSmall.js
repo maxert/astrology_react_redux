@@ -5,7 +5,7 @@ import Axios from "axios";
 import { ReduceContext } from "../context/reducerContext";
 import { EventContext } from "../context/eventReducer/eventContext";
 
-function CalendarNew({NewDefault,onAllChange}) {
+function CalendarSmall({ NewDefault, ValueSet }) {
   const { none } = useContext(ReduceContext);
   const { sort_data_events } = useContext(EventContext);
   function onPanelChange(date) {
@@ -61,11 +61,14 @@ function CalendarNew({NewDefault,onAllChange}) {
   }
   return (
     <Calendar
-    defaultValue={NewDefault}
+      defaultValue={NewDefault}
+      value={ValueSet}
       fullscreen={false}
       dateCellRender={dateCellRender}
-      onChange={(date)=>{onPanelChange(date);onAllChange(date)}}
+      onChange={date => {
+        onPanelChange(date);
+      }}
     />
   );
 }
-export default CalendarNew;
+export default CalendarSmall;

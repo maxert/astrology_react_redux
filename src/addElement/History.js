@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { List } from "semantic-ui-react";
 import Axios from "axios";
 import moment from "moment";
+import { NavLink } from "react-router-dom";
 
 //Блок историй
 function History() {
@@ -31,12 +32,17 @@ function History() {
                   />
                 </div>
                 <List.Content>
-                  <List.Description as="a">
+                  <List.Description as="div" >
                   {moment(items.created_at).format("DD.MM.YYYY")} , {moment(items.created_at).format("HH:MM")}
                   </List.Description>
-                  <List.Header as="a">
+                  <List.Header as="div">
                     {items.description+" "}
-                    <span> {items.name}</span>
+                     {items.description==="Персона удалена"?
+                     <span> {items.name}</span>:
+                     <NavLink to={`/${items.obj_type}/id/${items.obj_id}`}> {items.name}</NavLink>
+                     }
+                    
+                    
                   </List.Header>
                 </List.Content>
               </List.Item>

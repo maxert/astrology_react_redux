@@ -39,6 +39,7 @@ import {
 import Axios from "axios";
 
 import { useAlert } from "react-alert";
+import { useHistory } from "react-router";
 export const ReducerState = ({ children }) => {
   const initialState = {
     isLoading: false,
@@ -65,6 +66,7 @@ export const ReducerState = ({ children }) => {
     data_link_favorite: "/api/companies"
   };
   const alert = useAlert();
+  const history = useHistory();
   const [state, dispatch] = useReducer(AlertReducer, initialState);
   const pagination_number = number => {
     dispatch({
@@ -449,22 +451,27 @@ export const ReducerState = ({ children }) => {
       });
   };
   const Fetch_one_persons = async id => {
-    const res = await Axios.get(
+    await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    );
-    add_type_links(res.data.type, res.data.id);
-    Fetch_notal_card(res.data.type, res.data.id);
-    Fetch_links(res.data.type, res.data.id);
-
-    dispatch({
-      type: FETCH_ONE_PERSONS,
-      payload: res.data
-    });
+    ).then(res=>{
+      add_type_links(res.data.type, res.data.id);
+      Fetch_notal_card(res.data.type, res.data.id);
+      Fetch_links(res.data.type, res.data.id);
+  
+      dispatch({
+        type: FETCH_ONE_PERSONS,
+        payload: res.data
+      });
+    }).catch(error=>{if(error.response.data.error==="Resource not found"){
+      history.goBack('/');
+      alert.error("Эта страница удаленна")
+    }})
+   
   };
 
   const Fetch_one_events = async id => {

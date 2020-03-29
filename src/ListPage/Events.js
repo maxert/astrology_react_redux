@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Search from "../addElement/search";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { Button, Dimmer, Loader } from "semantic-ui-react";
@@ -18,13 +18,16 @@ import SearchAll from "./SearchAll";
 import { ShowContext } from "../context/show/showContext";
 import { GeoState } from "../context/geolocation/GeoState";
 import CalendarNew from "../addElement/Calendar";
+import CalendarSmall from "../addElement/CalendarSmall";
 //Локализация календаря
 moment.locale("ru");
 
 //Страница списка Событий
 function EventsHome() {
   let { url } = useRouteMatch();
-
+  const d = new Date();
+  const dateFormat = "YYYY-MM-DD";
+  const [dateNow, setDateNow] = useState(moment(d).format("YYYY"));
   const { display } = useContext(ShowContext);
 
   const {
@@ -35,14 +38,10 @@ function EventsHome() {
     isLoading
   } = useContext(ReduceContext);
 
-  const {
-    Fetch_data_events,
-    delete_events,
-    state_event,
-    sort_data_events
-  } = useContext(EventContext);
+  const { Fetch_data_events, delete_events, state_event } = useContext(
+    EventContext
+  );
 
-  
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
     Fetch_data_events(Value._targetInst.pendingProps.value, none.sorted);
@@ -58,6 +57,9 @@ function EventsHome() {
     isLoading(false);
   }, [none.sorted]);
 
+  function onAllChange(date) {
+    setDateNow(moment(date).format("YYYY"));
+  }
   return (
     <div className="container_list">
       <div className="search_container">
@@ -73,51 +75,24 @@ function EventsHome() {
           </NavLink>
           <div className="calendar_container">
             <div className="calendar_container_left">
-              <CalendarNew></CalendarNew>
-              {/* <Calendar
-                fullscreen={false}
-                onChange={onPanelChange}
-                disabledDays={[new Date(2020, 3, 15), { daysOfWeek: [0, 6] }]}
-              /> */}
+              <CalendarNew
+                onAllChange={date => onAllChange(date)}
+              ></CalendarNew>
             </div>
             <div className="calendar_container_right">
-              <div className="date_items">
-                <div className="data_items_text">Январь</div>
-                {/* <Calendar fullscreen={false} onPanelChange={onPanelChange} /> */}
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Февраль</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Март</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Апрель</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Май</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Июнь</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Июль</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Август</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Сентябрь</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Октябрь</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Ноябрь</div>
-              </div>
-              <div className="date_items">
-                <div className="data_items_text">Декабрь</div>
-              </div>
+              {moment(d, dateFormat)._locale._months.standalone.map(
+                (item, id) => (
+                  <div className="date_items" key={id}>
+                    <div className="data_items_text">{item}</div>
+                    <CalendarSmall
+                      NewDefault={moment(d, dateFormat).month(id)}
+                      ValueSet={moment(d, dateFormat)
+                        .month(id)
+                        .year(dateNow)}
+                    ></CalendarSmall>
+                  </div>
+                )
+              )}
             </div>
           </div>
           <div className="persons_list_grid persons_list_column">
