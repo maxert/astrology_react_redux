@@ -7,14 +7,10 @@ import { useState } from "react";
 import { ReduceContext } from "../context/reducerContext";
 import EditDrop from "../addElement/editDropSearch";
 import { Button } from "semantic-ui-react";
-function SearchAll({NameButton}) {
-  const url = useRouteMatch();
-  const {
-    Add_favorite,
-    delete_favorite,
-    none,
-    delete_all,
-  } = useContext(ReduceContext);
+function SearchAll({ NameButton, URL, NameCategory }) {
+  const { Add_favorite, delete_favorite, none, delete_all } = useContext(
+    ReduceContext
+  );
   const [isFavorite, setFavorite] = useState(true);
 
   function FavoriteClick() {
@@ -25,45 +21,77 @@ function SearchAll({NameButton}) {
   const [displaySet, setDisplay] = useState(false);
 
   const [isSort, setSort] = useState(true);
-  const {  display, search_sort, search_sort_favorite } = useContext(
-    ShowContext
-  );
+  const {
+    display,
+    search_sort,
+    search_sort_favorite,
+    search_sort_fav_data
+  } = useContext(ShowContext);
   useEffect(() => {
     search_sort_favorite(true, display.data_value);
   }, [display.data_value]);
   return (
     <div className="container_persons">
       <div className="container_persons_head">
-        <NavLink to={`${url}/add`}>
+        <NavLink to={`${URL}/add`}>
           <Button>{NameButton}</Button>
         </NavLink>
         <div className="container_persons_head_right">
-          <div className="filter_abc">
-            <div
-              className={
-                "text_head_persons abs_to_A_and_Y button_select" +
-                (isSort === true ? " active" : "")
-              }
-              onClick={() => {
-                search_sort(true, display.data_value);
-                setSort(true);
-              }}
-            >
-              По алфавиту А-Я
+          {isFavorite === false ? (
+            <div className="filter_abc">
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (isSort === true ? " active" : "")
+                }
+                onClick={() => {
+                  search_sort(true, display.data_value);
+                  setSort(true);
+                }}
+              >
+                По алфавиту А-Я
+              </div>
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (isSort !== true ? " active" : "")
+                }
+                onClick={() => {
+                  search_sort(false, display.data_value);
+                  setSort(false);
+                }}
+              >
+                По алфавиту Я-А
+              </div>
             </div>
-            <div
-              className={
-                "text_head_persons abs_to_A_and_Y button_select" +
-                (isSort !== true ? " active" : "")
-              }
-              onClick={() => {
-                search_sort(false, display.data_value);
-                setSort(false);
-              }}
-            >
-              По алфавиту Я-А
+          ) : (
+            <div className="filter_abc">
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (isSort === true ? " active" : "")
+                }
+                onClick={() => {
+                  search_sort_fav_data(true, display.data_value);
+                  setSort(true);
+                }}
+              >
+                По алфавиту А-Я
+              </div>
+              <div
+                className={
+                  "text_head_persons abs_to_A_and_Y button_select" +
+                  (isSort !== true ? " active" : "")
+                }
+                onClick={() => {
+                  search_sort_fav_data(false, display.data_value);
+                  setSort(false);
+                }}
+              >
+                По алфавиту Я-А
+              </div>
             </div>
-          </div>
+          )}
 
           <div
             className="text_head_persons favorites"
@@ -114,20 +142,28 @@ function SearchAll({NameButton}) {
                     <div className="container_info_persons d_flex_center">
                       <div
                         className={
-                          person.isFav === true
+                          person.isfav === true
                             ? "icon_image  active"
                             : "icon_image"
                         }
                       >
                         <div className="hidden_all">
                           {person.image !== null ? (
-                            <img
-                              src={
-                                "http://1690550.masgroup.web.hosting-test.net" +
-                                person.image
-                              }
-                              alt="Картинка"
-                            />
+                            person.image === undefined ? (
+                              <div className="text_persons">
+                                {person.firstname !== undefined
+                                  ? person.firstname[0]
+                                  : person.name[0]}
+                              </div>
+                            ) : (
+                              <img
+                                src={
+                                  "http://1690550.masgroup.web.hosting-test.net" +
+                                  person.image
+                                }
+                                alt="Картинка"
+                              />
+                            )
                           ) : (
                             <div className="text_persons">
                               {person.firstname !== undefined
@@ -161,7 +197,7 @@ function SearchAll({NameButton}) {
                             : "person"
                         }
                         Favorite={person.fav}
-                        isFavortie={person.isFav}
+                        isFavortie={person.isfav}
                       ></EditDrop>
                       <SvgLoader path="../../img/Group5.svg">
                         <SvgProxy selector="#co" />
@@ -169,9 +205,17 @@ function SearchAll({NameButton}) {
                     </div>
                   </div>
                   <div className="d_flex_center date_persons">
-                    <div className="persons_text_left">День рождения:</div>
+                    <div className="persons_text_left">
+                      {none.data_link_favorite.type_id === "company"
+                        ? `Дата основания:`
+                        : none.data_link_favorite.type_id === "event"
+                        ? `Дата:`
+                        : `День рождения:`}
+                    </div>
                     <div className="persons_text_right">
-                      {person.birth_date}
+                      {person.birth_date !== undefined
+                        ? person.birth_date
+                        : person.event_date}
                     </div>
                   </div>
 
@@ -187,7 +231,7 @@ function SearchAll({NameButton}) {
                   <div className="d_flex_center page_persons">
                     <NavLink
                       className="text_link d_flex_center"
-                      to={`${url}/id/${person.id}`}
+                      to={`${URL}/id/${person.id}`}
                     >
                       Перейти{" "}
                       <SvgLoader path="../../img/Arrow_21.svg">
@@ -208,16 +252,26 @@ function SearchAll({NameButton}) {
                       <div className={"icon_image  active"}>
                         <div className="hidden_all">
                           {favorite.image !== null ? (
-                            <img
-                              src={
-                                "http://1690550.masgroup.web.hosting-test.net" +
-                                favorite.image
-                              }
-                              alt="Картинка"
-                            />
+                            favorite.image === undefined ? (
+                              <div className="text_persons">
+                                {favorite.firstname !== undefined
+                                  ? favorite.firstname[0]
+                                  : favorite.name[0]}
+                              </div>
+                            ) : (
+                              <img
+                                src={
+                                  "http://1690550.masgroup.web.hosting-test.net" +
+                                  favorite.image
+                                }
+                                alt="Картинка"
+                              />
+                            )
                           ) : (
                             <div className="text_persons">
-                              {favorite.firstname[0]}
+                              {favorite.firstname !== undefined
+                                ? favorite.firstname[0]
+                                : favorite.name[0]}
                             </div>
                           )}
                         </div>
@@ -229,9 +283,13 @@ function SearchAll({NameButton}) {
                         </SvgLoader>
                       </div>
                       <div className="container_info_persons_name">
-                        {favorite.firstname +
-                          " " +
-                          (favorite.lastname !== null ? favorite.lastname : "")}
+                        {favorite.firstname !== undefined
+                          ? favorite.firstname +
+                            " " +
+                            (favorite.lastname !== null
+                              ? favorite.lastname
+                              : "")
+                          : favorite.name}
                       </div>
                     </div>
                     <div className="persons_edit">
@@ -244,7 +302,7 @@ function SearchAll({NameButton}) {
                             : "person"
                         }
                         Favorite={favorite.fav}
-                        isFavortie={favorite.isFav}
+                        isFavortie={favorite.isfav}
                       ></EditDrop>
                       <SvgLoader path="../../img/Group5.svg">
                         <SvgProxy selector="#co" />
@@ -252,7 +310,13 @@ function SearchAll({NameButton}) {
                     </div>
                   </div>
                   <div className="d_flex_center date_persons">
-                    <div className="persons_text_left">День рождения:</div>
+                    <div className="persons_text_left">
+                      {none.data_link_favorite.type_id === "company"
+                        ? `Дата основания:`
+                        : none.data_link_favorite.type_id === "event"
+                        ? `Дата:`
+                        : `День рождения:`}
+                    </div>
                     <div className="persons_text_right">
                       {favorite.birth_date}
                     </div>
@@ -270,7 +334,7 @@ function SearchAll({NameButton}) {
                   <div className="d_flex_center page_persons">
                     <NavLink
                       className="text_link d_flex_center"
-                      to={`${url}/id/${favorite.id}`}
+                      to={`${URL}/id/${favorite.id}`}
                     >
                       Перейти{" "}
                       <SvgLoader path="../../img/Arrow_21.svg">
@@ -285,8 +349,15 @@ function SearchAll({NameButton}) {
       {displaySet === true && (
         <div className="persons_list_grid persons_list_column">
           <div className="header_persons_list">
-            <div className="header_persons_list_name">Имя</div>
-            <div className="header_persons_list_date">Дата рождения</div>
+            <div className="header_persons_list_name">{NameCategory}</div>
+            <div className="header_persons_list_date">
+              {" "}
+              {none.data_link_favorite.type_id === "company"
+                ? `Дата основания`
+                : none.data_link_favorite.type_id === "event"
+                ? `Дата`
+                : `День рождения`}
+            </div>
             <div className="header_persons_list_city">Город</div>
           </div>
 
@@ -299,20 +370,28 @@ function SearchAll({NameButton}) {
                       <div className="container_info_persons d_flex_center">
                         <div
                           className={
-                            person.isFav === true
+                            person.isfav === true
                               ? "icon_image  active"
                               : "icon_image"
                           }
                         >
                           <div className="hidden_all">
                             {person.image !== null ? (
-                              <img
-                                src={
-                                  "http://1690550.masgroup.web.hosting-test.net" +
-                                  person.image
-                                }
-                                alt="Картинка"
-                              />
+                              person.image === undefined ? (
+                                <div className="text_persons">
+                                  {person.firstname !== undefined
+                                    ? person.firstname[0]
+                                    : person.name[0]}
+                                </div>
+                              ) : (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    person.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              )
                             ) : (
                               <div className="text_persons">
                                 {person.firstname !== undefined
@@ -340,7 +419,7 @@ function SearchAll({NameButton}) {
                           </div>
                           <NavLink
                             className="text_link d_flex_center"
-                            to={`${url}/id/${person.id}`}
+                            to={`${URL}/id/${person.id}`}
                           >
                             Перейти{" "}
                             <SvgLoader path="../../img/Arrow_21.svg">
@@ -352,7 +431,9 @@ function SearchAll({NameButton}) {
                     </div>
                     <div className="d_flex_center date_persons">
                       <div className="persons_text_right">
-                        {person.birth_date}
+                        {person.birth_date !== undefined
+                          ? person.birth_date
+                          : person.event_date}
                       </div>
                     </div>
                     <div className="d_flex_center adress_persons">
@@ -363,7 +444,7 @@ function SearchAll({NameButton}) {
                       )}
                     </div>
 
-                    {person.isFav === true ? (
+                    {person.isfav === true ? (
                       <div
                         className="d_flex_center favorite_persons"
                         onClick={() =>
@@ -441,13 +522,19 @@ function SearchAll({NameButton}) {
                         <div className={"icon_image  active"}>
                           <div className="hidden_all">
                             {favorite.image !== null ? (
-                              <img
-                                src={
-                                  "http://1690550.masgroup.web.hosting-test.net" +
-                                  favorite.image
-                                }
-                                alt="Картинка"
-                              />
+                              favorite.image === undefined ? (
+                                <div className="text_persons">
+                                  {favorite.firstname[0]}
+                                </div>
+                              ) : (
+                                <img
+                                  src={
+                                    "http://1690550.masgroup.web.hosting-test.net" +
+                                    favorite.image
+                                  }
+                                  alt="Картинка"
+                                />
+                              )
                             ) : (
                               <div className="text_persons">
                                 {favorite.firstname[0]}
@@ -463,15 +550,17 @@ function SearchAll({NameButton}) {
                         </div>
                         <div className="container_info_persons_column">
                           <div className="container_info_persons_name">
-                            {favorite.firstname +
-                              " " +
-                              (favorite.lastname !== null
-                                ? favorite.lastname
-                                : "")}
+                            {favorite.firstname !== undefined
+                              ? favorite.firstname +
+                                " " +
+                                (favorite.lastname !== null
+                                  ? favorite.lastname
+                                  : "")
+                              : favorite.name}
                           </div>
                           <NavLink
                             className="text_link d_flex_center"
-                            to={`${url}/id/${favorite.id}`}
+                            to={`${URL}/id/${favorite.id}`}
                           >
                             Перейти{" "}
                             <SvgLoader path="../../img/Arrow_21.svg">
@@ -483,7 +572,9 @@ function SearchAll({NameButton}) {
                     </div>
                     <div className="d_flex_center date_persons">
                       <div className="persons_text_right">
-                        {favorite.birth_date}
+                        {favorite.birth_date !== undefined
+                          ? favorite.birth_date
+                          : favorite.event_date}
                       </div>
                     </div>
                     <div className="d_flex_center adress_persons">

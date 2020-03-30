@@ -49,21 +49,21 @@ function PersonsAdd() {
     values["letnee"] = values.checkbox === true ? 1 : 0;
     console.log(values);
     Add_persons(values);
-    debugger;
+    ;
   }
 
   useEffect(() => {
-    if (errors.date !== undefined) {
+    if (errors.birth_date !== undefined) {
       alert.error("Введите корректно дату");
     }
-    if (errors.time !== undefined) {
+    if (errors.birth_time !== undefined) {
       alert.error("Введите корректно время");
     }
 
-    if (errors.lng !== undefined) {
+    if (errors.longitude !== undefined) {
       alert.error("Введите долготу");
     }
-    if (errors.lat !== undefined) {
+    if (errors.latitude !== undefined) {
       alert.error("Введите широту");
     }
     if (errors.firstname !== undefined) {
@@ -81,7 +81,7 @@ function PersonsAdd() {
   //   let new_data= birth_date[2]+"-"+birth_date[1]+"-"+birth_date[0];
   //   values["birth_date"] = new_data;
   //   Add_persons(values);
-  //   debugger;
+  //   ;
   // };
   return (
     <div className="container_add">
@@ -114,7 +114,7 @@ function PersonsAdd() {
                     className={"" + (errors.firstname ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){1,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){1,26}$/i
                     })}
                   />
                   {errors.firstname && errors.firstname.message}

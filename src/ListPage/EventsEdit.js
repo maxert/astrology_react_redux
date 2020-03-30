@@ -24,7 +24,7 @@ function EventsEdit() {
   const { handleSubmit, register, errors, control, setValue } = useForm({
     reValidateMode: onSubmit
   });
-  const {geoGet} = useContext(GeoContext)
+  const { geoGet } = useContext(GeoContext);
   const { url } = useRouteMatch();
   const { none, Fetch_one_events } = useContext(ReduceContext);
   const { Update_events } = useContext(EventContext);
@@ -32,16 +32,18 @@ function EventsEdit() {
     Fetch_one_events(url.replace(/\D+/g, ""));
   }, []);
 
-
   function onSubmit(values) {
     values["event_date"] = moment(values.event_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] = geoGet.geolocation ? geoGet.geolocation.city : none.one_event.city!==null? none.one_event.city:"";
+    values["city"] = geoGet.geolocation
+      ? geoGet.geolocation.city
+      : none.one_event.city !== null
+      ? none.one_event.city
+      : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_events(values, none.data_id.type_id);
-    debugger;
   }
   const history = useHistory();
   useEffect(() => {
@@ -52,10 +54,10 @@ function EventsEdit() {
       alert.error("Введите корректно время");
     }
 
-    if (errors.lng !== undefined) {
+    if (errors.longitude !== undefined) {
       alert.error("Введите долготу");
     }
-    if (errors.lat !== undefined) {
+    if (errors.latitude !== undefined) {
       alert.error("Введите широту");
     }
     if (errors.name !== undefined) {
@@ -104,7 +106,7 @@ function EventsEdit() {
                       defaultValue={none.one_event.name}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+){0,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
                       })}
                     />
                     {errors.name && errors.name.message}
@@ -216,18 +218,20 @@ function EventsEdit() {
                       <div className="text_localisation">Часовой пояс:</div>
                       <SelectLocation
                         ValueOptions={
-                          Number(none.option_value) !== 0 ? Number(none.option_value) : none.one_event.timezone
+                          Number(none.option_value) !== 0
+                            ? Number(none.option_value)
+                            : none.one_event.timezone
                         }
                       ></SelectLocation>
                     </div>
                   </div>
-                 
+
                   <Controller
                     name="checkbox"
                     rules={{
                       required: false
                     }}
-                    defaultValue={none.one_event.letnee === 0 ? true : false}
+                    defaultValue={none.one_event.letnee === 1 ? true : false}
                     as={
                       <AntCheckbox
                         label="Летнее время"

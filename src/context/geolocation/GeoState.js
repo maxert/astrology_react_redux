@@ -15,7 +15,7 @@ export const GeoState = ({ children }) => {
   };
   const {SelectLocationNew}=useContext(ReduceContext);
   const [state, dispatch] = useReducer(GeoReducer, initialState);
-  const geolocation = city => {
+  const geolocation = async city => {
     const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
     Geocode.setApiKey(API);
     Geocode.setLanguage("ru");

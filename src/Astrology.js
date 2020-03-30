@@ -4,7 +4,8 @@ import {
   Route,
   NavLink,
   Redirect,
-  useRouteMatch
+  useRouteMatch,
+  useLocation
 } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import Home from "./ListPage/Home";
@@ -24,12 +25,20 @@ import { EventContext } from "./context/eventReducer/eventContext";
 
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
+
+  const { pathname } = useLocation();
+
   const { none, fetch_number } = useContext(ReduceContext);
   const { state_persons } = useContext(PersonsContext);
   const { state_company } = useContext(CompanyContext);
   const { state_event } = useContext(EventContext);
-  useEffect(() => {
 
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  useEffect(() => {
     fetch_number();
   }, [
     state_persons.data_persons !== undefined
@@ -185,7 +194,13 @@ function Astrology() {
             ) : (
               <Route exact path="/" component={Home} />
             )}
-            <Route path="/home_card" component={NotalHome} />
+
+            <Route path="/home_card">
+              <ShowState>
+                <NotalHome></NotalHome>
+              </ShowState>
+            </Route>
+
             <Route path="/person" component={Persons} />
             <Route path="/company" component={Company} />
             <Route path="/сountries" component={Countries} />

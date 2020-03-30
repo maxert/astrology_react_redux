@@ -34,7 +34,8 @@ import {
   SORTED,
   LOADING,
   URL_BACK,
-  SHOW_NOTAL_CARD
+  SHOW_NOTAL_CARD,
+  FETCH_DATA_FAVORITE_ORDER
 } from "./types";
 import Axios from "axios";
 
@@ -67,6 +68,8 @@ export const ReducerState = ({ children }) => {
   };
   const alert = useAlert();
   const history = useHistory();
+  const CancelToken = Axios.CancelToken;
+
   const [state, dispatch] = useReducer(AlertReducer, initialState);
   const pagination_number = number => {
     dispatch({
@@ -114,7 +117,28 @@ export const ReducerState = ({ children }) => {
     });
   };
 
+  const Fetch_data_favorite_order = (bool, data) => {
+    isLoading(false);
+    const payload = bool
+      ? data.sort((a, b) =>
+          a.firstname !== undefined
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US")
+        )
+      : data.sort((a, b) =>
+          b.firstname !== undefined
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US")
+        );
+    console.log(payload);
+    setTimeout(() => {
+      isLoading(true);
+    }, 500);
+    dispatch({ type: FETCH_DATA_FAVORITE_ORDER, payload });
+  };
+
   const Fetch_data_favorite = async obj_type => {
+    isLoading(false);
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
       {
@@ -124,7 +148,7 @@ export const ReducerState = ({ children }) => {
       }
     );
     console.log(res.data);
-
+    isLoading(true);
     dispatch({
       type: FETCH_DATA_FAVORITE,
       payload: res.data
@@ -147,7 +171,7 @@ export const ReducerState = ({ children }) => {
       }
     );
     fetch_number();
-    Fetch_data_favorite();
+    Fetch_data_favorite(type);
     dispatch({
       type: DELETE_FAVORITE
     });
@@ -336,7 +360,6 @@ export const ReducerState = ({ children }) => {
   const createNotals = async value => {
     isLoading(false);
     console.log(value);
-    debugger;
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
       {
@@ -458,21 +481,26 @@ export const ReducerState = ({ children }) => {
           Authorization: `Bearer ${initialState.token}`
         }
       }
-    ).then(res=>{
-      add_type_links(res.data.type, res.data.id);
-      Fetch_notal_card(res.data.type, res.data.id);
-      Fetch_links(res.data.type, res.data.id);
-  
-      dispatch({
-        type: FETCH_ONE_PERSONS,
-        payload: res.data
+    )
+      .then(res => {
+        add_type_links(res.data.type, res.data.id);
+        Fetch_notal_card(res.data.type, res.data.id);
+        Fetch_links(res.data.type, res.data.id);
+
+        dispatch({
+          type: FETCH_ONE_PERSONS,
+          payload: res.data
+        });
+      })
+      .catch(error => {
+        if (
+          error.response &&
+          error.response.data.error === "Resource not found"
+        ) {
+          history.goBack("/");
+          alert.error("Эта страница удаленна");
+        }
       });
-    }).catch(error=>{
-      if(error.response&&error.response.data.error==="Resource not found"){
-      history.goBack('/');
-      alert.error("Эта страница удаленна")
-    }})
-   
   };
 
   const Fetch_one_events = async id => {
@@ -625,11 +653,18 @@ export const ReducerState = ({ children }) => {
       }
     });
   };
-
-  const online_card = async (int_d, int_type, int, refresh) => {
-    await Axios.get(
+  let cancel;
+  const online_card = (int_d, int_type, int, refresh, isc) => {
+   
+    //if(isc) canceller.cancel();
+    console.log(isc);
+    cancel && cancel();
+    Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
       {
+        cancelToken: new CancelToken(function executor(c) {
+          cancel = c;
+        }),
         headers: {
           Authorization: `Bearer ${initialState.token}`
         }
@@ -661,6 +696,7 @@ export const ReducerState = ({ children }) => {
         delete_link,
         delete_favorite,
         Fetch_data_favorite,
+        Fetch_data_favorite_order,
         SelectLocationNew,
         search_data,
         search_data_links,

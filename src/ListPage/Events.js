@@ -26,10 +26,12 @@ moment.locale("ru");
 function EventsHome() {
   let { url } = useRouteMatch();
   const d = new Date();
+  const [selected, setSelected] = useState();
   const dateFormat = "YYYY-MM-DD";
+  const [dateSmall, setDateSmall] = useState("");
   const [dateNow, setDateNow] = useState(moment(d).format("YYYY"));
   const { display } = useContext(ShowContext);
-
+  const { sort_data_events } = useContext(EventContext);
   const {
     Add_favorite,
     delete_favorite,
@@ -59,6 +61,17 @@ function EventsHome() {
 
   function onAllChange(date) {
     setDateNow(moment(date).format("YYYY"));
+    setDateSmall(moment(d, dateFormat).year(moment(date).format("YYYY")));
+  }
+  function onChangeSmall(date, id) {
+    sort_data_events(
+      none.pagination !== 1 ? none.pagination : 1,
+      none.sorted,
+      moment(date._d).format("YYYY-MM-DD")
+    );
+    setDateSmall(moment(d, dateFormat).month(moment(date).format("MM") - 1));
+    setSelected(id);
+    console.log(id);
   }
   return (
     <div className="container_list">
@@ -67,7 +80,11 @@ function EventsHome() {
       </div>
       <h2>События</h2>
       {display.isSearch === true ? (
-        <SearchAll NameButton={"Создать новое событие"}></SearchAll>
+        <SearchAll
+          NameButton={"Создать новое событие"}
+          URL={url}
+          NameCategory={"Название события"}
+        ></SearchAll>
       ) : (
         <div className="container_events">
           <NavLink to={`${url}/add`}>
@@ -76,15 +93,23 @@ function EventsHome() {
           <div className="calendar_container">
             <div className="calendar_container_left">
               <CalendarNew
+                NewDefault={moment(d, dateFormat)}
+                ValueSmall={dateSmall}
                 onAllChange={date => onAllChange(date)}
               ></CalendarNew>
             </div>
             <div className="calendar_container_right">
               {moment(d, dateFormat)._locale._months.standalone.map(
                 (item, id) => (
-                  <div className="date_items" key={id}>
+                  <div
+                    className={
+                      "date_items" + (id === selected ? " active" : "")
+                    }
+                    key={id}
+                  >
                     <div className="data_items_text">{item}</div>
                     <CalendarSmall
+                      onPanelChangeSmall={(date ) => onChangeSmall(date, id)}
                       NewDefault={moment(d, dateFormat).month(id)}
                       ValueSet={moment(d, dateFormat)
                         .month(id)
@@ -101,12 +126,12 @@ function EventsHome() {
               <div className="header_persons_list_date">Дата</div>
               <div className="header_persons_list_city">Город</div>
             </div>
-            <div className="persons_list_column">
-              {none.isLoading === false ? (
-                <Dimmer className="invert_none" active inverted>
-                  <Loader size="massive">Loading</Loader>
-                </Dimmer>
-              ) : (
+            {none.isLoading === false ? (
+              <Dimmer className="invert_none" active inverted>
+                <Loader size="massive">Загрузка</Loader>
+              </Dimmer>
+            ) : (
+              <div className="persons_list_column">
                 <div className="persons_list_column">
                   {state_event.data_events.events !== undefined &&
                     state_event.data_events.events.map((event, i) => (
@@ -238,10 +263,9 @@ function EventsHome() {
                       </div>
                     ))}
                 </div>
-              )}
-            </div>
-
-            {state_event.data_events.length !== 0
+              </div>
+            )}
+            {/* {state_event.data_events.length !== 0
               ? state_event.data_events.events.length && (
                   <div className="d_flex_center pagination">
                     <PaginationExamplePagination
@@ -259,7 +283,7 @@ function EventsHome() {
                     />
                   </div>
                 )
-              : null}
+              : null} */}
           </div>
         </div>
       )}

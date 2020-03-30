@@ -5,7 +5,7 @@ import Axios from "axios";
 import { ReduceContext } from "../context/reducerContext";
 import { EventContext } from "../context/eventReducer/eventContext";
 
-function CalendarNew({NewDefault,onAllChange}) {
+function CalendarNew({NewDefault,onAllChange,ValueSmall}) {
   const { none } = useContext(ReduceContext);
   const { sort_data_events } = useContext(EventContext);
   function onPanelChange(date) {
@@ -25,13 +25,13 @@ function CalendarNew({NewDefault,onAllChange}) {
       setDate(res.data);
     });
 
-    debugger;
+    ;
   }, []);
   function getListData(value) {
     let listData;
 
     if (date !== 0) {
-      debugger;
+      ;
       date.map(item => {
         if (moment(value._d).format("DD.MM.YYYY") === item.event_date) {
           listData = [
@@ -61,7 +61,8 @@ function CalendarNew({NewDefault,onAllChange}) {
   }
   return (
     <Calendar
-    defaultValue={NewDefault}
+      defaultValue={NewDefault}
+      value={ValueSmall}
       fullscreen={false}
       dateCellRender={dateCellRender}
       onChange={(date)=>{onPanelChange(date);onAllChange(date)}}

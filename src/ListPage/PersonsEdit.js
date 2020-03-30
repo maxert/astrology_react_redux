@@ -37,7 +37,7 @@ function PersonsEdit() {
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_persons(values, none.data_id.type_id);
-    debugger;
+    ;
   }
   useEffect(() => {
     if (geoGet.geolocation !== undefined) {
@@ -60,10 +60,10 @@ function PersonsEdit() {
       alert.error("Введите корректно время");
     }
 
-    if (errors.lng !== undefined) {
+    if (errors.longtitude !== undefined) {
       alert.error("Введите долготу");
     }
-    if (errors.lat !== undefined) {
+    if (errors.latitude !== undefined) {
       alert.error("Введите широту");
     }
     if (errors.firstname !== undefined) {
@@ -106,7 +106,7 @@ function PersonsEdit() {
                       className={"" + (errors.firstname ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,26}$/i
                       })}
                     />
                     {errors.firstname && errors.firstname.message}
@@ -271,12 +271,13 @@ function PersonsEdit() {
                       ></SelectLocation>
                     </div>
                   </div>
+                  {console.log(none.one_persons.letnee)}
                   <Controller
                     name="checkbox"
                     rules={{
                       required: false
                     }}
-                    defaultValue={none.one_persons.letnee === 0 ? true : false}
+                    defaultValue={none.one_persons.letnee === 1 ? true : false}
                     as={
                       <AntCheckbox
                         label="Летнее время"

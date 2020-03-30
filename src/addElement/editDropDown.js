@@ -23,7 +23,7 @@ function DropdownExampleInline({ ID, Type, Favorite,ClickDelete,Data }) {
             <SvgLoader path="../../img/favorites_21.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
-            В избранныx
+            Удалить с избранного
           </Dropdown.Item>
         ) : (
           <Dropdown.Item

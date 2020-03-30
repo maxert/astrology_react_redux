@@ -12,6 +12,7 @@ import Axios from "axios";
 import { useAlert } from "react-alert";
 import { useHistory } from "react-router";
 import { ReduceContext } from "../reducerContext";
+import moment from "moment";
 
 export const EventState = ({ children }) => {
   const initialState = {
@@ -57,7 +58,7 @@ export const EventState = ({ children }) => {
     const res = await Axios.get(
       `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
         number === undefined ? 1 : number
-      }&order_direction=${order_by}`,
+      }&order_direction=${order_by}&date=`+moment(Date.now()).format("YYYY-MM-DD"),
       {
         headers: {
           Authorization: `Bearer ${initialState.token}`
@@ -103,7 +104,7 @@ export const EventState = ({ children }) => {
     });
 
     console.log(formData);
-    debugger;
+    ;
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
       formData,
@@ -132,7 +133,7 @@ export const EventState = ({ children }) => {
     });
 
     console.log(formData);
-    debugger;
+    ;
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/events",
       formData,

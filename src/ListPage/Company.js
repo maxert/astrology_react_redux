@@ -26,9 +26,11 @@ function CompanyHome() {
     Order_by,
     delete_all,
     Fetch_data_favorite,
+    Fetch_data_favorite_order,
     isLoading
   } = useContext(ReduceContext);
   const [isFavorite, setFavorite] = useState(false);
+  const [clickFavorite, setClickFav] = useState(true);
   const { state_company, Fetch_data_сompany, delete_company } = useContext(
     CompanyContext
   );
@@ -65,7 +67,11 @@ function CompanyHome() {
       </div>
       <h2>Копании</h2>
       {display.isSearch === true ? (
-        <SearchAll NameButton={"Создать новую компанию"}></SearchAll>
+        <SearchAll
+          NameButton={"Создать новую компанию"}
+          URL={url}
+          NameCategory={"Название"}
+        ></SearchAll>
       ) : (
         <div className="container_persons">
           <div className="container_persons_head">
@@ -73,26 +79,55 @@ function CompanyHome() {
               <Button>Создать новую компанию</Button>
             </NavLink>
             <div className="container_persons_head_right">
-              <div className="filter_abc">
-                <div
-                  className={
-                    "text_head_persons abs_to_A_and_Y button_select" +
-                    (none.sorted === "asc" ? " active" : "")
-                  }
-                  onClick={() => Order_by("asc")}
-                >
-                  По алфавиту А-Я
+              {isFavorite === true ? (
+                <div className="filter_abc">
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (clickFavorite === true ? " active" : "")
+                    }
+                    onClick={() => {
+                      Fetch_data_favorite_order(true, none.data_favorite);
+                      setClickFav(true);
+                    }}
+                  >
+                    По алфавиту А-Я
+                  </div>
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (clickFavorite === false ? " active" : "")
+                    }
+                    onClick={() => {
+                      Fetch_data_favorite_order(false, none.data_favorite);
+                      setClickFav(false);
+                    }}
+                  >
+                    По алфавиту Я-А
+                  </div>
                 </div>
-                <div
-                  className={
-                    "text_head_persons abs_to_A_and_Y button_select" +
-                    (none.sorted !== "asc" ? " active" : "")
-                  }
-                  onClick={() => Order_by("desc")}
-                >
-                  По алфавиту Я-А
+              ) : (
+                <div className="filter_abc">
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (none.sorted === "asc" ? " active" : "")
+                    }
+                    onClick={() => Order_by("asc")}
+                  >
+                    По алфавиту А-Я
+                  </div>
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (none.sorted !== "asc" ? " active" : "")
+                    }
+                    onClick={() => Order_by("desc")}
+                  >
+                    По алфавиту Я-А
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div
                 className="text_head_persons favorites"
@@ -135,7 +170,7 @@ function CompanyHome() {
             isFavorite === false ? (
               none.isLoading === false ? (
                 <Dimmer className="invert_none" active inverted>
-                  <Loader size="massive">Loading</Loader>
+                  <Loader size="massive">Загрузка</Loader>
                 </Dimmer>
               ) : (
                 <div className="persons_list_grid">
@@ -181,11 +216,7 @@ function CompanyHome() {
                             <EditDrop
                               key={company.id}
                               ID={company.id}
-                              Type={
-                                none.data_link_favorite
-                                  ? none.data_link_favorite.type_id
-                                  : "person"
-                              }
+                              Type={company.obj_type}
                               Favorite={company.fav}
                               ClickDelete={(e, data) =>
                                 delete_company(
@@ -202,7 +233,7 @@ function CompanyHome() {
                         </div>
                         <div className="d_flex_center date_persons">
                           <div className="persons_text_left">
-                            День рождения:
+                            День основания:
                           </div>
                           <div className="persons_text_right">
                             {company.birth_date}
@@ -235,15 +266,15 @@ function CompanyHome() {
                     ))}
                 </div>
               )
+            ) : none.isLoading === false ? (
+              <Dimmer className="invert_none" active inverted>
+                <Loader active size="massive">
+                  Загрузка
+                </Loader>
+              </Dimmer>
             ) : (
               <div className="persons_list_grid">
-                {none.data_favorite === null ? (
-                  <Dimmer className="invert_none" active inverted>
-                    <Loader active size="massive">
-                      Loading
-                    </Loader>
-                  </Dimmer>
-                ) : (
+                {none.data_favorite &&
                   none.data_favorite.map(favorite => (
                     <div className="persons_items" key={favorite.id}>
                       <div className="persons_items_head d_flex_center">
@@ -287,11 +318,7 @@ function CompanyHome() {
                           <EditDrop
                             key={favorite.id}
                             ID={favorite.id}
-                            Type={
-                              none.data_link_favorite
-                                ? none.data_link_favorite.type_id
-                                : "person"
-                            }
+                            Type={favorite.obj_type}
                             Favorite={1}
                             ClickDelete={(e, data) =>
                               delete_company(
@@ -307,7 +334,7 @@ function CompanyHome() {
                         </div>
                       </div>
                       <div className="d_flex_center date_persons">
-                        <div className="persons_text_left">День рождения:</div>
+                        <div className="persons_text_left">Дата основания:</div>
                         <div className="persons_text_right">
                           {favorite.birth_date}
                         </div>
@@ -336,8 +363,7 @@ function CompanyHome() {
                         </NavLink>
                       </div>
                     </div>
-                  ))
-                )}
+                  ))}
               </div>
             )
           ) : (
@@ -346,7 +372,7 @@ function CompanyHome() {
           {display.visible === true && (
             <div className="persons_list_grid persons_list_column">
               <div className="header_persons_list">
-                <div className="header_persons_list_name">Имя</div>
+                <div className="header_persons_list_name">Название</div>
                 <div className="header_persons_list_date">Дата основания</div>
                 <div className="header_persons_list_city">Город</div>
               </div>
@@ -354,7 +380,7 @@ function CompanyHome() {
               {!isFavorite ? (
                 none.isLoading === false ? (
                   <Dimmer className="invert_none" active inverted>
-                    <Loader size="massive">Loading</Loader>
+                    <Loader size="massive">Загрузка</Loader>
                   </Dimmer>
                 ) : (
                   <div className="persons_list_column">
@@ -468,7 +494,7 @@ function CompanyHome() {
                           )}
 
                           <NavLink
-                            to={`/person/${company.id}/edit`}
+                            to={`/company/${company.id}/edit`}
                             className="d_flex_center edit_persons"
                           >
                             <SvgLoader path="../../img/Edit1.svg">
@@ -588,7 +614,7 @@ function CompanyHome() {
                         </div>
 
                         <NavLink
-                          to={`/person/${favorite.id}/edit`}
+                          to={`/company/${favorite.id}/edit`}
                           className="d_flex_center edit_persons"
                         >
                           <SvgLoader path="../../img/Edit1.svg">
@@ -628,7 +654,9 @@ function CompanyHome() {
                     ? state_company.data_company.pages
                     : 1
                 }
-                listpagedefault={none.pagination!==undefined?none.pagination:1}
+                listpagedefault={
+                  none.pagination !== undefined ? none.pagination : 1
+                }
                 SelectPagination={SelectPagination =>
                   pagination(SelectPagination)
                 }
@@ -662,9 +690,11 @@ function Company() {
         </GeoState>
       </Route>
       <Route path={`${path}/:id/edit`}>
-        <GeoState>
-          <CompanyEdit></CompanyEdit>
-        </GeoState>
+        <ShowState>
+          <GeoState>
+            <CompanyEdit></CompanyEdit>
+          </GeoState>
+        </ShowState>
       </Route>
     </Switch>
   );

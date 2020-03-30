@@ -11,7 +11,7 @@ function ModalExampleDimmer(Houses) {
 
   function selectNew(event, data) {
     setSelect(data.value)
-    debugger;
+    ;
   }
   return (
     <Modal trigger={<div className="modal_click"></div>} closeIcon className="modal_big">

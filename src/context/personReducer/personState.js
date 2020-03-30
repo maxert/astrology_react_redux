@@ -43,7 +43,7 @@ export const PersonState = ({ children }) => {
       }
     );
     alert.success("Персона обновленна");
-    debugger;
+    ;
     dispatch({
       type: UPDATE_PERSONS,
       add_update_json: res.data
@@ -63,7 +63,7 @@ export const PersonState = ({ children }) => {
    
 
     console.log(formData);
-    debugger;
+    ;
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/persons",
       formData,
@@ -108,7 +108,7 @@ export const PersonState = ({ children }) => {
       }
     ).then(res => {
       console.log(res.data);
-      debugger;
+      ;
       dispatch({
         type: FETCH_DATA_PERSONS,
         payload: res.data

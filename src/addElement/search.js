@@ -86,7 +86,7 @@ function SearchExampleStandard({ handleResultSelect }) {
       value.result.title,
       none.data_link.type_id
     );
-    debugger;
+    ;
   }
   return (
     <Grid>

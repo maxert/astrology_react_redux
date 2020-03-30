@@ -11,7 +11,8 @@ import {
   SEARCH_SORT_FAVORITE,
   FETCH_FAVORITE_LIST,
   FETCH_FAVORITE_ORDER,
-  DELETE_FAVORITE_LIST
+  DELETE_FAVORITE_LIST,
+  SEARCH_SORT_FAV_DATE
 } from "../types";
 import { ShowContext } from "./showContext";
 import { ShowReducer } from "./showReducer";
@@ -37,9 +38,24 @@ export const ShowState = ({ children }) => {
   const hide = () => {
     dispatch({ type: HIDE_ELEMENT, visible: false });
   };
+  const search_sort_fav_data = (bool, data) => {
+    let payload = bool
+      ? data.sort((a, b) =>
+          a.firstname !== undefined
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US")
+        )
+      : data.sort((a, b) =>
+          b.firstname !== undefined
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US")
+        );
+    payload = data.filter(i => i.isfav !== false);
+    dispatch({ type: SEARCH_SORT_FAV_DATE, payload });
+  };
   const search_sort_favorite = (bool, data) => {
     if (bool) {
-      const payload = data.filter(i => i.isFav !== false);
+      const payload = data.filter(i => i.isfav !== false);
       dispatch({ type: SEARCH_SORT_FAVORITE, payload });
     } else {
       dispatch({ type: SEARCH_SORT_FAVORITE, payload: data });
@@ -49,16 +65,15 @@ export const ShowState = ({ children }) => {
     const payload = bool
       ? data.sort((a, b) =>
           a.firstname !== undefined
-            ? a.firstname.localeCompare(b.firstname)
-            : a.name.localeCompare(b.name)
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US")
         )
       : data.sort((a, b) =>
           b.firstname !== undefined
-            ? b.firstname.localeCompare(a.firstname)
-            : b.name.localeCompare(a.name)
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US")
         );
     console.log(payload);
-    debugger;
     dispatch({ type: SEARCH_SORT, payload });
   };
   const search_bool = bool => {
@@ -88,22 +103,21 @@ export const ShowState = ({ children }) => {
     const payload = bool
       ? data.sort((a, b) =>
           a.firstname !== undefined
-            ? a.firstname.localeCompare(b.firstname)
-            : a.name.localeCompare(b.name)
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US")
         )
       : data.sort((a, b) =>
           b.firstname !== undefined
-            ? b.firstname.localeCompare(a.firstname)
-            : b.name.localeCompare(a.name)
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US")
         );
     setTimeout(() => {
       isLoading(true);
     }, 500);
-    debugger;
     dispatch({ type: FETCH_FAVORITE_ORDER, payload });
   };
 
-  const search_add_favorite = async (id, type, data, fav) => {
+  const search_add_favorite = async (id, type, data) => {
     const res = await Axios.post(
       `http://1690550.masgroup.web.hosting-test.net/api/favorites`,
       {
@@ -116,9 +130,10 @@ export const ShowState = ({ children }) => {
         }
       }
     );
+    fetch_number();
     const payload = data.map(Items => {
       if (Items.id === id) {
-        Items.isFav = true;
+        Items.isfav = true;
       }
       return Items;
     });
@@ -136,7 +151,6 @@ export const ShowState = ({ children }) => {
         }
       }
     );
-    debugger;
     const payload = data.filter(i => i.id !== id);
     fetch_number();
     dispatch({ type: DELETE_FAVORITE_LIST, payload });
@@ -151,9 +165,10 @@ export const ShowState = ({ children }) => {
         }
       }
     );
+    fetch_number();
     const payload = data.map(Items => {
       if (Items.id === id) {
-        Items.isFav = false;
+        Items.isfav = false;
       }
       return Items;
     });
@@ -169,6 +184,7 @@ export const ShowState = ({ children }) => {
       }
     );
     console.log(res.data);
+    fetch_number();
     const payload = data.filter(i => i.id !== id);
     dispatch({ type: SEARCH_DELETE, payload });
   };
@@ -182,7 +198,6 @@ export const ShowState = ({ children }) => {
         }
       }
     );
-    debugger;
     const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
       return {
         ...res.data[Object.keys(res.data)[0]][key],
@@ -195,14 +210,14 @@ export const ShowState = ({ children }) => {
                 ? res.data[Object.keys(res.data)[0]][key].lastname
                 : "")
             : res.data[Object.keys(res.data)[0]][key].name,
-        isFav:
+        isfav:
           res.data[Object.keys(res.data)[0]][key].fav === null ? false : true
       };
     });
     payload.sort((a, b) =>
       a.firstname !== undefined
-        ? a.firstname.localeCompare(b.firstname)
-        : a.name.localeCompare(b.name)
+        ? a.firstname.localeCompare(b.firstname, "en-US")
+        : a.name.localeCompare(b.name, "en-US")
     );
     console.log(payload);
     dispatch({
@@ -223,6 +238,7 @@ export const ShowState = ({ children }) => {
         delete_favorite_list,
         search_add_favorite,
         search_sort,
+        search_sort_fav_data,
         search_sort_favorite,
         Fetch_favorite_order,
         Fetch_favorite_list,

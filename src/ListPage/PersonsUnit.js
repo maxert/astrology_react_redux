@@ -12,6 +12,9 @@ import { NoteState } from "../context/noteReducer/noteState";
 import { ShowContext } from "../context/show/showContext";
 //Страница Персоны
 function PersonsUnit() {
+
+ 
+
   const { url } = useRouteMatch();
   const {
     number_all,
@@ -127,7 +130,7 @@ function PersonsUnit() {
               <div className="d_flex_center">
                 <div className="unit_info_left">Часовой пояс:</div>
                 <div className="unit_info_right">
-                  GMT+{none.one_persons.timezone}
+                  GMT{none.one_persons.timezone>0?"+"+none.one_persons.timezone:none.one_persons.timezone}
                 </div>
               </div>
             </div>

@@ -41,7 +41,7 @@ function SearchLinks({ handleResultSelect, handleSearchChange, isLoading }) {
     const key = data.options.filter(x => x.value === data.value);
     search_select(data.value, key[0].key);
     console.log(key[0].key);
-    debugger;
+    ;
   }
 
   return (

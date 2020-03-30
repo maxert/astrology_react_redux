@@ -13,40 +13,53 @@ function History() {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("users")}`
       }
-    }).then(res => {setHistory(res.data);console.log(res.data)});
-  },[]);
+    }).then(res => {
+      setHistory(res.data);
+      console.log(res.data);
+    });
+  }, []);
 
   return (
     <div className="histotry_container">
       <div className="text_planetary text_all">История</div>
       <div className="history_list">
         <List divided relaxed>
-          {dateHistory!==undefined &&
-            dateHistory.history.map(items => 
+          {dateHistory !== undefined &&
+            dateHistory.history.map(items => (
               <List.Item key={items.id}>
                 <div className="icon_image">
-                  <img
-                    className="icon_image_size"
-                    src={items.image!==null?"http://1690550.masgroup.web.hosting-test.net/"+items.image:"/img/Ellipse 11.png"}
-                    alt=""
-                  />
+                  {items.image !== null ? (
+                    <img
+                      className="icon_image_size"
+                      src={
+                        "http://1690550.masgroup.web.hosting-test.net/" +
+                        items.image
+                      }
+                      alt=""
+                    />
+                  ) : (
+                    <div className="text_image">{items.name[0]}</div>
+                  )}
                 </div>
                 <List.Content>
-                  <List.Description as="div" >
-                  {moment(items.created_at).format("DD.MM.YYYY")} , {moment(items.created_at).format("HH:MM")}
+                  <List.Description as="div">
+                    {moment(items.created_at).format("DD.MM.YYYY")} ,{" "}
+                    {moment(items.created_at).format("HH:mm")}
                   </List.Description>
                   <List.Header as="div">
-                    {items.description+" "}
-                     {items.description==="Персона удалена"?
-                     <span> {items.name}</span>:
-                     <NavLink to={`/${items.obj_type}/id/${items.obj_id}`}> {items.name}</NavLink>
-                     }
-                    
-                    
+                    {items.description + " "}
+                    {items.description.indexOf("удалена") !== -1 ? (
+                      <span> {items.name}</span>
+                    ) : (
+                      <NavLink to={`/${items.obj_type}/id/${items.obj_id}`}>
+                        {" "}
+                        {items.name}
+                      </NavLink>
+                    )}
                   </List.Header>
                 </List.Content>
               </List.Item>
-          )}
+            ))}
         </List>
       </div>
     </div>

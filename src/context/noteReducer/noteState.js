@@ -38,7 +38,7 @@ export const NoteState = ({ children }) => {
   };
 
   const add_note = async values => {
-    debugger;
+    ;
     const res = await Axios.post(
       "http://1690550.masgroup.web.hosting-test.net/api/notes",
       {
@@ -77,7 +77,7 @@ export const NoteState = ({ children }) => {
   };
 
   const edit_note = async (id, data) => {
-    debugger;
+    ;
     const dateEdit = data.map(Item => {
       Item.id === id && Item.isEdit === true
         ? (Item.isEdit = false)

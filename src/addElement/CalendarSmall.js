@@ -5,16 +5,10 @@ import Axios from "axios";
 import { ReduceContext } from "../context/reducerContext";
 import { EventContext } from "../context/eventReducer/eventContext";
 
-function CalendarSmall({ NewDefault, ValueSet }) {
+function CalendarSmall({ NewDefault, ValueSet,onPanelChangeSmall }) {
   const { none } = useContext(ReduceContext);
-  const { sort_data_events } = useContext(EventContext);
-  function onPanelChange(date) {
-    sort_data_events(
-      none.pagination !== 1 ? none.pagination : 1,
-      none.sorted,
-      moment(date._d).format("YYYY-MM-DD")
-    );
-  }
+
+ 
   const [date, setDate] = useState(0);
   useEffect(() => {
     Axios.get("http://1690550.masgroup.web.hosting-test.net/api/eventdates", {
@@ -25,13 +19,13 @@ function CalendarSmall({ NewDefault, ValueSet }) {
       setDate(res.data);
     });
 
-    debugger;
+    ;
   }, []);
   function getListData(value) {
     let listData;
 
     if (date !== 0) {
-      debugger;
+      ;
       date.map(item => {
         if (moment(value._d).format("DD.MM.YYYY") === item.event_date) {
           listData = [
@@ -65,8 +59,9 @@ function CalendarSmall({ NewDefault, ValueSet }) {
       value={ValueSet}
       fullscreen={false}
       dateCellRender={dateCellRender}
+      showToday={false}
       onChange={date => {
-        onPanelChange(date);
+        onPanelChangeSmall(date);
       }}
     />
   );

@@ -1,7 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 // import { SvgLoader, SvgProxy } from "react-svgmt";
-import { SmartBlock, Extensions, Image, Heading1 } from "smartblock";
+import { SmartBlock, Extensions, Image, Heading1, Trash } from "smartblock";
+import { SmartBlock as New } from "smartblock";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { NoteContext } from "../context/noteReducer/noteContext";
@@ -17,11 +18,12 @@ Extensions.push(
     ]
   })
 );
+
 //Создание заметки
 function CreateNote({ ID, Type }) {
   const { add_note } = useContext(NoteContext);
   const alert = useAlert();
-  const [htmlDesc, setHtml] = useState("<p></p>");
+  const [htmlDesc, setHtml] = useState("<p> </p>");
   const { handleSubmit, register, errors } = useForm({
     reValidateMode: onSubmit
   });
@@ -55,43 +57,8 @@ function CreateNote({ ID, Type }) {
           />
         </Form.Field>
         <div className="textarea_container">
-          <div className="textarea_note">
-            Заметка
-            {/* <div className="checkbox">
-              <div className="checkbox_list">
-                <input type="checkbox" id="bold" />
-                <label htmlFor="bold">
-                  <SvgLoader path="../../img/В.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </label>
-              </div>
-              <div className="checkbox_list">
-                <input type="checkbox" id="italic" />
-                <label htmlFor="italic">
-                  <SvgLoader path="../../img/І.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </label>
-              </div>
-              <div className="checkbox_list">
-                <input type="checkbox" id="underline" />
-                <label htmlFor="underline">
-                  <SvgLoader path="../../img/U.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </label>
-              </div>
-              <div className="checkbox_list">
-                <input type="checkbox" id="createImg" />
-                <label htmlFor="createImg">
-                  <SvgLoader path="../../img/picture 2.svg">
-                    <SvgProxy selector="#co" />
-                  </SvgLoader>
-                </label>
-              </div>
-            </div> */}
-          </div>
+          <div className="textarea_note">Заметка</div>
+
           <SmartBlock
             extensions={Extensions}
             html={htmlDesc}
@@ -99,13 +66,15 @@ function CreateNote({ ID, Type }) {
               setHtml(html);
             }}
           />
-          {/* <Form.TextArea rows="8"/> */}
+
           <div className="button_footer">
             <Button>Создать</Button>
             <Button
               className="clear_buttton"
               type="reset"
-              onClick={() => setHtml("<p></p>")}
+              onClick={() => {
+                setHtml("<p> </p>");
+              }}
             >
               Очистить
             </Button>

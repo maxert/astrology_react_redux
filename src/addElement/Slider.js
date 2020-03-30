@@ -39,14 +39,14 @@ function ModalExampleSize() {
       value.value,
       none.data_link.type_id
     );
-    debugger;
+    ;
     setTimeout(() => {
       setSearch({ isLoading: false });
     }, 300);
     console.log(value);
   }
   const onSubmit = values => {
-    debugger;
+    ;
     if (result !== undefined) {
       values["obj_type"] = none.data_id.type_link;
       values["obj_id"] = none.data_id.type_id;

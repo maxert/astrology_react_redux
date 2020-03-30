@@ -13,7 +13,7 @@ function ResultCardAll({ Birthday, Time,NameNotal }) {
 
   function selectNew(event, data) {
     setSelect(data.value);
-    debugger;
+    ;
   }
   if (none.data_notal === undefined) {
     return null;
@@ -45,7 +45,7 @@ function ResultCardAll({ Birthday, Time,NameNotal }) {
 
             {none.isLoading === false ? (
               <Dimmer active={true} inverted>
-                <Loader size="massive">Loading</Loader>
+                <Loader size="massive">Загрузка</Loader>
               </Dimmer>
             ) : select === "0" ? (
               <div className="notal_table_persons">

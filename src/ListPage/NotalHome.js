@@ -12,7 +12,7 @@ function NotalHome() {
   const { none, createNotals } = useContext(ReduceContext);
   function selectNew(event, data) {
     setSelect(data.value);
-    debugger;
+    ;
   }
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("save_natal"));
@@ -62,7 +62,7 @@ function NotalHome() {
                 </div>
                 {none.isLoading === false ? (
                   <Dimmer active={true} inverted>
-                    <Loader size="massive">Loading</Loader>
+                    <Loader size="massive">Загрузка</Loader>
                   </Dimmer>
                 ) : select === "0" ? (
                   <div className="notal_table_persons">

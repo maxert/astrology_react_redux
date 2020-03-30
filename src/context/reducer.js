@@ -6,7 +6,6 @@ import {
   ADD_FAVORITE,
   FETCH_DATA_FAVORITE,
   DELETE_FAVORITE,
-  SEARCH,
   SEARCH_SELECT,
   CREATE_LINKS,
   FETCH_LINKS,
@@ -29,9 +28,9 @@ import {
   PAGINATION_NUMBER,
   SORTED,
   LOADING,
-  URL_BACK,
   SEARCH_HOME,
   SHOW_NOTAL_CARD,
+  FETCH_DATA_FAVORITE_ORDER,
 } from "./types";
 const handlers = {
   //Залогиненый пользователь
@@ -57,7 +56,10 @@ const handlers = {
     ...state,
     pagination: payload
   }),
-
+  [FETCH_DATA_FAVORITE_ORDER]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
   [FETCH_DATA_FAVORITE]: (state, { payload }) => ({
     ...state,
     data_favorite: payload

@@ -48,17 +48,17 @@ function CompanyEdit() {
 
   const d = new Date();
   useEffect(() => {
-    if (errors.date !== undefined) {
+    if (errors.birth_date !== undefined) {
       alert.error("Введите корректно дату");
     }
-    if (errors.time !== undefined) {
+    if (errors.birth_time !== undefined) {
       alert.error("Введите корректно время");
     }
 
-    if (errors.lng !== undefined) {
+    if (errors.longitude !== undefined) {
       alert.error("Введите долготу");
     }
-    if (errors.lat !== undefined) {
+    if (errors.latitude !== undefined) {
       alert.error("Введите широту");
     }
     if (errors.name !== undefined) {
@@ -77,7 +77,7 @@ function CompanyEdit() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    debugger;
+    ;
     values["city"] =
       geoGet.geolocation !== undefined ? geoGet.geolocation.city : none.one_company.city!==null? none.one_company.city:"";
     values["timezone"] = none.option_value;
@@ -115,7 +115,7 @@ function CompanyEdit() {
                       className={"" + (errors.name ? "active" : "")}
                       ref={register({
                         required: true,
-                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,16}$/i
+                        pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,26}$/i
                       })}
                     />
                     {errors.name && errors.name.message}
@@ -288,7 +288,7 @@ function CompanyEdit() {
                     rules={{
                       required: false
                     }}
-                    defaultValue={none.one_company.letnee === 0 ? true : false}
+                    defaultValue={none.one_company.letnee === 1 ? true : false}
                     as={
                       <AntCheckbox
                         label="Летнее время"

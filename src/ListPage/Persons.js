@@ -29,11 +29,12 @@ function PersonsHome() {
     none,
     pagination_number,
     Order_by,
-    delete_all,
+    Fetch_data_favorite_order,
     Fetch_data_favorite,
     isLoading
   } = useContext(ReduceContext);
   const [isFavorite, setFavorite] = useState(false);
+  const [clickFavorite, setClickFav] = useState(true);
   const { state_persons, Fetch_data_persons, delete_persons } = useContext(
     PersonsContext
   );
@@ -70,7 +71,11 @@ function PersonsHome() {
       </div>
       <h2>Персоны</h2>
       {display.isSearch === true ? (
-        <SearchAll NameButton={"Создать новую персону"}></SearchAll>
+        <SearchAll
+          NameButton={"Создать новую персону"}
+          URL={url}
+          NameCategory={"Имя"}
+        ></SearchAll>
       ) : (
         <div className="container_persons">
           <div className="container_persons_head">
@@ -78,26 +83,55 @@ function PersonsHome() {
               <Button>Создать новую персону</Button>
             </NavLink>
             <div className="container_persons_head_right">
-              <div className="filter_abc">
-                <div
-                  className={
-                    "text_head_persons abs_to_A_and_Y button_select" +
-                    (none.sorted === "asc" ? " active" : "")
-                  }
-                  onClick={() => Order_by("asc")}
-                >
-                  По алфавиту А-Я
+              {isFavorite === true ? (
+                <div className="filter_abc">
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (clickFavorite === true ? " active" : "")
+                    }
+                    onClick={() => {
+                      Fetch_data_favorite_order(true, none.data_favorite);
+                      setClickFav(true);
+                    }}
+                  >
+                    По алфавиту А-Я
+                  </div>
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (clickFavorite === false ? " active" : "")
+                    }
+                    onClick={() => {
+                      Fetch_data_favorite_order(false, none.data_favorite);
+                      setClickFav(false);
+                    }}
+                  >
+                    По алфавиту Я-А
+                  </div>
                 </div>
-                <div
-                  className={
-                    "text_head_persons abs_to_A_and_Y button_select" +
-                    (none.sorted !== "asc" ? " active" : "")
-                  }
-                  onClick={() => Order_by("desc")}
-                >
-                  По алфавиту Я-А
+              ) : (
+                <div className="filter_abc">
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (none.sorted === "asc" ? " active" : "")
+                    }
+                    onClick={() => Order_by("asc")}
+                  >
+                    По алфавиту А-Я
+                  </div>
+                  <div
+                    className={
+                      "text_head_persons abs_to_A_and_Y button_select" +
+                      (none.sorted !== "asc" ? " active" : "")
+                    }
+                    onClick={() => Order_by("desc")}
+                  >
+                    По алфавиту Я-А
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div
                 className="text_head_persons favorites"
@@ -140,7 +174,7 @@ function PersonsHome() {
             isFavorite === false ? (
               none.isLoading === false ? (
                 <Dimmer className="invert_none" active inverted>
-                  <Loader size="massive">Loading</Loader>
+                  <Loader size="massive">Загрузка</Loader>
                 </Dimmer>
               ) : (
                 <div className="persons_list_grid">
@@ -190,11 +224,7 @@ function PersonsHome() {
                             <EditDrop
                               key={person.id}
                               ID={person.id}
-                              Type={
-                                none.data_link_favorite
-                                  ? none.data_link_favorite.type_id
-                                  : "person"
-                              }
+                              Type={person.obj_type}
                               Favorite={person.fav}
                               ClickDelete={(e, data) =>
                                 delete_persons(
@@ -244,15 +274,15 @@ function PersonsHome() {
                     ))}
                 </div>
               )
+            ) : none.isLoading === false ? (
+              <Dimmer className="invert_none" active inverted>
+                <Loader active size="massive">
+                  Загрузка
+                </Loader>
+              </Dimmer>
             ) : (
               <div className="persons_list_grid">
-                {none.data_favorite === null ? (
-                  <Dimmer className="invert_none" active inverted>
-                    <Loader active size="massive">
-                      Loading
-                    </Loader>
-                  </Dimmer>
-                ) : (
+                {none.data_favorite &&
                   none.data_favorite.map(favorite => (
                     <div className="persons_items" key={favorite.id}>
                       <div className="persons_items_head d_flex_center">
@@ -269,7 +299,9 @@ function PersonsHome() {
                                 />
                               ) : (
                                 <div className="text_persons">
-                                  {favorite.firstname[0]}
+                                  {favorite.firstname !== undefined
+                                    ? favorite.firstname[0]
+                                    : favorite.name[0]}
                                 </div>
                               )}
                             </div>
@@ -292,11 +324,7 @@ function PersonsHome() {
                           <EditDrop
                             key={favorite.id}
                             ID={favorite.id}
-                            Type={
-                              none.data_link_favorite
-                                ? none.data_link_favorite.type_id
-                                : "person"
-                            }
+                            Type={favorite.obj_type}
                             Favorite={1}
                           ></EditDrop>
                           <SvgLoader path="../../img/Group5.svg">
@@ -334,8 +362,7 @@ function PersonsHome() {
                         </NavLink>
                       </div>
                     </div>
-                  ))
-                )}
+                  ))}
               </div>
             )
           ) : (
@@ -352,7 +379,7 @@ function PersonsHome() {
               {!isFavorite ? (
                 none.isLoading === false ? (
                   <Dimmer className="invert_none" active inverted>
-                    <Loader size="massive">Loading</Loader>
+                    <Loader size="massive">Загрузка</Loader>
                   </Dimmer>
                 ) : (
                   <div className="persons_list_column">
@@ -627,7 +654,9 @@ function PersonsHome() {
                     ? state_persons.data_persons.pages
                     : 1
                 }
-                listpagedefault={none.pagination!==undefined?none.pagination:1}
+                listpagedefault={
+                  none.pagination !== undefined ? none.pagination : 1
+                }
                 SelectPagination={SelectPagination =>
                   pagination(SelectPagination)
                 }
@@ -661,9 +690,11 @@ function Persons() {
         </GeoState>
       </Route>
       <Route path={`${path}/:id/edit`}>
-        <GeoState>
-          <PersonsEdit></PersonsEdit>
-        </GeoState>
+        <ShowState>
+          <GeoState>
+            <PersonsEdit></PersonsEdit>
+          </GeoState>
+        </ShowState>
       </Route>
     </Switch>
   );

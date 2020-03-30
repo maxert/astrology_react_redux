@@ -59,10 +59,10 @@ function EventsAdd() {
       alert.error("Введите корректно время");
     }
 
-    if (errors.lng !== undefined) {
+    if (errors.longitude !== undefined) {
       alert.error("Введите долготу");
     }
-    if (errors.lat !== undefined) {
+    if (errors.latitude !== undefined) {
       alert.error("Введите широту");
     }
     if (errors.name !== undefined) {
@@ -103,7 +103,7 @@ function EventsAdd() {
                     className={"" + (errors.name ? "active" : "")}
                     ref={register({
                       required: true,
-                      pattern: /^([а-яё]+|[a-z]+){0,16}$/i
+                      pattern: /^([а-яё]+|[a-z]+|[^\\s*]){0,26}$/i
                     })}
                   />
                   {errors.name && errors.name.message}

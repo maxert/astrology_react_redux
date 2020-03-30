@@ -4,7 +4,7 @@ import { SelectWeeks } from "../addElement/SelectWeeks";
 import { SelectNew } from "../addElement/SelectNew";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { TableList } from "../addElement/Table";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { ShowContext } from "../context/show/showContext";
 import { ReduceContext } from "../context/reducerContext";
 import { Checkbox as AntCheckbox } from "antd";
@@ -13,34 +13,34 @@ import { Checkbox as AntCheckbox } from "antd";
 export const FormsPosition = () => {
   const [interval, setNumber] = useState(1);
   const [select, setSelect] = useState("0");
-  const [int_d, setint_d] = useState(0);
+  const [int_d, setint_d] = useState(1);
   const [selectData, setselectData] = useState("hour");
-  const [refresh, setRefresh] = useState(0);
-  const { online_card, none } = useContext(ReduceContext);
+  const { online_card, none,isLoading } = useContext(ReduceContext);
   const { hide, display, show } = useContext(ShowContext);
-  const { handleSubmit } = useForm();
+  const { handleSubmit, control } = useForm({
+    reValidateMode: onSubmit
+  });
+  
   const [isPlay, setPlay] = useState(false);
   function onSubmit(values) {
-    setRefresh(0)
     values["number"] = interval;
     values["type"] = selectData;
     values["int_d"] = int_d;
-    values["refresh"] = refresh;
-    online_card(values.int_d, selectData, interval, values.refresh);
+    online_card(values.int_d, values.type, values.number, 0);
   }
   function selectNew(event, data) {
     setSelect(data.value);
   }
-  if (isPlay) {
-    online_card(int_d, selectData, interval, refresh);
-  }
-
   function onChangeSelect(event, data) {
     setselectData(data.value);
   }
+
+  if (isPlay) {
+    online_card(int_d, selectData, interval, 0);
+  }
   useEffect(() => {
-    online_card(int_d, selectData, interval, refresh);
-  }, [refresh]);
+    online_card(int_d, selectData, interval, 1);
+  }, []);
 
   return (
     <form className="planetary_position" onSubmit={handleSubmit(onSubmit)}>
@@ -49,18 +49,22 @@ export const FormsPosition = () => {
         <span>{none.online_data && none.online_data.in_date + " GMT 0"}</span>
       </div>
 
-      <AntCheckbox
-        type="checkbox"
-        name="new"
-        className="planeta_сheckbox"
-        onClick={() =>
-          isPlay
-            ? (setPlay(false), setRefresh(0))
-            : (setPlay(true), setRefresh(0))
+      <Controller
+        as={
+          <AntCheckbox
+            onClick={() => (isPlay ? setPlay(false) : setPlay(true))}
+            className="planeta_сheckbox"
+          >
+            Непрерывное
+          </AntCheckbox>
         }
-      >
-        Непрерывное
-      </AntCheckbox>
+        control={control}
+        name="checkbox"
+        defaultValue={false}
+        rules={{
+          required: false
+        }}
+      ></Controller>
       <div className="header_card">
         <div className="select_submit">
           <button className="prev_button" onClick={() => setint_d(-1)}></button>
@@ -76,16 +80,19 @@ export const FormsPosition = () => {
           <SelectWeeks
             SelectSubmite={(event, data) => onChangeSelect(event, data)}
           ></SelectWeeks>
-          <button className="next_button" onClick={() => setint_d(1)}></button>
+          <button className="next_button" onClick={() => {setint_d(1)}}></button>
         </div>
         <div className="select_new">
           <SelectNew
             ChangeSelect={(event, data) => selectNew(event, data)}
           ></SelectNew>
         </div>
-        <Button className="button_reset" onClick={() => setRefresh(1)}>
+        <div
+          className="button_reset"
+          onClick={() => online_card(int_d, selectData, interval, 1)}
+        >
           Сбросить
-        </Button>
+        </div>
       </div>
 
       <div className="image_container">
@@ -95,7 +102,7 @@ export const FormsPosition = () => {
 
         {none.online_data === undefined ? (
           <Dimmer active={true} inverted>
-            <Loader size="massive">Loading</Loader>
+            <Loader size="massive">Загрузка</Loader>
           </Dimmer>
         ) : select === "0" ? (
           <div className="none_aynamsha">

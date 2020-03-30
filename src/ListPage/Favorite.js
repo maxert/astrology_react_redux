@@ -21,21 +21,14 @@ function Favorite() {
     delete_favorite_list
   } = useContext(ShowContext);
 
-  const { none, number_all, delete_favorite, favorite_select } = useContext(
-    ReduceContext
-  );
+  const { none, delete_favorite, favorite_select } = useContext(ReduceContext);
 
   function onChangeElement(event, data) {
     const key = data.options.filter(x => x.value === data.value);
     favorite_select(data.value, key[0].key);
     Fetch_favorite_list(key[0].key);
-    debugger;
   }
-  function newSubmite(events, id, type, value) {
-    if (events.target.dataset.index === "3") {
-      delete_favorite(id, type);
-    }
-  }
+
   const [isOrder, setOrder] = useState(true);
   useEffect(() => {
     Fetch_favorite_list("person");
@@ -118,7 +111,7 @@ function Favorite() {
         {display.visible === false &&
           (none.isLoading === false ? (
             <Dimmer className="invert_none" active inverted>
-              <Loader size="massive">Loading</Loader>
+              <Loader size="massive">Загрузка</Loader>
             </Dimmer>
           ) : (
             <div className="persons_list_grid">
@@ -172,11 +165,7 @@ function Favorite() {
                         <EditDrop
                           key={items.id}
                           ID={items.id}
-                          Type={
-                            none.data_link_favorite
-                              ? none.data_link_favorite.type_id
-                              : "person"
-                          }
+                          Type={items.obj_type}
                           Data={display.data_favorite}
                           Favorite={1}
                         ></EditDrop>
@@ -186,7 +175,13 @@ function Favorite() {
                       </div>
                     </div>
                     <div className="d_flex_center date_persons">
-                      <div className="persons_text_left">День рождения:</div>
+                      <div class="persons_text_left">
+                        {none.data_link_favorite.type_id === "company"
+                          ? `Дата основания:`
+                          : none.data_link_favorite.type_id === "event"
+                          ? `Дата:`
+                          : `День рождения:`}
+                      </div>
                       <div className="persons_text_right">
                         {items.birth_date !== undefined
                           ? items.birth_date
@@ -219,12 +214,16 @@ function Favorite() {
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
               <div className="header_persons_list_name">Имя</div>
-              <div className="header_persons_list_date">Дата рождения</div>
+              {none.data_link_favorite.type_id === "company"
+                ? `Дата основания`
+                : none.data_link_favorite.type_id === "event"
+                ? `Дата`
+                : `День рождения`}
               <div className="header_persons_list_city">Город</div>
             </div>
             {none.isLoading === false ? (
               <Dimmer className="invert_none" active inverted>
-                <Loader size="massive">Loading</Loader>
+                <Loader size="massive">Загрузка</Loader>
               </Dimmer>
             ) : (
               <div className="persons_list_column">

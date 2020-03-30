@@ -3,7 +3,9 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { NoteContext } from "../context/noteReducer/noteContext";
 import EditNote from "./editNote";
 import { SmartBlock, Extensions } from "smartblock";
+import moment from "moment";
 Extensions.push(new Image({parseDOM: [{ tag: 'img' }, { style: 'width=200px' }]}));
+
 //Блок Заметок
 function NoteList({ Type, ID, id_node }) {
   const { Fetch_note, state_note, update_note } = useContext(NoteContext);
@@ -51,7 +53,7 @@ function NoteList({ Type, ID, id_node }) {
                       </SvgLoader>
                     </div>
                   </div>
-                  <div className="note_list_date"> {items.created_at}</div>
+                  <div className="note_list_date"> {moment(items.created_at,"YYYY-MM-DD").format("DD.MM.YYYY")}</div>
                   <div className="note_list_comment">
                     <SmartBlock
                       extensions={Extensions}
@@ -85,7 +87,7 @@ function NoteList({ Type, ID, id_node }) {
                       </SvgLoader>
                     </div>
                   </div>
-                  <div className="note_list_date"> {items.created_at}</div>
+                  <div className="note_list_date"> {moment(items.created_at,"YYYY-MM-DD").format("DD.MM.YYYY")+" "+moment(items.created_at).format("HH:mm:ss")}</div>
                   <div
                     className="note_list_comment"
                     dangerouslySetInnerHTML={{

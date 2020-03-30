@@ -67,7 +67,7 @@ function SearchHome({ handleResultSelect }) {
   }
 function resultSubmite(value){
     search_data_home(none.data_link.type_link, value.result.title, none.data_link.type_id);
-  debugger
+  
 }
   return (
     <Grid>

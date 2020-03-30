@@ -33,11 +33,11 @@ function InputExampleIconChild() {
     setData(SaveData);
     SelectLocationNew(SaveData !== null ? SaveData.timezone : 0);
     setValue("checkboxing", SaveData !== null ? SaveData.checkboxing : false);
-    debugger
+    
   }, []);
 
   function onSubmit(values) {
-    debugger;
+    ;
     values["date"] = values.date;
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkboxing === true ? 1 : 0;
@@ -52,7 +52,7 @@ function InputExampleIconChild() {
       setValue("lng", geoGet.geolocation.location.lng);
       setValue("lat", geoGet.geolocation.location.lat);
       setValue("checkboxing",geoGet.geolocation.letnee === 0 ? true : false);
-      debugger
+      
     }
   }, [localStorage.getItem("city")]);
 
