@@ -15,11 +15,13 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { GeoContext } from "../context/geolocation/GeoContext";
+import manifest from ".././manifest";
+
 //Блок Добавление Персоны
 function PersonsEdit() {
   const history = useHistory();
   const { geoGet } = useContext(GeoContext);
-  const { none, Fetch_one_persons } = useContext(ReduceContext);
+  const { none, Fetch_one_persons,update_notal_card } = useContext(ReduceContext);
   const { Update_persons } = useContext(PersonsContext);
   const { url } = useRouteMatch();
   const [ImageSrc, setImageSrc] = useState();
@@ -33,11 +35,15 @@ function PersonsEdit() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] = geoGet.geolocation ? geoGet.geolocation.city : none.one_persons.city!==null? none.one_persons.city:"";
+    values["city"] = geoGet.geolocation
+      ? geoGet.geolocation.city
+      : none.one_persons.city !== null
+      ? none.one_persons.city
+      : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
-    Update_persons(values, none.data_id.type_id);
-    ;
+    Update_persons(values, none.one_persons.id);
+    update_notal_card(none.one_persons.natal_id); 
   }
   useEffect(() => {
     if (geoGet.geolocation !== undefined) {
@@ -47,10 +53,11 @@ function PersonsEdit() {
     }
   }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
-  
   useEffect(() => {
+    none.one_persons = undefined;
     Fetch_one_persons(url.replace(/\D+/g, ""));
   }, []);
+
 
   useEffect(() => {
     if (errors.birth_date !== undefined) {
@@ -73,7 +80,6 @@ function PersonsEdit() {
       alert.error("Введите корректно email");
     }
   }, [errors]);
-
 
   return (
     <div className="container_add">
@@ -127,7 +133,6 @@ function PersonsEdit() {
                       className={"" + (errors.lastname ? "active" : "")}
                       ref={register({
                         required: false
-                        // pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,16}$/i
                       })}
                     />
                     {errors.lastname && errors.lastname.message}
@@ -170,7 +175,6 @@ function PersonsEdit() {
                       getInputRef={register({
                         required: false
                       })}
-                    
                     />
                     {errors.telephone && errors.telephone.message}
                   </Form.Field>
@@ -250,7 +254,7 @@ function PersonsEdit() {
                   <div className="grid_column center_grid location_input_top">
                     <div className="input_all">
                       <label>Место рождения</label>
-                      {console.log(none.one_persons.city)}
+
                       <SearchCity
                         type="text"
                         name="city"
@@ -266,12 +270,14 @@ function PersonsEdit() {
                       <div className="text_localisation">Часовой пояс:</div>
                       <SelectLocation
                         ValueOptions={
-                          Number(none.option_value) !== 0 ? Number(none.option_value) : none.one_persons.timezone
+                          Number(none.option_value) !== 0
+                            ? Number(none.option_value)
+                            : none.one_persons.timezone
                         }
                       ></SelectLocation>
                     </div>
                   </div>
-                  {console.log(none.one_persons.letnee)}
+
                   <Controller
                     name="checkbox"
                     rules={{
@@ -328,18 +334,22 @@ function PersonsEdit() {
             <div className="create_persons_right">
               <div className="block_image">
                 <div className="image_contaner_perons">
-                  {ImageSrc !== undefined||none.one_persons.image !== null? <img
-                    src={
-                      ImageSrc !== undefined
-                        ? ImageSrc
-                        : none.one_persons.image !== null
-                        ? "http://1690550.masgroup.web.hosting-test.net" +
-                          none.one_persons.image
-                        : "../../img/Photo 1.svg"
-                    }
-                    alt=" "
-                  />:<div className="text_edit_image">{none.one_persons.firstname[0]}</div>}
-                 
+                  {ImageSrc !== undefined || none.one_persons.image !== null ? (
+                    <img
+                      src={
+                        ImageSrc !== undefined
+                          ? ImageSrc
+                          : none.one_persons.image !== null
+                          ? manifest.URL + none.one_persons.image
+                          : "../../img/Photo 1.svg"
+                      }
+                      alt=" "
+                    />
+                  ) : (
+                    <div className="text_edit_image">
+                      {none.one_persons.firstname[0]}
+                    </div>
+                  )}
                 </div>
                 {none.one_persons.image === null ? (
                   <div className="button_add">

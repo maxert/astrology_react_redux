@@ -3,7 +3,7 @@ import { Search } from "semantic-ui-react";
 import { ReduceContext } from "../context/reducerContext.js";
 import { GeoContext } from "../context/geolocation/GeoContext.js";
 
-//Блок плашки поиска
+//Блок плашки поиска по городам
 function SearchCity({ ValueData, ValueLocation, HandleChange }) {
   const { geolocation } = useContext(GeoContext);
   const { none, search_data_city } = useContext(ReduceContext);
@@ -12,7 +12,6 @@ function SearchCity({ ValueData, ValueLocation, HandleChange }) {
   }
   function handleSearchChange(e, { value }) {
     search_data_city(value);
-    console.log(value);
   }
 
   return (

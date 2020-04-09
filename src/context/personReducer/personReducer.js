@@ -4,6 +4,7 @@ import {
     UPDATE_PERSONS,
     DELETE_PERSONS,
   } from "../types";
+  //Все состояния с переменными для обращения к ним
   const handlers = {
     [FETCH_DATA_PERSONS]: (state, { payload }) => ({
       ...state,

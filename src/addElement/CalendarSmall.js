@@ -1,32 +1,14 @@
 import { Calendar, Badge } from "antd";
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import moment from "moment";
-import Axios from "axios";
-import { ReduceContext } from "../context/reducerContext";
-import { EventContext } from "../context/eventReducer/eventContext";
 
-function CalendarSmall({ NewDefault, ValueSet,onPanelChangeSmall }) {
-  const { none } = useContext(ReduceContext);
-
- 
-  const [date, setDate] = useState(0);
-  useEffect(() => {
-    Axios.get("http://1690550.masgroup.web.hosting-test.net/api/eventdates", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("users")}`
-      }
-    }).then(res => {
-      setDate(res.data);
-    });
-
-    ;
-  }, []);
+//Блок маленьких календарей
+function CalendarSmall({ NewDefault, ValueSet, onPanelChangeSmall, DateSet }) {
   function getListData(value) {
     let listData;
 
-    if (date !== 0) {
-      ;
-      date.map(item => {
+    if (DateSet !== 0) {
+      DateSet.map(item => {
         if (moment(value._d).format("DD.MM.YYYY") === item.event_date) {
           listData = [
             {

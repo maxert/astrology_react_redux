@@ -14,11 +14,11 @@ import SearchCity from "../addElement/searchCity";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { GeoContext } from "../context/geolocation/GeoContext";
 
-//Страница добавления компаний
 
+//Страница добавления компаний
 function CompanyAdd() {
   const { none } = useContext(ReduceContext);
   const { Add_company } = useContext(CompanyContext);
@@ -39,6 +39,8 @@ function CompanyAdd() {
       setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
   }, [localStorage.getItem("city")]);
+
+
   const alert = useAlert();
 
   const d = new Date();
@@ -67,25 +69,25 @@ function CompanyAdd() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    ;
+    
     values["city"] = geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
-    console.log(values);
     Add_company(values);
    
   }
+  const history = useHistory();
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to="/company">
+        <div onClick={()=>history.goBack()}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
           </div>
-        </NavLink>
+        </div>
       </div>
       <div className="container_list container_create">
         <h2>Создание компании</h2>
@@ -182,7 +184,7 @@ function CompanyAdd() {
                       <DatePicker
                         format={"DD.MM.YYYY"}
                         onChange={(data, dataString) =>
-                          setValue("date", dataString)
+                          setValue("birth_date", dataString)
                         }
                       ></DatePicker>
                     </Icon>

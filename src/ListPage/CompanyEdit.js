@@ -3,7 +3,6 @@ import { Icon, Button, Form } from "semantic-ui-react";
 import { DatePicker } from "antd";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import moment from "moment";
-import { usePosition } from "use-position";
 import { useForm } from "react-hook-form";
 import { useAlert } from "react-alert";
 import { ReduceContext } from "../context/reducerContext";
@@ -14,13 +13,15 @@ import SearchCity from "../addElement/searchCity";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink, useRouteMatch, useHistory } from "react-router-dom";
 import { GeoContext } from "../context/geolocation/GeoContext";
-
+import manifest from "../manifest";
 //Страница редактирования компаний
 
 function CompanyEdit() {
-  const { none, Fetch_one_company } = useContext(ReduceContext);
+  
+  const { none, Fetch_one_company,update_notal_card } = useContext(ReduceContext);
+  
   const { url } = useRouteMatch();
   const { geoGet } = useContext(GeoContext);
   const { Update_company } = useContext(CompanyContext);
@@ -32,9 +33,7 @@ function CompanyEdit() {
     },
     reValidateMode: onSubmit
   });
-  const { latitude, longitude, error } = usePosition(false, {
-    enableHighAccuracy: true
-  });
+  const history = useHistory();
 
   const alert = useAlert();
 
@@ -46,7 +45,6 @@ function CompanyEdit() {
     }
   }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
-  const d = new Date();
   useEffect(() => {
     if (errors.birth_date !== undefined) {
       alert.error("Введите корректно дату");
@@ -70,6 +68,7 @@ function CompanyEdit() {
   }, [errors]);
 
   useEffect(() => {
+    none.one_company = undefined;
     Fetch_one_company(url.replace(/\D+/g, ""));
   }, []);
 
@@ -77,28 +76,33 @@ function CompanyEdit() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    ;
     values["city"] =
-      geoGet.geolocation !== undefined ? geoGet.geolocation.city : none.one_company.city!==null? none.one_company.city:"";
+      geoGet.geolocation !== undefined
+        ? geoGet.geolocation.city
+        : none.one_company.city !== null
+        ? none.one_company.city
+        : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
-    console.log(values);
-    Update_company(values, none.data_id.type_id);
+    Update_company(values, none.one_company.id);
+    update_notal_card(none.one_company.natal_id); 
   }
+
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to="/company">
+        <div onClick={() => history.goBack()}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
           </div>
-        </NavLink>
+        </div>
       </div>
       <div className="container_list container_create">
-        <h2>Создание компании</h2>
+        <h2>Редактирование компании</h2>
+
         {none.one_company && (
           <Form className="create_persons" onSubmit={handleSubmit(onSubmit)}>
             <div className="create_persons_left">
@@ -346,8 +350,7 @@ function CompanyEdit() {
                         ImageSrc !== undefined
                           ? ImageSrc
                           : none.one_company.image !== null
-                          ? "http://1690550.masgroup.web.hosting-test.net" +
-                            none.one_company.image
+                          ? manifest.URL + none.one_company.image
                           : "../../img/Photo 1.svg"
                       }
                       alt=" "

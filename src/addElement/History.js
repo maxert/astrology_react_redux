@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import { List } from "semantic-ui-react";
 import Axios from "axios";
 import moment from "moment";
-import { NavLink } from "react-router-dom";
-
+import { NavLink, useLocation } from "react-router-dom";
+import manifest from "../manifest"
 //Блок историй
 function History() {
   const [dateHistory, setHistory] = useState();
-
+  const location = useLocation();
   useEffect(() => {
-    Axios.get("http://1690550.masgroup.web.hosting-test.net/api/history", {
+    //Получение списка историй
+    Axios.get(manifest.URL+"/api/history", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("users")}`
       }
     }).then(res => {
       setHistory(res.data);
-      console.log(res.data);
+ 
     });
   }, []);
 
@@ -32,7 +33,7 @@ function History() {
                     <img
                       className="icon_image_size"
                       src={
-                        "http://1690550.masgroup.web.hosting-test.net/" +
+                        manifest.URL +
                         items.image
                       }
                       alt=""
@@ -48,10 +49,16 @@ function History() {
                   </List.Description>
                   <List.Header as="div">
                     {items.description + " "}
-                    {items.description.indexOf("удалена") !== -1 ? (
+                    {items.description.indexOf("удалена") !== -1 ||
+                    items.description.indexOf("удалено") !== -1 ? (
                       <span> {items.name}</span>
                     ) : (
-                      <NavLink to={`/${items.obj_type}/id/${items.obj_id}`}>
+                      <NavLink
+                        to={{
+                          pathname: `/${items.obj_type}/id/${items.obj_id}`,
+                          state: location.pathname
+                        }}
+                      >
                         {" "}
                         {items.name}
                       </NavLink>

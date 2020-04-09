@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Dropdown } from "semantic-ui-react";
 import { ReduceContext } from "../context/reducerContext";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import { PersonsContext } from "../context/personReducer/personContext";
 import { ShowContext } from "../context/show/showContext";
-//Функциональный Блок изменений карточки
+
+
+//Функциональный Блок изменений в блоке поиск
 function DropdownExampleInline({ ID, Type, Favorite, isFavortie }) {
   const { url } = useRouteMatch();
-
-  const { none, Add_favorite } = useContext(ReduceContext);
+  const { none } = useContext(ReduceContext);
   const {
     display,
     search_delete,
@@ -19,7 +19,7 @@ function DropdownExampleInline({ ID, Type, Favorite, isFavortie }) {
   return (
     <Dropdown className={"edit_drop"} inline floating labeled button>
       <Dropdown.Menu>
-        {isFavortie === true ? (
+        {isFavortie === 1 ? (
           <Dropdown.Item
             data-index="0"
             onClick={() =>

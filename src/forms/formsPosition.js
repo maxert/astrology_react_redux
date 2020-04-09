@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Input, Button, Dimmer, Loader } from "semantic-ui-react";
 import { SelectWeeks } from "../addElement/SelectWeeks";
 import { SelectNew } from "../addElement/SelectNew";
@@ -15,14 +15,23 @@ export const FormsPosition = () => {
   const [select, setSelect] = useState("0");
   const [int_d, setint_d] = useState(1);
   const [selectData, setselectData] = useState("hour");
-  const { online_card, none,isLoading } = useContext(ReduceContext);
+  const { online_card, none, isLoading } = useContext(ReduceContext);
   const { hide, display, show } = useContext(ShowContext);
-  const { handleSubmit, control } = useForm({
-    reValidateMode: onSubmit
+  const { handleSubmit, control, setValue } = useForm({
+    reValidateMode: onSubmit,
   });
-  
+
   const [isPlay, setPlay] = useState(false);
+  const [isLoadButton, setLoading] = useState(true);
+  var widthNone = 0;
+  var heightNone = 0;
+  var widthAynam = 0;
+  var heightAynam = 0;
   function onSubmit(values) {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 2000);
     values["number"] = interval;
     values["type"] = selectData;
     values["int_d"] = int_d;
@@ -42,6 +51,14 @@ export const FormsPosition = () => {
     online_card(int_d, selectData, interval, 1);
   }, []);
 
+  function RefreshClick() {
+    online_card(int_d, selectData, interval, 1);
+    setselectData("hour");
+    setSelect("0");
+    setPlay(false);
+    setNumber(1);
+    setValue("checkbox", false);
+  }
   return (
     <form className="planetary_position" onSubmit={handleSubmit(onSubmit)}>
       <div className="text_planetary text_all">
@@ -53,8 +70,7 @@ export const FormsPosition = () => {
         as={
           <AntCheckbox
             onClick={() => (isPlay ? setPlay(false) : setPlay(true))}
-            className="planeta_сheckbox"
-          >
+            className="planeta_сheckbox">
             Непрерывное
           </AntCheckbox>
         }
@@ -62,82 +78,129 @@ export const FormsPosition = () => {
         name="checkbox"
         defaultValue={false}
         rules={{
-          required: false
-        }}
-      ></Controller>
+          required: false,
+        }}></Controller>
       <div className="header_card">
         <div className="select_submit">
-          <button className="prev_button" onClick={() => setint_d(-1)}></button>
+          <Button
+            className="prev_button"
+            disabled={isLoadButton === true ? false : true}
+            onClick={() => {
+              setint_d(-1);
+            }}></Button>
           <Input
             className="numbers"
             name="text"
             type="number"
-            defaultValue={interval}
+            value={interval}
             onChange={(e, data) =>
               data.value < 0 ? "" : setNumber(data.value)
             }
           />
           <SelectWeeks
-            SelectSubmite={(event, data) => onChangeSelect(event, data)}
-          ></SelectWeeks>
-          <button className="next_button" onClick={() => {setint_d(1)}}></button>
+            ValueWeeeks={selectData}
+            DefaultWeeks={"hour"}
+            SelectSubmite={(event, data) =>
+              onChangeSelect(event, data)
+            }></SelectWeeks>
+          <Button
+            className="next_button"
+            disabled={isLoadButton === true ? false : true}
+            onClick={() => setint_d(1)}></Button>
         </div>
         <div className="select_new">
           <SelectNew
-            ChangeSelect={(event, data) => selectNew(event, data)}
-          ></SelectNew>
+            ValueNew={select}
+            ChangeSelect={(event, data) => selectNew(event, data)}></SelectNew>
         </div>
-        <div
-          className="button_reset"
-          onClick={() => online_card(int_d, selectData, interval, 1)}
-        >
+        <div className="button_reset" onClick={() => RefreshClick()}>
           Сбросить
         </div>
       </div>
+      <div className="image_size_container">
+        <div className="image_container">
+          <SvgLoader path="../../img/sagittarius.svg">
+            <SvgProxy selector="#com" />
+          </SvgLoader>
 
-      <div className="image_container">
-        <SvgLoader path="../../img/sagittarius.svg">
-          <SvgProxy selector="#com" />
-        </SvgLoader>
-
-        {none.online_data === undefined ? (
-          <Dimmer active={true} inverted>
-            <Loader size="massive">Загрузка</Loader>
-          </Dimmer>
-        ) : select === "0" ? (
-          <div className="none_aynamsha">
-            {Object.keys(none.online_data.res_planet).map((key, i) => (
-              <div
-                className={`${key}`}
-                key={i}
-                style={{
-                  transition: `.5s all`,
-                  transform: `rotate(${none.online_data.res_planet[key].gradus *
-                    -1}deg)`
-                }}
-              >
-                <div>{key}</div>
+          {none.online_data === undefined ? (
+            <Dimmer active={true} inverted>
+              <Loader size="massive">Загрузка</Loader>
+            </Dimmer>
+          ) : select === "0" ? (
+            <div className="elipse_all">
+              <div className="none_aynamsha">
+                {Object.keys(none.online_data.res_planet).map((key, i) => (
+                  <div
+                    className={`${key}`}
+                    key={i}
+                    style={{
+                      width: `${widthNone+=6.3}%`,
+                      height: `${heightNone+=6.3}%`,
+                      transition: `.5s all`,
+                      transform: `rotate(${
+                        none.online_data.res_planet[key].gradus * -1
+                      }deg)`,
+                    }}>
+                    <div>{key}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="aynamsha">
-            {Object.keys(none.online_data.res_planet).map((key, i) => (
-              <div
-                className={`${key}`}
-                key={i}
-                style={{
-                  transform: `rotate(${none.online_data.res_planet[key]
-                    .gradus_ay * -1}deg)`
-                }}
-              >
-                <div>{key}</div>
+              <div className="aynamsha">
+                {Object.keys(none.online_data.res_planet).map((key, i) => (
+                  <div
+                    className={`${key}`}
+                    key={i}
+                    style={{
+                      width: `${widthAynam+=6.3}%`,
+                      height: `${heightAynam+=6.3}%`,
+                      transform: `rotate(${
+                        none.online_data.res_planet[key].gradus_ay * -1
+                      }deg)`,
+                    }}>
+                    <div>{key}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ) : select === "1" ? (
+            <div className="none_aynamsha">
+              {Object.keys(none.online_data.res_planet).map((key, i) => (
+                <div
+                  className={`${key}`}
+                  key={i}
+                  style={{
+                    width: `${widthNone+=6.3}%`,
+                    height: `${heightNone+=6.3}%`,
+                    transition: `.5s all`,
+                    transform: `rotate(${
+                      none.online_data.res_planet[key].gradus * -1
+                    }deg)`,
+                  }}>
+                  <div>{key}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="aynamsha">
+              {Object.keys(none.online_data.res_planet).map((key, i) => (
+                <div
+                  className={`${key}`}
+                  key={i}
+                  style={{
+                    width: `${widthAynam+=6.3}%`,
+                    height: `${heightAynam+=6.3}%`,
+                    transform: `rotate(${
+                      none.online_data.res_planet[key].gradus_ay * -1
+                    }deg)`,
+                  }}>
+                  <div>{key}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-      {console.log(2)}
       <div className="hide_table" onClick={display.visible ? show : hide}>
         <SvgLoader path="./img/spreadsheet.svg">
           <SvgProxy selector="#co" />

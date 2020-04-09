@@ -1,3 +1,6 @@
+
+//Типы для обращений к функциям
+
 export const HIDE_ELEMENT = "HIDE_ELEMENT";
 export const SHOW_ELEMENT = "SHOW_ELEMENT";
 export const LOG_OUT = "LOG_OUT";
@@ -42,7 +45,6 @@ export const FETCH_NUMBER = "FETCH_NUMBER";
 export const PAGINATION_NUMBER = "PAGINATION_NUMBER";
 export const SORTED = "SORTED";
 export const LOADING = "LOADING";
-export const URL_BACK = "URL_BACK";
 export const FETCH_NOTE = "FETCH_NOTE";
 export const DELETE_NOTE = "DELETE_NOTE";
 export const UPDATE_NOTE = "UPDATE_NOTE";
@@ -62,3 +64,6 @@ export const SORT_DATA_EVENTS = "SORT_DATA_EVENTS";
 export const DELETE_FAVORITE_LIST = "DELETE_FAVORITE_LIST";
 export const FETCH_DATA_FAVORITE_ORDER = "FETCH_DATA_FAVORITE_ORDER";
 export const SEARCH_SORT_FAV_DATE = "SEARCH_SORT_FAV_DATE";
+export const SEARCH_FAVORITE_LIST = "SEARCH_FAVORITE_LIST";
+export const SELECT_FAVORITE_LIST = "SELECT_FAVORITE_LIST";
+export const WIDTH = "WIDTH";

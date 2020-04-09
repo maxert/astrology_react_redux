@@ -10,15 +10,17 @@ import {
   SEARCH_SORT_FAVORITE,
   FETCH_FAVORITE_LIST,
   FETCH_FAVORITE_ORDER,
-  DELETE_FAVORITE_LIST
+  DELETE_FAVORITE_LIST,
+  SELECT_FAVORITE_LIST,
+  SEARCH_FAVORITE_LIST
 } from "../types";
+
+//Все состояния с переменными для обращения к ним
 const handlers = {
-  //Показать элемент
   [SHOW_ELEMENT]: (state, { payload }) => ({
     ...state,
     visible: false
   }),
-  //Скрыть элемент
   [HIDE_ELEMENT]: state => ({
     ...state,
     visible: true
@@ -60,8 +62,15 @@ const handlers = {
     ...state,
     data_favorite: payload
   }),
-
+  [SELECT_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    select_fav: payload
+  }),
   [FETCH_FAVORITE_ORDER]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
+  [SEARCH_FAVORITE_LIST]: (state, { payload }) => ({
     ...state,
     data_favorite: payload
   }),

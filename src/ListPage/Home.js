@@ -1,13 +1,15 @@
 import React from "react";
-import Search from "../addElement/search";
+
 import FormsCreate from "../forms/formsCreate";
 import { FormsPosition } from "../forms/formsPosition";
-import  History  from "../addElement/History";
+import History from "../addElement/History";
 import { ShowState } from "../context/show/showState";
 import SearchHome from "../addElement/SearchHome";
 import { GeoState } from "../context/geolocation/GeoState";
+
 //Блок Главной страниццы
 function Home() {
+  
   return (
     <div className="container_list">
       <div className="search_container_home">

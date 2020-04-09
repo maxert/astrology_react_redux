@@ -21,5 +21,7 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+   "API_GOOGLE_KEY": "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U",
+   "URL": "//api.astrosoft.online"
 }

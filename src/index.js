@@ -6,7 +6,6 @@ import "semantic-ui-css/semantic.min.css";
 import "./styles.scss";
 import logger from "redux-logger";
 import { ConfigProvider } from "antd";
-import "smartblock/css/smartblock.css";
 import { ReducerState } from "./context/reducerState";
 import { AlertReducer } from "./context/reducer";
 import {
@@ -43,7 +42,7 @@ ReactDOM.render(
   <Provider store={store} template={AlertTemplate} {...options}>
     <ConfigProvider locale={ru}>
       <Router history={history}>
-        <ReducerState store={store}>
+        <ReducerState >
           <PersonState>
             <EventState>
               <CompanyState>

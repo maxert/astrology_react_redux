@@ -5,6 +5,8 @@ import {
   UPDATE_NOTE,
   EDIT_NOTE
 } from "../types";
+
+//Все состояния с переменными для обращения к ним
 const handlers = {
   [FETCH_NOTE]: (state, { payload }) => ({
     ...state,

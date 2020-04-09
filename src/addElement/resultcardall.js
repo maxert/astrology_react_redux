@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
-import EditDrop from "./editDropDown";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
 
 import { ReduceContext } from "../context/reducerContext";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-//Блок скрытой натальной карты персоны
+//Блок расчитать натальную карту
 function ResultCardAll({ Birthday, Time,NameNotal }) {
   const [select, setSelect] = useState("0");
   const { none } = useContext(ReduceContext);

@@ -3,7 +3,6 @@ import { Button, Form } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { ReduceContext } from "../context/reducerContext";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
 import { useAlert } from "react-alert";
 
 //Блок авторизации

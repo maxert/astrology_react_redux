@@ -2,7 +2,10 @@ import React, { useContext, useEffect } from "react";
 import { Dropdown } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { NoteContext } from "../context/noteReducer/noteContext";
-//Функциональный Блок изменений карточки
+
+
+
+//Функциональный Блок изменений заметки
 function EditNote({ id_note, ItemsEdit,ClickSave }) {
   const { delete_note, edit_note, state_note } = useContext(NoteContext);
 

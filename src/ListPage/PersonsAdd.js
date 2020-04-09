@@ -29,7 +29,7 @@ function PersonsAdd() {
     },
     reValidateMode: onSubmit
   });
-  const { latitude, longitude, error } = usePosition(false, {
+  const { latitude, longitude } = usePosition(false, {
     enableHighAccuracy: true
   });
   useEffect(() => {
@@ -44,12 +44,11 @@ function PersonsAdd() {
     values["birth_date"] = moment(values.birth_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
-    values["city"] = geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
+    values["city"] =
+      geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
-    console.log(values);
     Add_persons(values);
-    ;
   }
 
   useEffect(() => {
@@ -74,15 +73,6 @@ function PersonsAdd() {
     }
   }, [errors]);
 
-  // const onSubmit = values => {
-  //   console.log(values);
-  //   values["timezone"] = none.option_value;
-  //   const birth_date = values.birth_date.split(".");
-  //   let new_data= birth_date[2]+"-"+birth_date[1]+"-"+birth_date[0];
-  //   values["birth_date"] = new_data;
-  //   Add_persons(values);
-  //   ;
-  // };
   return (
     <div className="container_add">
       <div className="button_header">
@@ -318,7 +308,7 @@ function PersonsAdd() {
           <div className="create_persons_right">
             <div className="block_image">
               <div className="image_contaner_perons">
-                <img class="default_image" src={ImageSrc} alt=" " />
+                <img className="default_image" src={ImageSrc} alt=" " />
               </div>
               <div className="button_add">
                 <SvgLoader path="../../img/Photosm.svg">

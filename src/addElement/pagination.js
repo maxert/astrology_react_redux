@@ -1,6 +1,7 @@
 import React from "react";
 import { Pagination } from "semantic-ui-react";
 
+//Блок общий пагинаций
 function PaginationExamplePagination({
   listpagedefault,
   listPageAll,

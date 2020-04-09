@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { Select } from "semantic-ui-react";
 import { ReduceContext } from "../context/reducerContext";
-//Блок с выбором
+
+//Блок с выбором таймзоны
 const countryOptions = [
   { key: "12", value: 12, text: "GMT+12" },
   { key: "11", value: 11, text: "GMT+11" },

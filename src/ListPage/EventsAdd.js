@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { Form, Button, Icon } from "semantic-ui-react";
 import SelectLocation from "../addElement/SelectLocation";
@@ -14,8 +14,8 @@ import Cleave from "cleave.js/react";
 import SearchCity from "../addElement/searchCity";
 import { useAlert } from "react-alert";
 import { GeoContext } from "../context/geolocation/GeoContext";
-//Страница Добавления Событий
 
+//Страница Добавления Событий
 function EventsAdd() {
   const alert = useAlert();
 
@@ -26,20 +26,19 @@ function EventsAdd() {
     },
     reValidateMode: onSubmit
   });
-  const [ImageSrc, setImageSrc] = useState("../../img/Photo 1.svg");
+
   const { none } = useContext(ReduceContext);
-  const {geoGet} = useContext(GeoContext)
+  const { geoGet } = useContext(GeoContext);
   const { Add_events } = useContext(EventContext);
-  const { latitude, longitude, error } = usePosition(false, {
+  const { latitude, longitude } = usePosition(false, {
     enableHighAccuracy: true
   });
   function onSubmit(values) {
-    console.log(values);
     values["event_date"] = moment(values.event_date, "DD.MM.YYYY").format(
       "YYYY-MM-DD"
     );
     values["city"] =
-    geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
+      geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Add_events(values);
@@ -72,18 +71,18 @@ function EventsAdd() {
       alert.error("Введите корректно email");
     }
   }, [errors]);
-
+  const history = useHistory();
   return (
     <div className="container_add">
       <div className="button_header">
-        <NavLink to="/event">
+        <div onClick={() => history.goBack()}>
           <div className="purple">
             <SvgLoader path="../../img/Arrow2.svg">
               <SvgProxy selector="#cst" />
             </SvgLoader>
             Назад
           </div>
-        </NavLink>
+        </div>
       </div>
       <div className="container_list container_create">
         <h2>Создание события</h2>
@@ -135,7 +134,7 @@ function EventsAdd() {
                     <Icon className="icon_date">
                       <DatePicker
                         format={"DD.MM.YYYY"}
-                        onChange={(data, dataString) =>
+                        onChange={(dataString) =>
                           setValue("event_date", dataString)
                         }
                       ></DatePicker>

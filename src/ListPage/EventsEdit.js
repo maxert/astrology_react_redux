@@ -18,7 +18,6 @@ import { EventContext } from "../context/eventReducer/eventContext";
 import { GeoContext } from "../context/geolocation/GeoContext";
 
 //Страница Добавления Событий
-
 function EventsEdit() {
   const alert = useAlert();
   const { handleSubmit, register, errors, control, setValue } = useForm({
@@ -26,9 +25,10 @@ function EventsEdit() {
   });
   const { geoGet } = useContext(GeoContext);
   const { url } = useRouteMatch();
-  const { none, Fetch_one_events } = useContext(ReduceContext);
+  const { none, Fetch_one_events,update_notal_card } = useContext(ReduceContext);
   const { Update_events } = useContext(EventContext);
   useEffect(() => {
+    none.one_event = undefined;
     Fetch_one_events(url.replace(/\D+/g, ""));
   }, []);
 
@@ -43,7 +43,8 @@ function EventsEdit() {
       : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
-    Update_events(values, none.data_id.type_id);
+    Update_events(values, none.one_event.id);
+    update_notal_card(none.one_event.natal_id)
   }
   const history = useHistory();
   useEffect(() => {

@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import Search from "../addElement/search";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
 import { SelectNew } from "../addElement/SelectNew";
 import EditDrop from "../addElement/editDropDown";
 import { Dimmer, Loader } from "semantic-ui-react";
+
+
 //Блок Главной страниццы
 function NotalHome() {
   const [select, setSelect] = useState("0");
@@ -20,7 +21,6 @@ function NotalHome() {
       const date = data.date.split(".");
       let new_date = date[2] + "-" + date[1] + "-" + date[0];
       data["date"] = new_date;
-      console.log(data);
       createNotals(data);
     }
   }, []);

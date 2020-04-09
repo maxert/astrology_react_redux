@@ -1,8 +1,7 @@
 import React, { useReducer } from "react";
 import { ReduceContext } from "./reducerContext";
 import { AlertReducer } from "./reducer";
-import Geocode from "react-geocode";
-
+import manifest from ".././manifest.json";
 import {
   LOG_OUT,
   LOG_IN,
@@ -33,14 +32,13 @@ import {
   SEARCH_HOME,
   SORTED,
   LOADING,
-  URL_BACK,
   SHOW_NOTAL_CARD,
-  FETCH_DATA_FAVORITE_ORDER
+  FETCH_DATA_FAVORITE_ORDER,
+  WIDTH,
 } from "./types";
 import Axios from "axios";
 
 import { useAlert } from "react-alert";
-import { useHistory } from "react-router";
 export const ReducerState = ({ children }) => {
   const initialState = {
     isLoading: false,
@@ -53,55 +51,56 @@ export const ReducerState = ({ children }) => {
     data_notal_online: {
       type: "hour",
       interval: 1,
-      interval_direction: 1
+      interval_direction: 1,
     },
     data_value: {
       value: [],
-      isSearch: false
+      isSearch: false,
     },
     pagination: 1,
     data_fetch_value: [],
     data_value_home: [],
     data_value_select: [],
     data_link: "/api/companies",
-    data_link_favorite: "/api/companies"
+    data_link_favorite: "/api/companies",
+    width_mob: window.innerWidth,
   };
   const alert = useAlert();
-  const history = useHistory();
   const CancelToken = Axios.CancelToken;
 
   const [state, dispatch] = useReducer(AlertReducer, initialState);
-  const pagination_number = number => {
+
+  //Получение номера пагинации
+  const pagination_number = (number) => {
     dispatch({
       type: PAGINATION_NUMBER,
-      payload: number
+      payload: number,
     });
   };
-  const isLoading = bool => {
+
+  //Загрузка
+  const isLoading = (bool) => {
     dispatch({
       type: LOADING,
-      payload: bool
+      payload: bool,
     });
   };
-  const urlBack = url => {
-    dispatch({
-      type: URL_BACK,
-      payload: url
-    });
-  };
-  const LogIn = async values => {
-    await Axios.post("http://1690550.masgroup.web.hosting-test.net/api/login", {
+
+  //Залогиненый пользователь
+
+  const LogIn = async (values) => {
+    await Axios.post(manifest.URL + "/api/login", {
       email: values.email,
-      password: values.password
+      password: values.password,
     })
-      .then(res => {
+      .then((res) => {
         localStorage.setItem("users", res.data.data.api_token);
         dispatch({
           type: LOG_IN,
-          token: res.data.data.api_token
+          token: res.data.data.api_token,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.status === 401) {
           LogOut();
           alert.error("Некорректно введенны данные.");
@@ -110,451 +109,510 @@ export const ReducerState = ({ children }) => {
         }
       });
   };
-  const SelectLocationNew = value => {
+
+  //Выбор Локации
+  const SelectLocationNew = (value) => {
     dispatch({
       type: SELECT_LOCATION,
-      payload: value
+      payload: value,
     });
   };
 
+  //Сортировка избранных
   const Fetch_data_favorite_order = (bool, data) => {
     isLoading(false);
     const payload = bool
       ? data.sort((a, b) =>
           a.firstname !== undefined
             ? a.firstname.localeCompare(b.firstname, "en-US")
-            : a.name.localeCompare(b.name, "en-US")
+            : a.name.localeCompare(b.name, "en-US"),
         )
       : data.sort((a, b) =>
           b.firstname !== undefined
             ? b.firstname.localeCompare(a.firstname, "en-US")
-            : b.name.localeCompare(a.name, "en-US")
+            : b.name.localeCompare(a.name, "en-US"),
         );
-    console.log(payload);
     setTimeout(() => {
       isLoading(true);
     }, 500);
     dispatch({ type: FETCH_DATA_FAVORITE_ORDER, payload });
   };
 
-  const Fetch_data_favorite = async obj_type => {
-    isLoading(false);
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${obj_type}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    console.log(res.data);
-    isLoading(true);
+  //Загрузка избранных
+  const Fetch_data_favorite = async (obj_type) => {
+    await Axios.get(manifest.URL + `/api/favorites?obj_type=${obj_type}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        isLoading(true);
+        dispatch({
+          type: FETCH_DATA_FAVORITE,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+  //Сортировка по убыванию возрастанию
+  const Order_by = (order_by) => {
     dispatch({
-      type: FETCH_DATA_FAVORITE,
-      payload: res.data
+      type: SORTED,
+      payload: order_by,
     });
   };
 
-  const Order_by = order_by => {
-    dispatch({
-      type: SORTED,
-      payload: order_by
-    });
-  };
+  //Удаление с избранных
   const delete_favorite = async (id, type, id_pagination, order_by) => {
-    const res = await Axios.delete(
-      `http://1690550.masgroup.web.hosting-test.net/api/favorites?obj_type=${type}&obj_id=${id}`,
+    await Axios.delete(
+      manifest.URL + `/api/favorites?obj_type=${type}&obj_id=${id}`,
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    fetch_number();
-    Fetch_data_favorite(type);
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        fetch_number();
+        Fetch_data_favorite(type);
+        dispatch({
+          type: DELETE_FAVORITE,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+  //Мобильная версия ширина экрана
+  const width_mobile = async () => {
     dispatch({
-      type: DELETE_FAVORITE
+      type: WIDTH,
+      payload: window.innerWidth,
     });
   };
+  //Удаление Связей
   const delete_link = async (id, obj_type, obj_id) => {
-    const res = await Axios.delete(
-      `http://1690550.masgroup.web.hosting-test.net/api/links/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    Fetch_links(obj_type, obj_id);
-    alert.info("Связь удаленна");
-    dispatch({
-      type: DELETE_LINK
-    });
+    await Axios.delete(manifest.URL + `/api/links/${id}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        Fetch_links(obj_type, obj_id);
+        alert.info("Связь удаленна");
+        dispatch({
+          type: DELETE_LINK,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
+
+  //Добавить в избранные
   const Add_favorite = async (type, id, id_pagination, order_by) => {
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/favorites",
+    await Axios.post(
+      manifest.URL + "/api/favorites",
       {
         obj_type: type,
-        obj_id: id
+        obj_id: id,
       },
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    fetch_number();
-    dispatch({
-      type: ADD_FAVORITE
-    });
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        fetch_number();
+        dispatch({
+          type: ADD_FAVORITE,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
+  //Поиск
   const search_data = async (type, value, url) => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
+    await Axios.get(manifest.URL + `${type}?search=${value}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(
+          (key) => {
+            return {
+              id: res.data[Object.keys(res.data)[0]][key].id,
+              title:
+                res.data[Object.keys(res.data)[0]][key].name === undefined
+                  ? res.data[Object.keys(res.data)[0]][key].firstname +
+                    " " +
+                    (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                      ? res.data[Object.keys(res.data)[0]][key].lastname
+                      : "")
+                  : res.data[Object.keys(res.data)[0]][key].name,
+            };
+          },
+        );
 
-    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
-      return {
-        ...res.data[Object.keys(res.data)[0]][key],
-        id: res.data[Object.keys(res.data)[0]][key].id,
-        title:
-          res.data[Object.keys(res.data)[0]][key].name === undefined
-            ? res.data[Object.keys(res.data)[0]][key].firstname +
-              " " +
-              (res.data[Object.keys(res.data)[0]][key].lastname !== null
-                ? res.data[Object.keys(res.data)[0]][key].lastname
-                : "")
-            : res.data[Object.keys(res.data)[0]][key].name
-      };
-    });
-
-    dispatch({
-      type: SEARCH,
-      payload: {
-        value: payload
-      }
-    });
+        dispatch({
+          type: SEARCH,
+          payload: {
+            value: payload,
+          },
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
-  const search_data_city = async value => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/custom/getcity?search=${value}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
+  //Поиск по городам
+  const search_data_city = async (value) => {
+    await Axios.get(manifest.URL + `/api/custom/getcity?search=${value}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data.predictions).map((key) => {
+          return {
+            id: res.data.predictions[key].id,
+            title: res.data.predictions[key].description,
+          };
+        });
 
-    const payload = Object.keys(res.data.predictions).map(key => {
-      return {
-        id: res.data.predictions[key].id,
-        title: res.data.predictions[key].description
-      };
-    });
-
-    dispatch({
-      type: SEARCH_CITY,
-      payload
-    });
+        dispatch({
+          type: SEARCH_CITY,
+          payload,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
+  //Поиск по связям
   const search_data_links = async (type, value, url) => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
+    await Axios.get(manifest.URL + `${type}?search=${value}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(
+          (key) => {
+            return {
+              id: res.data[Object.keys(res.data)[0]][key].id,
+              title:
+                res.data[Object.keys(res.data)[0]][key].name === undefined
+                  ? res.data[Object.keys(res.data)[0]][key].firstname +
+                    " " +
+                    (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                      ? res.data[Object.keys(res.data)[0]][key].lastname
+                      : "")
+                  : res.data[Object.keys(res.data)[0]][key].name,
+            };
+          },
+        );
 
-    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
-      return {
-        id: res.data[Object.keys(res.data)[0]][key].id,
-        title:
-          res.data[Object.keys(res.data)[0]][key].name === undefined
-            ? res.data[Object.keys(res.data)[0]][key].firstname +
-              " " +
-              (res.data[Object.keys(res.data)[0]][key].lastname !== null
-                ? res.data[Object.keys(res.data)[0]][key].lastname
-                : "")
-            : res.data[Object.keys(res.data)[0]][key].name
-      };
-    });
-    console.log(payload);
-
-    dispatch({
-      type: SELECT_HOME,
-      payload
-    });
+        dispatch({
+          type: SELECT_HOME,
+          payload,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
+  //Ссылки связей
   const add_type_links = (type, id) => {
     dispatch({
       type: ADD_TYPE_LINKS,
       payload: {
         type_link: type,
-        type_id: id
-      }
+        type_id: id,
+      },
     });
   };
+
+  //Выбранная ссылка на выпадающем блоке
   const search_select = (type, id) => {
     dispatch({
       type: SEARCH_SELECT,
       payload: {
         type_link: type,
-        type_id: id
-      }
+        type_id: id,
+      },
     });
   };
 
+  //Выбранная ссылка на избранных выпадающем блоке
   const favorite_select = (type, id) => {
     dispatch({
       type: FAVORITE_SELECT,
       payload: {
         type_link: type,
-        type_id: id
-      }
+        type_id: id,
+      },
     });
   };
 
-  const create_links = async value => {
+  //Создание свзяей
+  const create_links = async (value) => {
     await Axios.post(
-      `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type&obj_id&link_obj_type=&link_obj_id=&name=`,
+      manifest.URL + `/api/links`,
       {
         obj_type: value.obj_type,
         obj_id: value.obj_id,
         link_obj_type: value.link_obj_type,
         link_obj_id: value.link_obj_id,
-        name: value.name
+        name: value.name,
       },
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
     )
-      .then(res => {
+      .then((res) => {
         Fetch_links(value.obj_type, value.obj_id);
         alert.success("Связь созданна");
         dispatch({
           type: CREATE_LINKS,
-          create_links: res.data
+          create_links: res.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+
         if (error.response.status === 400) {
           alert.error("Связь уже существует");
         }
       });
   };
 
-  const createNotals = async value => {
+  //Создание Нотальной карты
+  const createNotals = async (value) => {
     isLoading(false);
-    console.log(value);
-    const res = await Axios.post(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals/fast`,
+    await Axios.post(
+      manifest.URL + `/api/natals/fast`,
       {
         date: value.date,
         time: value.time,
         lat: parseFloat(value.lat),
         lng: parseFloat(value.lng),
         timezone: value.timezone,
-        letnee: parseInt(value.letnee)
+        letnee: parseInt(value.letnee),
       },
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    dispatch({
-      type: CREATE_NOTAL_HOME,
-      payload: res.data
-    });
-    isLoading(true);
-  };
-  const show_notal_card = async (id, data, shownatal) => {
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/links/` + id,
-      {
-        shownatal: shownatal
+          Authorization: `Bearer ${initialState.token}`,
+        },
       },
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-
-    const payload = data.map(items => {
-      if (items.id === id) {
-        items.isDisplay = items.isDisplay === true ? false : true;
-      }
-      return items;
-    });
-
-    dispatch({
-      type: SHOW_NOTAL_CARD,
-      payload
-    });
-  };
-
-  const Fetch_links = async (type, id) => {
-    await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/links?obj_type=${type}&obj_id=${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
     )
-      .then(res => {
-        const payload = Object.keys(res.data).map(key => {
+      .then((res) => {
+        dispatch({
+          type: CREATE_NOTAL_HOME,
+          payload: res.data,
+        });
+        isLoading(true);
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+
+  //Показать натальную карту в связях
+  const show_notal_card = async (id, data, shownatal) => {
+    await Axios.put(
+      manifest.URL + `/api/links/` + id,
+      {
+        shownatal: shownatal,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        const payload = data.map((items) => {
+          if (items.id === id) {
+            items.isDisplay = items.isDisplay === true ? false : true;
+          }
+          return items;
+        });
+
+        dispatch({
+          type: SHOW_NOTAL_CARD,
+          payload,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+
+  //Получение связей
+  const Fetch_links = async (type, id) => {
+    await Axios.get(manifest.URL + `/api/links?obj_type=${type}&obj_id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data).map((key) => {
           return {
             ...res.data[key],
-            isDisplay: res.data[key].shownatal === 0 ? false : true
+            isDisplay: res.data[key].shownatal === 0 ? false : true,
           };
         });
-        console.log(payload);
 
         dispatch({
           type: FETCH_LINKS,
-          payload
+          payload,
         });
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch((error) => {
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
+        }
       });
   };
+
+  //Номер сущености
   const number_all = (numbers, type) => {
     dispatch({
       type: NUMBER_ALL,
       payload: {
         numbers: numbers,
-        match: type
-      }
+        match: type,
+      },
     });
   };
+
+  //Разлогинится
   const LogOut = () => {
     localStorage.removeItem("users");
     dispatch({
       type: LOG_OUT,
-      token: null
+      token: null,
     });
   };
 
+  //Получить боковые номера
   const fetch_number = async () => {
-    // console.log(stateNew.getState())
-    await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/custom/objcount`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    )
-      .then(res => {
+    await Axios.get(manifest.URL + `/api/custom/objcount`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
         dispatch({
           type: FETCH_NUMBER,
-          payload: res.data
+          payload: res.data,
         });
       })
-      .catch(error => {
-        error.response.status === 401 ? LogOut() : console.log(error);
+      .catch((error) => {
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
+        }
       });
   };
-  const Fetch_one_persons = async id => {
-    await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/persons/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    )
-      .then(res => {
-        add_type_links(res.data.type, res.data.id);
-        Fetch_notal_card(res.data.type, res.data.id);
-        Fetch_links(res.data.type, res.data.id);
+  //Получить одного пользователя
+  const Fetch_one_persons = async (id) => {
+    isLoading(false);
+    await Axios.get(manifest.URL + `/api/persons/` + id, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        setTimeout(() => {
+          isLoading(true);
+        }, 1500);
 
         dispatch({
           type: FETCH_ONE_PERSONS,
-          payload: res.data
+          payload: res.data,
         });
       })
-      .catch(error => {
-        if (
-          error.response &&
-          error.response.data.error === "Resource not found"
-        ) {
-          history.goBack("/");
-          alert.error("Эта страница удаленна");
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+
+  //Получить одну событие
+  const Fetch_one_events = async (id) => {
+    isLoading(false);
+    await Axios.get(manifest.URL + `/api/events/` + id, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        setTimeout(() => {
+          isLoading(true);
+        }, 1500);
+        dispatch({
+          type: FETCH_ONE_EVENTS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+
+  //Получить одну компанию
+  const Fetch_one_company = async (id) => {
+    isLoading(false);
+    await Axios.get(manifest.URL + `/api/companies/` + id, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        setTimeout(() => {
+          isLoading(true);
+        }, 1500);
+        dispatch({
+          type: FETCH_ONE_COMPANY,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
         }
       });
   };
 
-  const Fetch_one_events = async id => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/events/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    add_type_links(res.data.type, res.data.id);
-    Fetch_notal_card(res.data.type, res.data.id);
-    Fetch_links(res.data.type, res.data.id);
-    dispatch({
-      type: FETCH_ONE_EVENTS,
-      payload: res.data
-    });
-  };
-  const Fetch_one_company = async id => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/companies/` + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    add_type_links(res.data.type, res.data.id);
-    Fetch_notal_card(res.data.type, res.data.id);
-    Fetch_links(res.data.type, res.data.id);
-    dispatch({
-      type: FETCH_ONE_COMPANY,
-      payload: res.data
-    });
-  };
-
+  //Добавить нотальную карту
   const add_notal_card = async (type, id) => {
     await Axios.post(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals`,
+      manifest.URL + `/api/natals`,
       {
         obj_type: type,
-        obj_id: id
+        obj_id: id,
       },
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
     )
-      .then(res => {
+      .then((res) => {
         dispatch({
           type: ADD_NOTAL_CARD,
-          payload: res.data
+          payload: res.data,
         });
         setTimeout(() => {
           isLoading(true);
@@ -562,126 +620,150 @@ export const ReducerState = ({ children }) => {
 
         alert.success("Натальная карта расчитанна");
       })
-      .catch(error => {
-        error.response.data.error.forEach(none => {
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+        error.response.data.error.forEach((none) => {
           alert.error(none);
         });
       });
   };
 
-  const update_notal_card = async id => {
-    const res = await Axios.put(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals/${id}`,
+  //Обновить нотальную карту
+  const update_notal_card = async (id) => {
+    await Axios.put(
+      manifest.URL + `/api/natals/${id}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    alert.info("Натальная карта обновленна");
-    Fetch_notal_card(res.data.obj_type, res.data.obj_id);
-    dispatch({
-      type: UPDATE_PERSONS,
-      payload: res.data
-    });
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        alert.info("Натальная карта обновленна");
+        Fetch_notal_card(res.data.obj_type, res.data.obj_id);
+        dispatch({
+          type: UPDATE_PERSONS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
+
+  //Получить нотальную карту
   const Fetch_notal_card = async (type, id) => {
     await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals?obj_type=${type}&obj_id=${id}`,
+      manifest.URL + `/api/natals?obj_type=${type}&obj_id=${id}`,
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    ).then(
-      response => {
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((response) => {
         setTimeout(() => {
           isLoading(true);
         }, 500);
         dispatch({
           type: FETCH_NOTAL_CARD,
-          payload: response.data
+          payload: response.data,
         });
-      },
-      error => {
+      })
+      .catch((error) => {
         if (error.response.status === 404) {
           dispatch({
             type: FETCH_NOTAL_CARD,
-            payload: undefined
+            payload: undefined,
           });
         }
-      }
-    );
+      });
   };
+
+  //Поиск на главной странице
   const search_data_home = async (type, value, url) => {
     var bool = true;
     if (value.length === 0 || value === " ") {
       bool = false;
     }
 
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net${type}?search=${value}`,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
+    await Axios.get(manifest.URL + `${type}?search=${value}`, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(
+          (key) => {
+            return {
+              id: res.data[Object.keys(res.data)[0]][key].id,
+              title:
+                res.data[Object.keys(res.data)[0]][key].name === undefined
+                  ? res.data[Object.keys(res.data)[0]][key].firstname +
+                    " " +
+                    (res.data[Object.keys(res.data)[0]][key].lastname !== null
+                      ? res.data[Object.keys(res.data)[0]][key].lastname
+                      : "")
+                  : res.data[Object.keys(res.data)[0]][key].name,
+              content: url,
+              type_id: res.data[Object.keys(res.data)[0]][key].id,
+            };
+          },
+        );
 
-    const payload = Object.keys(res.data[Object.keys(res.data)[0]]).map(key => {
-      return {
-        id: res.data[Object.keys(res.data)[0]][key].id,
-        title:
-          res.data[Object.keys(res.data)[0]][key].name === undefined
-            ? res.data[Object.keys(res.data)[0]][key].firstname +
-              " " +
-              (res.data[Object.keys(res.data)[0]][key].lastname !== null
-                ? res.data[Object.keys(res.data)[0]][key].lastname
-                : "")
-            : res.data[Object.keys(res.data)[0]][key].name,
-        content: url,
-        type_id: res.data[Object.keys(res.data)[0]][key].id
-      };
-    });
-
-    dispatch({
-      type: SEARCH_HOME,
-      payload: {
-        value: payload,
-        isSearch: bool
-      }
-    });
+        dispatch({
+          type: SEARCH_HOME,
+          payload: {
+            value: payload,
+            isSearch: bool,
+          },
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
+
+  //Онлайн натальная карта
   let cancel;
   const online_card = (int_d, int_type, int, refresh, isc) => {
-   
-    //if(isc) canceller.cancel();
     console.log(isc);
     cancel && cancel();
+
     Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
+      manifest.URL +
+        `/api/natals/online?refresh=${refresh}&interval=${int}&interval_type=${int_type}&interval_direction=${int_d}`,
       {
         cancelToken: new CancelToken(function executor(c) {
           cancel = c;
         }),
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    ).then(res => {
-      console.log(res.data);
-      dispatch({
-        type: ONLINE_CARD,
-        payload: res.data
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+
+      .then((res) => {
+        dispatch({
+          type: ONLINE_CARD,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response !== undefined
+          ? error.response.status === 401
+            ? LogOut()
+            : console.log(error)
+          : console.log(error);
       });
-    });
   };
 
   return (
     <ReduceContext.Provider
       value={{
         search_data_city,
+        width_mobile,
         createNotals,
         Fetch_one_company,
         online_card,
@@ -704,7 +786,6 @@ export const ReducerState = ({ children }) => {
         Fetch_links,
         LogIn,
         LogOut,
-        urlBack,
         Add_favorite,
         favorite_select,
         update_notal_card,
@@ -713,9 +794,8 @@ export const ReducerState = ({ children }) => {
         Order_by,
         isLoading,
         search_data_home,
-        none: state
-      }}
-    >
+        none: state,
+      }}>
       {children}
     </ReduceContext.Provider>
   );

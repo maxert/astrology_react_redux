@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import Slider from "react-slick";
+import Slider from "infinite-react-carousel";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import DropdownSlider from "./dropdownslider";
 import { Modal, Form, Button } from "semantic-ui-react";
 import SearchLinks from "../addElement/searchLinks";
@@ -11,22 +9,18 @@ import { ReduceContext } from "../context/reducerContext";
 import { useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
+import manifest from ".././manifest";
 
 //Блок с слайдером
-
 function ModalExampleSize() {
   const [dataSearch, setSearch] = useState({ isLoading: false });
   const { handleSubmit, register, errors } = useForm();
   const [result, setResult] = useState([]);
-  const { url } = useRouteMatch();
   const alert = useAlert();
-  const { none, create_links, Fetch_links, search_data_links } = useContext(
-    ReduceContext
+  const { none, create_links, search_data_links, search_select } = useContext(
+    ReduceContext,
   );
   const [close, setCloseNew] = useState(false);
-  useEffect(() => {
-    Fetch_links(none.data_id.type_link, none.data_id.type_id);
-  }, [url]);
 
   const newSubmite = (e, { result }) => {
     setResult(result);
@@ -37,26 +31,24 @@ function ModalExampleSize() {
     search_data_links(
       none.data_link.type_link,
       value.value,
-      none.data_link.type_id
+      none.data_link.type_id,
     );
-    ;
     setTimeout(() => {
       setSearch({ isLoading: false });
     }, 300);
-    console.log(value);
   }
-  const onSubmit = values => {
-    ;
+  const onSubmit = (values) => {
     if (result !== undefined) {
       values["obj_type"] = none.data_id.type_link;
       values["obj_id"] = none.data_id.type_id;
       values["link_obj_type"] = none.data_link.type_id;
       values["link_obj_id"] = result.id;
-      console.log(values);
       setCloseNew(false);
       create_links(values);
     } else {
-      alert.error("Такой карточки нет в базе программы, создайте ее и вернитесь к созданию связи");
+      alert.error(
+        "Такой карточки нет в базе программы, создайте ее и вернитесь к созданию связи",
+      );
     }
   };
   return (
@@ -66,16 +58,20 @@ function ModalExampleSize() {
       trigger={
         <div
           className="communication_slider_add"
-          onClick={() => setCloseNew(true)}
-        >
+          onClick={() => {
+            setCloseNew(true);
+            search_select(
+              none.data_link_favorite.type_link,
+              none.data_link_favorite.type_id,
+            );
+          }}>
           <SvgLoader path="../../img/Group 15.svg">
             <SvgProxy selector="#cst" />
           </SvgLoader>
         </div>
       }
       className="modal_slider"
-      closeIcon
-    >
+      closeIcon>
       <Form className="modal_slider_form" onSubmit={handleSubmit(onSubmit)}>
         <div className="text_all">Создать связь</div>
         <div className="search_container_home">
@@ -95,7 +91,7 @@ function ModalExampleSize() {
               className={"" + (errors.name ? "active" : "")}
               ref={register({
                 required: true,
-                pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,26}$/i
+                pattern: /^([а-яё]+|[a-z]+|[^\\s*]){3,26}$/i,
               })}
             />
             {errors.name && errors.name.message}
@@ -109,31 +105,41 @@ function ModalExampleSize() {
 
 function SimpleSlider() {
   const { none, delete_link, show_notal_card } = useContext(ReduceContext);
-  const [isOpen, setOpen] = useState(false);
+  const [Close, setClosePop] = useState(false);
+  const [Select, setSelect] = useState();
+  function handleClose(i) {
+    setClosePop(true);
+    setSelect(i);
+  }
+  function handleCloseOpen(e, date, i) {
+    setClosePop(false);
+    setSelect(i);
+  }
+
   const setting = {
-    infinite: true,
-    arrow: true,
+    rows: none.width_mob <= 767 ? 2 : 1,
+    dots: none.width_mob <= 767 ? true : false,
+    arrow: none.width_mob <= 767 ? false : true,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 1
+    slidesToShow: none.width_mob <= 1280 ? (none.width_mob <= 767 ? 2 : 4) : 7,
+    slidesToScroll: none.width_mob <= 767 ? 1 : 1,
   };
   return (
     <div className="slider_content">
       {none.data_fetch_links !== null &&
         (none.data_fetch_links.length === 0 ? (
           <div className="error_none">У вас нет связей</div>
-        ) : none.data_fetch_links.length >= 7 ? (
-          <Slider {...setting}>
+        ) : none.data_fetch_links.length >= 7 ||
+          (none.width_mob <= 1280 && none.data_fetch_links.length >= 4) ||
+          (none.width_mob <= 767 && none.data_fetch_links.length >= 2) ? (
+          <Slider {...setting} beforeChange={(data) => console.log(data)}>
             {none.data_fetch_links.map((items, i) => (
-              <div key={i}>
+              <div key={items.id}>
                 <div className="items_slider">
                   <div className="icon_elipse">
                     {items.obj.image !== null ? (
                       <img
-                        src={
-                          "http://1690550.masgroup.web.hosting-test.net" +
-                          items.obj.image
-                        }
+                        src={manifest.URL + items.obj.image}
                         alt="Картинка"
                       />
                     ) : (
@@ -142,23 +148,29 @@ function SimpleSlider() {
                   </div>
                   <div className="icon_text">{items.name}</div>
                   <DropdownSlider
+                    Close={i === Select && Close === true ? true : false}
+                    handleClose={() => handleClose(i)}
+                    handleCloseOpen={(e, date) => handleCloseOpen(e, date, i)}
                     Content={
-                      <div className="dropdownslider">
+                      <div className="dropdownslider" data-index={Select}>
                         <Link
-                          to={`/${items.link_obj_type}/id/${items.link_obj_id}`}
-                        >
+                          to={{
+                            pathname: `/${items.link_obj_type}/id/${items.link_obj_id}`,
+                            state: null,
+                          }}>
                           Перейти на страницу
                         </Link>
                         <div
                           className="delete_comunity"
-                          onClick={() =>
+                          onClick={() => {
                             delete_link(
                               items.id,
                               none.data_id.type_link,
-                              none.data_id.type_id
-                            )
-                          }
-                        >
+                              none.data_id.type_id,
+                            );
+                            setClosePop(false);
+                            setSelect(i);
+                          }}>
                           Удалить связь
                         </div>
                         {items.isDisplay === null ? null : items.isDisplay ===
@@ -167,8 +179,7 @@ function SimpleSlider() {
                             className="add_notal"
                             onClick={() =>
                               show_notal_card(items.id, none.data_fetch_links)
-                            }
-                          >
+                            }>
                             Показать натальную карту
                           </div>
                         ) : (
@@ -176,14 +187,13 @@ function SimpleSlider() {
                             className="add_notal"
                             onClick={() =>
                               show_notal_card(items.id, none.data_fetch_links)
-                            }
-                          >
+                            }>
                             Скрыть натальную карту
                           </div>
                         )}
                       </div>
                     }
-                  ></DropdownSlider>
+                    Disabled={true}></DropdownSlider>
                 </div>
               </div>
             ))}
@@ -195,24 +205,31 @@ function SimpleSlider() {
                 <div className="items_slider">
                   <div className="icon_elipse">
                     {items.obj.image !== null ? (
-                      <img
-                        src={
-                          "http://1690550.masgroup.web.hosting-test.net" +
-                          items.obj.image
-                        }
-                        alt="Картинка"
-                      />
+                      items.obj.image !== undefined ? (
+                        <img
+                          src={manifest.URL + items.obj.image}
+                          alt="Картинка"
+                        />
+                      ) : (
+                        <div className="text_all_image">{items.name[0]}</div>
+                      )
                     ) : (
                       <div className="text_all_image">{items.name[0]}</div>
                     )}
                   </div>
                   <div className="icon_text">{items.name}</div>
+
                   <DropdownSlider
+                    Close={i === Select && Close === true ? true : false}
+                    handleClose={() => handleClose(i)}
+                    handleCloseOpen={(e, date) => handleCloseOpen(e, date, i)}
                     Content={
                       <div className="dropdownslider">
                         <Link
-                          to={`/${items.link_obj_type}/id/${items.link_obj_id}`}
-                        >
+                          to={{
+                            pathname: `/${items.link_obj_type}/id/${items.link_obj_id}`,
+                            state: null,
+                          }}>
                           Перейти на страницу
                         </Link>
                         <div
@@ -221,35 +238,34 @@ function SimpleSlider() {
                             delete_link(
                               items.id,
                               none.data_id.type_link,
-                              none.data_id.type_id
+                              none.data_id.type_id,
                             );
-                          }}
-                        >
+                            setClosePop(false);
+                            setSelect(i);
+                          }}>
                           Удалить связь
                         </div>
-                        {items.natal === null ? null : items.isDisplay ===
+                        {items.isDisplay === null ? null : items.isDisplay ===
                           false ? (
                           <div
                             className="add_notal"
                             onClick={() =>
-                              show_notal_card(items.id, none.data_fetch_links,1)
-                            }
-                          >
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }>
                             Показать натальную карту
                           </div>
                         ) : (
                           <div
                             className="add_notal"
                             onClick={() =>
-                              show_notal_card(items.id, none.data_fetch_links,0)
-                            }
-                          >
+                              show_notal_card(items.id, none.data_fetch_links)
+                            }>
                             Скрыть натальную карту
                           </div>
                         )}
                       </div>
                     }
-                  ></DropdownSlider>
+                    Disabled={true}></DropdownSlider>
                 </div>
               </div>
             ))}

@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { Modal } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { SelectNew } from "./SelectNew";
-import EditDrop from "./editDropDown";
 
 //Модальной окно натальной карты
 function ModalExampleDimmer(Houses) {
   const [select, setSelect] = useState("0");
-
-
   function selectNew(event, data) {
-    setSelect(data.value)
-    ;
+    setSelect(data.value);
   }
   return (
-    <Modal trigger={<div className="modal_click"></div>} closeIcon className="modal_big">
+    <Modal
+      trigger={<div className="modal_click"></div>}
+      closeIcon
+      className="modal_big"
+    >
       <div className="notal_card_community element_continer ">
         <div className="notal_person">
           <div className="persons_items notal_items">
@@ -25,10 +25,8 @@ function ModalExampleDimmer(Houses) {
                   ChangeSelect={(event, data) => selectNew(event, data)}
                 ></SelectNew>
                 <div className="container_info_persons_name">
-                  {/* {Birthday + " " + Time} */}
                 </div>
               </div>
-             
             </div>
 
             {select === "0" ? (
@@ -46,12 +44,20 @@ function ModalExampleDimmer(Houses) {
                       <div className="four">{Houses.Houses.houses[8].nmz}</div>
                       <div className="five">{Houses.Houses.houses[9].nmz}</div>
                       <div className="six">{Houses.Houses.houses[10].nmz}</div>
-                      <div className="seven">{Houses.Houses.houses[11].nmz}</div>
-                      <div className="eight">{Houses.Houses.houses[12].nmz}</div>
+                      <div className="seven">
+                        {Houses.Houses.houses[11].nmz}
+                      </div>
+                      <div className="eight">
+                        {Houses.Houses.houses[12].nmz}
+                      </div>
                       <div className="nine">{Houses.Houses.houses[1].nmz}</div>
                       <div className="ten">{Houses.Houses.houses[2].nmz}</div>
-                      <div className="eleven">{Houses.Houses.houses[3].nmz}</div>
-                      <div className="Twelve">{Houses.Houses.houses[4].nmz}</div>
+                      <div className="eleven">
+                        {Houses.Houses.houses[3].nmz}
+                      </div>
+                      <div className="Twelve">
+                        {Houses.Houses.houses[4].nmz}
+                      </div>
                     </div>
                   )}
                   {Houses.Houses !== undefined && (
@@ -209,29 +215,33 @@ function ModalExampleDimmer(Houses) {
                         <div className="table_text table_text_small">
                           Планета
                         </div>
-                        {Object.keys(Houses.Houses.res_planet).map((items, i) => (
-                          <div className="table_text" key={i}>
-                            {items}
-                          </div>
-                        ))}
+                        {Object.keys(Houses.Houses.res_planet).map(
+                          (items, i) => (
+                            <div className="table_text" key={i}>
+                              {items}
+                            </div>
+                          )
+                        )}
                       </div>
                       <div className="footer_table">
                         <div className="table_text table_text_small">
                           Эклиптика
                         </div>
 
-                        {Object.keys(Houses.Houses.res_planet).map((items, i) => (
-                          <div className="table_text" key={i}>
-                            <div className="center_table">
-                              <div
-                                className="table_text_time"
-                                dangerouslySetInnerHTML={{
-                                  __html: Houses.Houses.res_planet[items].text
-                                }}
-                              ></div>
+                        {Object.keys(Houses.Houses.res_planet).map(
+                          (items, i) => (
+                            <div className="table_text" key={i}>
+                              <div className="center_table">
+                                <div
+                                  className="table_text_time"
+                                  dangerouslySetInnerHTML={{
+                                    __html: Houses.Houses.res_planet[items].text
+                                  }}
+                                ></div>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
                   )}
@@ -246,18 +256,42 @@ function ModalExampleDimmer(Houses) {
 
                   {Houses.Houses !== undefined && (
                     <div className="block_numbers">
-                      <div className="one">{Houses.Houses.houses_ay[5].nmz}</div>
-                      <div className="two">{Houses.Houses.houses_ay[6].nmz}</div>
-                      <div className="three">{Houses.Houses.houses_ay[7].nmz}</div>
-                      <div className="four">{Houses.Houses.houses_ay[8].nmz}</div>
-                      <div className="five">{Houses.Houses.houses_ay[9].nmz}</div>
-                      <div className="six">{Houses.Houses.houses_ay[10].nmz}</div>
-                      <div className="seven">{Houses.Houses.houses_ay[11].nmz}</div>
-                      <div className="eight">{Houses.Houses.houses_ay[12].nmz}</div>
-                      <div className="nine">{Houses.Houses.houses_ay[1].nmz}</div>
-                      <div className="ten">{Houses.Houses.houses_ay[2].nmz}</div>
-                      <div className="eleven">{Houses.Houses.houses_ay[3].nmz}</div>
-                      <div className="Twelve">{Houses.Houses.houses_ay[4].nmz}</div>
+                      <div className="one">
+                        {Houses.Houses.houses_ay[5].nmz}
+                      </div>
+                      <div className="two">
+                        {Houses.Houses.houses_ay[6].nmz}
+                      </div>
+                      <div className="three">
+                        {Houses.Houses.houses_ay[7].nmz}
+                      </div>
+                      <div className="four">
+                        {Houses.Houses.houses_ay[8].nmz}
+                      </div>
+                      <div className="five">
+                        {Houses.Houses.houses_ay[9].nmz}
+                      </div>
+                      <div className="six">
+                        {Houses.Houses.houses_ay[10].nmz}
+                      </div>
+                      <div className="seven">
+                        {Houses.Houses.houses_ay[11].nmz}
+                      </div>
+                      <div className="eight">
+                        {Houses.Houses.houses_ay[12].nmz}
+                      </div>
+                      <div className="nine">
+                        {Houses.Houses.houses_ay[1].nmz}
+                      </div>
+                      <div className="ten">
+                        {Houses.Houses.houses_ay[2].nmz}
+                      </div>
+                      <div className="eleven">
+                        {Houses.Houses.houses_ay[3].nmz}
+                      </div>
+                      <div className="Twelve">
+                        {Houses.Houses.houses_ay[4].nmz}
+                      </div>
                     </div>
                   )}
                   {Houses.Houses !== undefined && (
@@ -415,29 +449,34 @@ function ModalExampleDimmer(Houses) {
                         <div className="table_text table_text_small">
                           Планета
                         </div>
-                        {Object.keys(Houses.Houses.res_planet).map((items, i) => (
-                          <div className="table_text" key={i}>
-                            {items}
-                          </div>
-                        ))}
+                        {Object.keys(Houses.Houses.res_planet).map(
+                          (items, i) => (
+                            <div className="table_text" key={i}>
+                              {items}
+                            </div>
+                          )
+                        )}
                       </div>
                       <div className="footer_table">
                         <div className="table_text table_text_small">
                           Эклиптика
                         </div>
 
-                        {Object.keys(Houses.Houses.res_planet).map((items, i) => (
-                          <div className="table_text" key={i}>
-                            <div className="center_table">
-                              <div
-                                className="table_text_time"
-                                dangerouslySetInnerHTML={{
-                                  __html: Houses.Houses.res_planet[items].text_ay
-                                }}
-                              ></div>
+                        {Object.keys(Houses.Houses.res_planet).map(
+                          (items, i) => (
+                            <div className="table_text" key={i}>
+                              <div className="center_table">
+                                <div
+                                  className="table_text_time"
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      Houses.Houses.res_planet[items].text_ay
+                                  }}
+                                ></div>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
                   )}

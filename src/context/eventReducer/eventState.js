@@ -1,156 +1,169 @@
 import React, { useReducer, useContext } from "react";
 import { EventContext } from "./eventContext";
 import { EventReducer } from "./eventReducer";
+import manifest from "../../manifest";
 import {
   ADD_EVENTS,
   FETCH_DATA_EVENTS,
   DELETE_EVENTS,
   UPDATE_EVENTS,
-  SORT_DATA_EVENTS
+  SORT_DATA_EVENTS,
 } from "../types";
 import Axios from "axios";
 import { useAlert } from "react-alert";
 import { useHistory } from "react-router";
 import { ReduceContext } from "../reducerContext";
-import moment from "moment";
 
 export const EventState = ({ children }) => {
   const initialState = {
     token: localStorage.getItem("users"),
-    data_events: []
+    data_events: [],
   };
   const [state, dispatch] = useReducer(EventReducer, initialState);
   const alert = useAlert();
   const history = useHistory();
-  const { isLoading, fetch_number } = useContext(ReduceContext);
+  const { isLoading, fetch_number, LogOut } = useContext(ReduceContext);
 
-
-  const sort_data_events = async (number, order_by,date) => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
-        number === undefined ? 1 : number
-      }&order_direction=${order_by}&date=`+date,
+  //Сортировка событий
+  const sort_data_events = async (number, order_by, date) => {
+    await Axios.get(
+      manifest.URL +
+        `/api/events?page=${
+          number === undefined ? 1 : number
+        }&order_direction=${order_by}&date=` +
+        date,
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        if (res.data.events.length === 0) {
+          Fetch_data_events(number, order_by);
+          isLoading(true);
+        } else {
+          fetch_number();
+          alert.info("Событие отсортированно");
+          dispatch({
+            type: SORT_DATA_EVENTS,
+            payload: res.data,
+          });
+          isLoading(true);
         }
-      }
-    );
-    if(res.data.events.length===0){
-      Fetch_data_events(number,order_by)
-      isLoading(true);
-    }else{
-      fetch_number();
-      console.log(res.data);
-      alert.info("Событие отсортированно")
-      dispatch({
-        type: SORT_DATA_EVENTS,
-        payload: res.data
+      })
+      .catch((error) => {
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
+        }
       });
-      isLoading(true);
-    }
- 
   };
 
-
-
-  const Fetch_data_events = async (number, order_by) => {
-    const res = await Axios.get(
-      `http://1690550.masgroup.web.hosting-test.net/api/events?page=${
-        number === undefined ? 1 : number
-      }&order_direction=${order_by}&date=`+moment(Date.now()).format("YYYY-MM-DD"),
+  //Получить список событий
+  const Fetch_data_events = async (number, order_by, date) => {
+    await Axios.get(
+      manifest.URL +
+        `/api/events?page=${
+          number === undefined ? 1 : number
+        }&order_direction=${order_by}&date=` +
+        date,
       {
         headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    fetch_number();
-    console.log(res.data);
-    dispatch({
-      type: FETCH_DATA_EVENTS,
-      payload: res.data
-    });
-    isLoading(true);
+          Authorization: `Bearer ${initialState.token}`,
+        },
+      },
+    )
+      .then((res) => {
+        fetch_number();
+        dispatch({
+          type: FETCH_DATA_EVENTS,
+          payload: res.data,
+        });
+        isLoading(true);
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
+  //Удалить событие
   const delete_events = async (id, id_pagination, order_by) => {
-    await Axios.delete(
-      "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
-      {
-        headers: {
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    isLoading(false);
-
-    Fetch_data_events(id_pagination, order_by);
-    fetch_number();
-    dispatch({
-      type: DELETE_EVENTS
-    });
+    await Axios.delete(manifest.URL + "/api/events/" + id, {
+      headers: {
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        isLoading(false);
+        Fetch_data_events(id_pagination, order_by);
+        fetch_number();
+        dispatch({
+          type: DELETE_EVENTS,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
+  //Обновить событие
   const Update_events = async (values, id) => {
     let formData = new FormData();
 
-    Object.keys(values).map(key => {
+    Object.keys(values).map((key) => {
       if (key === "upload_image") {
         formData.append(key, values[key][0]);
       } else {
         formData.append(key, values[key]);
       }
     });
-
-    console.log(formData);
-    ;
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/events/" + id,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    alert.success("Событие обновленно");
-    dispatch({
-      type: UPDATE_EVENTS,
-      payload: res.data
-    });
+    await Axios.post(manifest.URL + "/api/events/" + id, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        alert.success("Событие обновленно");
+        dispatch({
+          type: UPDATE_EVENTS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
-  const Add_events = async values => {
+
+  //Добавить событие
+  const Add_events = async (values) => {
     let formData = new FormData();
 
-    Object.keys(values).map(key => {
+    Object.keys(values).map((key) => {
       if (key === "upload_image") {
         formData.append(key, values[key][0]);
       } else {
         formData.append(key, values[key]);
       }
     });
-
-    console.log(formData);
-    ;
-    const res = await Axios.post(
-      "http://1690550.masgroup.web.hosting-test.net/api/events",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${initialState.token}`
-        }
-      }
-    );
-    alert.success("Событие созданно");
-    fetch_number();
-    history.goBack();
-    dispatch({
-      type: ADD_EVENTS,
-      payload: res.data
-    });
+    await Axios.post(manifest.URL + "/api/events", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${initialState.token}`,
+      },
+    })
+      .then((res) => {
+        alert.success("Событие созданно");
+        fetch_number();
+        history.goBack();
+        dispatch({
+          type: ADD_EVENTS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
   };
 
   return (
@@ -161,9 +174,8 @@ export const EventState = ({ children }) => {
         delete_events,
         Fetch_data_events,
         sort_data_events,
-        state_event: state
-      }}
-    >
+        state_event: state,
+      }}>
       {children}
     </EventContext.Provider>
   );

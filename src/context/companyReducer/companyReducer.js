@@ -4,6 +4,8 @@ import {
     DELETE_COMPANY,
     UPDATE_COMPANY,
   } from "../types";
+
+   //Все состояния с переменными для обращения к ним
   const handlers = {
     [FETCH_DATA_COMPANY]: (state, { payload }) => ({
       ...state,

@@ -1,23 +1,22 @@
-
 import React, { useReducer, useContext } from "react";
-import {
-  GEOLOCATION
-} from "../types";
+import { GEOLOCATION } from "../types";
 import Axios from "axios";
 import Geocode from "react-geocode";
 import { GeoReducer } from "./GeoReducer";
 import { ReduceContext } from "../reducerContext";
 import { GeoContext } from "./GeoContext";
+import customData from "../../manifest.json";
 
 export const GeoState = ({ children }) => {
   const initialState = {
     isEdit: true
   };
-  const {SelectLocationNew}=useContext(ReduceContext);
+  const { SelectLocationNew } = useContext(ReduceContext);
   const [state, dispatch] = useReducer(GeoReducer, initialState);
+
+  //Поиск геолокации с положением и вычитания с учётом города
   const geolocation = async city => {
-    const API = "AIzaSyA8N9Pn8cR6kKibSWGXkY4e9saEvPv-Z-U";
-    Geocode.setApiKey(API);
+    Geocode.setApiKey(customData.API_GOOGLE_KEY);
     Geocode.setLanguage("ru");
     Geocode.fromAddress(city).then(
       async response => {
@@ -26,13 +25,12 @@ export const GeoState = ({ children }) => {
             response.results[0].geometry.location.lat
           },${response.results[0].geometry.location.lng}&timestamp=${parseInt(
             Date.now() / 1000
-          )}&key=${API}`
+          )}&key=${customData.API_GOOGLE_KEY}`
         );
-        console.log(res);
         SelectLocationNew(parseInt(res.data.rawOffset / 3600));
         SelectLocationNew(parseInt(res.data.rawOffset / 3600));
         localStorage.setItem("city", city);
-        
+
         dispatch({
           type: GEOLOCATION,
           payload: {
@@ -42,7 +40,6 @@ export const GeoState = ({ children }) => {
             letnee: res.data.dstOffset > 0 ? true : false
           }
         });
-        
       },
       error => console.log(error)
     );
@@ -58,6 +55,3 @@ export const GeoState = ({ children }) => {
     </GeoContext.Provider>
   );
 };
-
-
-

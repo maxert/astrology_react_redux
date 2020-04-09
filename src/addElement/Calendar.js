@@ -1,11 +1,12 @@
 import { Calendar, Badge } from "antd";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import moment from "moment";
-import Axios from "axios";
+
 import { ReduceContext } from "../context/reducerContext";
 import { EventContext } from "../context/eventReducer/eventContext";
 
-function CalendarNew({NewDefault,onAllChange,ValueSmall}) {
+//Блок большого календаря
+function CalendarNew({ NewDefault, onAllChange, ValueSmall, DateSet }) {
   const { none } = useContext(ReduceContext);
   const { sort_data_events } = useContext(EventContext);
   function onPanelChange(date) {
@@ -15,33 +16,21 @@ function CalendarNew({NewDefault,onAllChange,ValueSmall}) {
       moment(date._d).format("YYYY-MM-DD")
     );
   }
-  const [date, setDate] = useState(0);
-  useEffect(() => {
-    Axios.get("http://1690550.masgroup.web.hosting-test.net/api/eventdates", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("users")}`
-      }
-    }).then(res => {
-      setDate(res.data);
-    });
 
-    ;
-  }, []);
   function getListData(value) {
     let listData;
 
-    if (date !== 0) {
-      ;
-      date.map(item => {
-        if (moment(value._d).format("DD.MM.YYYY") === item.event_date) {
-          listData = [
-            {
-              type: "events",
-              content: moment(item.event_date, "DD.MM.YYYY").format("DD")
-            }
-          ];
-        }
-      });
+    if (DateSet !== 0) {
+      DateSet.map(item =>
+        moment(value._d).format("DD.MM.YYYY") === item.event_date
+          ? (listData = [
+              {
+                type: "events",
+                content: moment(item.event_date, "DD.MM.YYYY").format("DD")
+              }
+            ])
+          : false
+      );
     }
     return listData || [];
   }
@@ -65,7 +54,10 @@ function CalendarNew({NewDefault,onAllChange,ValueSmall}) {
       value={ValueSmall}
       fullscreen={false}
       dateCellRender={dateCellRender}
-      onChange={(date)=>{onPanelChange(date);onAllChange(date)}}
+      onChange={date => {
+        onPanelChange(date);
+        onAllChange(date);
+      }}
     />
   );
 }

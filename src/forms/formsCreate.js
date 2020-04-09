@@ -12,8 +12,8 @@ import moment from "moment";
 import { useAlert } from "react-alert";
 import { Checkbox as AntCheckbox } from "antd";
 import { GeoContext } from "../context/geolocation/GeoContext";
-//Форма создания натальной карты пользователя на главной странице
 
+//Форма создания натальной карты пользователя на главной странице
 function InputExampleIconChild() {
   const [data_notal, setData] = useState([]);
   const history = useHistory();
@@ -43,7 +43,6 @@ function InputExampleIconChild() {
     values["letnee"] = values.checkboxing === true ? 1 : 0;
 
     localStorage.setItem("save_natal", JSON.stringify(values));
-    console.log(values);
     history.push(`/home_card`);
     alert.success("Натальная карта созданна");
   }

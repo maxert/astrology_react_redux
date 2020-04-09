@@ -5,6 +5,8 @@ import {
     UPDATE_EVENTS,
     SORT_DATA_EVENTS
   } from "../types";
+
+   //Все состояния с переменными для обращения к ним
   const handlers = {
     [FETCH_DATA_EVENTS]: (state, { payload }) => ({
       ...state,

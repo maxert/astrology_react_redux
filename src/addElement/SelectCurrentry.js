@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select } from 'semantic-ui-react'
-//Блок с выбором
+//Блок с выбором валюты
 const countryOptions = [
   { key: '1', value: '1', text: 'Доллар США' },
   { key: '2', value: '2', text: 'Евро' },

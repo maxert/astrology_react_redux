@@ -1,5 +1,6 @@
 import React from 'react'
 import { Select } from 'semantic-ui-react'
+
 //Блок с выбором
 const countryOptions = [
   { key: '1', value: 'hour', text: 'Час' },
@@ -9,7 +10,7 @@ const countryOptions = [
   { key: '5', value: 'year', text: 'Год' },
 ]
 
-export const SelectWeeks = ({SelectSubmite}) => (
-  <Select placeholder='Неделя' name="type" defaultValue={"hour"} options={countryOptions} onChange={(event,data)=>SelectSubmite(event,data)}  />
+export const SelectWeeks = ({SelectSubmite,ValueWeeeks}) => (
+  <Select placeholder='Неделя' name="type" value={ValueWeeeks}  options={countryOptions} onChange={(event,data)=>SelectSubmite(event,data)}  />
 )
 

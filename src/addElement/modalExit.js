@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import { SvgLoader, SvgProxy } from "react-svgmt";
-import {ReduceContext} from "../context/reducerContext";
+import { ReduceContext } from "../context/reducerContext";
 import { useHistory } from "react-router";
 
 //Модальной окно ВЫХОДА
@@ -12,11 +12,16 @@ function ModalExit() {
 
   function handleClick() {
     LogOut();
-    history.push("/login")
+    history.push("/login");
   }
   return (
     <div>
-      <div className="footer_menu" onClick={()=>{setOpen(true)}}>
+      <div
+        className="footer_menu"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
         <SvgLoader path="../../img/logout.svg">
           <SvgProxy selector="#ca" />
         </SvgLoader>
@@ -25,7 +30,7 @@ function ModalExit() {
 
       <Modal
         open={open}
-        onClose={()=>setOpen(false)}
+        onClose={() => setOpen(false)}
         className="close_modal"
         closeIcon
       >
@@ -34,7 +39,7 @@ function ModalExit() {
         </div>
         <div className="button_footer">
           <Button onClick={handleClick}>Подтвердить</Button>
-          <Button className="reset" onClick={()=>setOpen(false)}>
+          <Button className="reset" onClick={() => setOpen(false)}>
             Отмена
           </Button>
         </div>

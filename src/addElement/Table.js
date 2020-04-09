@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ShowContext } from "../context/show/showContext";
 
 //Блок с таблицами
