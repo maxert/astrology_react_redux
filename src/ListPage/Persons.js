@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Search from "../addElement/search";
-import { Button, Dimmer, Loader, Dropdown, Select } from "semantic-ui-react";
+import { Button, Dimmer, Loader, Select } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import EditDrop from "../addElement/editDropDown";
@@ -18,7 +18,7 @@ import manifest from ".././manifest";
 import NoErorrs from "./404";
 //Cтраница списка персон
 function PersonsHome() {
-  const { hide, display, show, Order_by,setFavorite } = useContext(ShowContext);
+  const { hide, display, show, Order_by,setFavorite,setClickFav } = useContext(ShowContext);
   const {
     Add_favorite,
     delete_favorite,
@@ -29,7 +29,7 @@ function PersonsHome() {
     isLoading,
   } = useContext(ReduceContext);
 
-  const [clickFavorite, setClickFav] = useState(true);
+
   const { state_persons, Fetch_data_persons, delete_persons } = useContext(
     PersonsContext,
   );
@@ -99,7 +99,7 @@ function PersonsHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (clickFavorite === true ? " active" : "")
+                        (display.clickFavorite === true ? " active" : "")
                       }
                       onClick={() => {
                         Fetch_data_favorite_order(true, none.data_favorite);
@@ -110,7 +110,7 @@ function PersonsHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (clickFavorite === false ? " active" : "")
+                        (display.clickFavorite === false ? " active" : "")
                       }
                       onClick={() => {
                         Fetch_data_favorite_order(false, none.data_favorite);

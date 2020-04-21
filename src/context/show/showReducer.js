@@ -17,6 +17,8 @@ import {
   SAVEVALUE,
   SEARCH_FAVORITE,
   SORTED_SAVE,
+  SETCLICKFAV,
+  SORTED_SAVE_SEARCH,
 } from "../types";
 
 //Все состояния с переменными для обращения к ним
@@ -83,6 +85,10 @@ const handlers = {
     ...state,
     isFavorite: payload,
   }),
+  [SETCLICKFAV]: (state, { payload }) => ({
+    ...state,
+    clickFavorite: payload,
+  }),
   [SEARCH_FAVORITE]: (state, { payload }) => ({
     ...state,
     isSearchFav: payload,
@@ -95,7 +101,7 @@ const handlers = {
     ...state,
     isDisplay: payload,
   }),
-  [SORTED_SAVE]: (state, { payload }) => ({
+  [SORTED_SAVE_SEARCH]: (state, { payload }) => ({
     ...state,
     isSort: payload,
   }),

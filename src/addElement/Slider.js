@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Slider from "infinite-react-carousel";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import DropdownSlider from "./dropdownslider";

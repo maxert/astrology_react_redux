@@ -16,6 +16,7 @@ import {
   SEARCH_FAVORITE,
   SORTED_SAVE_SEARCH,
   SORTED_SAVE,
+  SETCLICKFAV,
 } from "../types";
 import { ShowContext } from "./showContext";
 import { ShowReducer } from "./showReducer";
@@ -34,6 +35,7 @@ export const ShowState = ({ children }) => {
     value: "",
     isSort: true,
     isFavorite: false,
+    clickFavorite:true
   };
 
   const [state, dispatch] = useReducer(ShowReducer, initialState);
@@ -243,6 +245,12 @@ export const ShowState = ({ children }) => {
       payload: bool,
     });
   };
+  const setClickFav = (bool) => {
+    dispatch({
+      type: SETCLICKFAV,
+      payload: bool,
+    });
+  };
   //Сортировка по избранным в поиске
   const searchFavorite = (bool) => {
     dispatch({
@@ -274,6 +282,7 @@ export const ShowState = ({ children }) => {
     <ShowContext.Provider
       value={{
         show,
+        setClickFav,
         saveValue,
         setDisplay,
         Order_by,

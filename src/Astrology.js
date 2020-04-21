@@ -24,7 +24,6 @@ import { CompanyContext } from "./context/companyReducer/companyContext";
 import { EventContext } from "./context/eventReducer/eventContext";
 import SidebarExampleSidebar from "./addElement/MobSideBar";
 import NoErorrs from "./ListPage/404";
-import NoMatch from 'react-router-nomatch';
 //Блок Навигации, и переход по разным страницам, через route
 function Astrology() {
   const { pathname } = useLocation();

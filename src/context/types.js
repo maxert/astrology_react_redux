@@ -75,3 +75,4 @@ export const SORTED_SAVE = "SORTED_SAVE";
 export const ORDER_ALL = "ORDER_ALL";
 export const SAVE_DISPLAY_FAV = "SAVE_DISPLAY_FAV";
 export const SAVEVALUE_FAV = "SAVEVALUE_FAV";
+export const SETCLICKFAV = "SETCLICKFAV";

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Select } from "semantic-ui-react";
-import { ShowContext } from "../context/show/showContext";
 import { ReduceContext } from "../context/reducerContext";
 
 //Блок с выбором сущностей на избранных

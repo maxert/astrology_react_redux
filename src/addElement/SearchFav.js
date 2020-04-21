@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React, { useState, useContext, useEffect } from "react";
 import { Search, Grid } from "semantic-ui-react";
 import SelectExample from "./SelectFav";
-import { ShowContext } from "../context/show/showContext.js";
 import { ReduceContext } from "../context/reducerContext";
 
 //Блок плашки поиска на странице Избранных

@@ -17,7 +17,7 @@ import { GeoState } from "../context/geolocation/GeoState";
 import manifest from ".././manifest";
 //Страница списка компаний
 function CompanyHome() {
-  const { hide, display, show, Order_by,setFavorite } = useContext(ShowContext);
+  const { hide, display, show, Order_by,setFavorite,setClickFav } = useContext(ShowContext);
   const {
     Add_favorite,
     delete_favorite,
@@ -28,7 +28,7 @@ function CompanyHome() {
     Fetch_data_favorite_order,
     isLoading,
   } = useContext(ReduceContext);
-  const [clickFavorite, setClickFav] = useState(true);
+
   const { state_company, Fetch_data_сompany, delete_company } = useContext(
     CompanyContext,
   );
@@ -96,7 +96,7 @@ function CompanyHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (clickFavorite === true ? " active" : "")
+                        (display.clickFavorite === true ? " active" : "")
                       }
                       onClick={() => {
                         Fetch_data_favorite_order(true, none.data_favorite);
@@ -107,7 +107,7 @@ function CompanyHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (clickFavorite === false ? " active" : "")
+                        (display.clickFavorite === false ? " active" : "")
                       }
                       onClick={() => {
                         Fetch_data_favorite_order(false, none.data_favorite);

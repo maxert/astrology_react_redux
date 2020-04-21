@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ShowContext } from "../context/show/showContext";
-import { useState } from "react";
 import { ReduceContext } from "../context/reducerContext";
 import EditDrop from "../addElement/editDropSearch";
 import { Select } from "semantic-ui-react";
@@ -10,16 +9,12 @@ import manifest from ".././manifest";
 
 //Блок поиска
 function SearchAll({ NameButton, URL, NameCategory, isAll }) {
-  const { none, delete_all } = useContext(
-    ReduceContext,
-  );
-
+  const { none, delete_all } = useContext(ReduceContext);
 
   function FavoriteClick() {
     display.isSearchFav ? searchFavorite(false) : searchFavorite(true);
     search_sort_favorite(display.isSearchFav, display.data_value);
   }
-
 
   const {
     display,
@@ -30,7 +25,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
     search_delete_favorite,
     search_add_favorite,
     search_sort_fav_data,
-    searchFavorite
+    searchFavorite,
   } = useContext(ShowContext);
   useEffect(() => {
     search_sort(display.isSort, display.data_value);
@@ -283,7 +278,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                       <div className="persons_text_right">
                         {person.birth_date !== undefined
                           ? person.birth_date
-                          : person.event_date+" "+person.event_time}
+                          : person.event_date + " " + person.event_time}
                       </div>
                     </div>
 
@@ -886,8 +881,6 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                           <div
                             className="persons_text_right"
                             onClick={() =>
-
-                            
                               delete_all(
                                 none.data_link_favorite.type_link,
                                 favorite.id,

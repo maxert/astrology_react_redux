@@ -12,7 +12,7 @@ function SearchExampleStandard() {
     ShowContext,
   );
 
-  const { search_select, none ,Fetch_favorite_list} = useContext(ReduceContext);
+  const { search_select, none } = useContext(ReduceContext);
   const [dataSearch, setSearch] = useState({ isLoading: false });
 
 

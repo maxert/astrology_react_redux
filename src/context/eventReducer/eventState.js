@@ -82,8 +82,8 @@ export const EventState = ({ children }) => {
         isLoading(true);
       })
       .catch((error) => {
-        if(error.response!==undefined){
-        error.response.status === 401 ? LogOut() : console.log(error);
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
         }
       });
   };
@@ -112,40 +112,34 @@ export const EventState = ({ children }) => {
   const Update_events = async (values, id) => {
     let formData = new FormData();
 
-    Object.keys(values).map((key) => {
-      if (key === "upload_image") {
-        formData.append(key, values[key][0]);
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
+    Object.keys(values).map((key) =>
+      key === "upload_image"
+        ? formData.append(key, values[key][0])
+        : formData.append(key, values[key]),
+    );
     await Axios.post(manifest.URL + "/api/events/" + id, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${initialState.token}`,
       },
-    })
-      .then((res) => {
-        alert.success("Событие обновленно");
-        dispatch({
-          type: UPDATE_EVENTS,
-          payload: res.data,
-        });
-      })
-     
+    }).then((res) => {
+      alert.success("Событие обновленно");
+      dispatch({
+        type: UPDATE_EVENTS,
+        payload: res.data,
+      });
+    });
   };
 
   //Добавить событие
   const Add_events = async (values) => {
     let formData = new FormData();
 
-    Object.keys(values).map((key) => {
-      if (key === "upload_image") {
-        formData.append(key, values[key][0]);
-      } else {
-        formData.append(key, values[key]);
-      }
-    });
+    Object.keys(values).map((key) =>
+      key === "upload_image"
+        ? formData.append(key, values[key][0])
+        : formData.append(key, values[key]),
+    );
     await Axios.post(manifest.URL + "/api/events", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
