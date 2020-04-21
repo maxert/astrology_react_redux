@@ -21,7 +21,7 @@ function ModalExampleSize() {
     ReduceContext,
   );
   const [close, setCloseNew] = useState(false);
-
+  const { url } = useRouteMatch();
   const newSubmite = (e, { result }) => {
     setResult(result);
   };
@@ -39,12 +39,21 @@ function ModalExampleSize() {
   }
   const onSubmit = (values) => {
     if (result !== undefined) {
-      values["obj_type"] = none.data_id.type_link;
-      values["obj_id"] = none.data_id.type_id;
-      values["link_obj_type"] = none.data_link.type_id;
-      values["link_obj_id"] = result.id;
-      setCloseNew(false);
-      create_links(values);
+  
+      if( result.id!==Number(url.replace(/\D+/g, ""))){
+    
+        values["obj_type"] = none.data_id.type_link;
+        values["obj_id"] = none.data_id.type_id;
+        values["link_obj_type"] = none.data_link.type_id;
+        values["link_obj_id"] = result.id;
+        setCloseNew(false);
+        create_links(values);
+      }else{
+        alert.error(
+          "Нельзя создать для текущей страницы",
+        );
+      }
+      
     } else {
       alert.error(
         "Такой карточки нет в базе программы, создайте ее и вернитесь к созданию связи",
@@ -132,16 +141,20 @@ function SimpleSlider() {
         ) : none.data_fetch_links.length >= 7 ||
           (none.width_mob <= 1280 && none.data_fetch_links.length >= 4) ||
           (none.width_mob <= 767 && none.data_fetch_links.length >= 2) ? (
-          <Slider {...setting} beforeChange={(data) => console.log(data)}>
+          <Slider {...setting} >
             {none.data_fetch_links.map((items, i) => (
               <div key={items.id}>
                 <div className="items_slider">
                   <div className="icon_elipse">
                     {items.obj.image !== null ? (
-                      <img
-                        src={manifest.URL + items.obj.image}
-                        alt="Картинка"
-                      />
+                      items.obj.image !== undefined ? (
+                        <img
+                          src={manifest.URL + items.obj.image}
+                          alt="Картинка"
+                        />
+                      ) : (
+                        <div className="text_all_image">{items.name[0]}</div>
+                      )
                     ) : (
                       <div className="text_all_image">{items.name[0]}</div>
                     )}

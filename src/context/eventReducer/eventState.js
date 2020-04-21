@@ -82,7 +82,9 @@ export const EventState = ({ children }) => {
         isLoading(true);
       })
       .catch((error) => {
+        if(error.response!==undefined){
         error.response.status === 401 ? LogOut() : console.log(error);
+        }
       });
   };
 
@@ -130,9 +132,7 @@ export const EventState = ({ children }) => {
           payload: res.data,
         });
       })
-      .catch((error) => {
-        error.response.status === 401 ? LogOut() : console.log(error);
-      });
+     
   };
 
   //Добавить событие

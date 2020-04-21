@@ -30,15 +30,23 @@ import {
   FETCH_NUMBER,
   PAGINATION_NUMBER,
   SEARCH_HOME,
-  SORTED,
   LOADING,
   SHOW_NOTAL_CARD,
   FETCH_DATA_FAVORITE_ORDER,
   WIDTH,
+  FETCH_FAVORITE_LIST,
+  FETCH_FAVORITE_ORDER,
+  SEARCH_FAVORITE_LIST,
+  ORDER_ALL,
+  SAVE_DISPLAY_FAV,
+  SELECT_FAVORITE_LIST,
+  DELETE_FAVORITE_LIST,
+  SAVEVALUE_FAV
 } from "./types";
 import Axios from "axios";
 
 import { useAlert } from "react-alert";
+import { useHistory } from "react-router";
 export const ReducerState = ({ children }) => {
   const initialState = {
     isLoading: false,
@@ -47,17 +55,21 @@ export const ReducerState = ({ children }) => {
     option_value: "0",
     data_favorite: null,
     data_fetch_links: null,
-    sorted: "asc",
     data_notal_online: {
       type: "hour",
       interval: 1,
       interval_direction: 1,
     },
+    select_fav: { link_id: "" },
     data_value: {
       value: [],
       isSearch: false,
     },
+    value: "",
     pagination: 1,
+    isOrder: true,
+    isDisplayFav: false,
+    data_favorite_search: [],
     data_fetch_value: [],
     data_value_home: [],
     data_value_select: [],
@@ -67,7 +79,7 @@ export const ReducerState = ({ children }) => {
   };
   const alert = useAlert();
   const CancelToken = Axios.CancelToken;
-
+  const history = useHistory();
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
   //Получение номера пагинации
@@ -155,13 +167,6 @@ export const ReducerState = ({ children }) => {
       .catch((error) => {
         error.response.status === 401 ? LogOut() : console.log(error);
       });
-  };
-  //Сортировка по убыванию возрастанию
-  const Order_by = (order_by) => {
-    dispatch({
-      type: SORTED,
-      payload: order_by,
-    });
   };
 
   //Удаление с избранных
@@ -545,7 +550,9 @@ export const ReducerState = ({ children }) => {
         });
       })
       .catch((error) => {
-        error.response.status === 401 ? LogOut() : console.log(error);
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : history.push("/404");
+        }
       });
   };
 
@@ -567,7 +574,7 @@ export const ReducerState = ({ children }) => {
         });
       })
       .catch((error) => {
-        error.response.status === 401 ? LogOut() : console.log(error);
+        error.response.status === 401 ? LogOut() : history.push("/404");
       });
   };
 
@@ -590,7 +597,7 @@ export const ReducerState = ({ children }) => {
       })
       .catch((error) => {
         if (error.response !== undefined) {
-          error.response.status === 401 ? LogOut() : console.log(error);
+          error.response.status === 401 ? LogOut() : history.push("/404");
         }
       });
   };
@@ -629,7 +636,7 @@ export const ReducerState = ({ children }) => {
   };
 
   //Обновить нотальную карту
-  const update_notal_card = async (id) => {
+  const update_notal_card = async (id, bool) => {
     await Axios.put(
       manifest.URL + `/api/natals/${id}`,
       {},
@@ -640,7 +647,9 @@ export const ReducerState = ({ children }) => {
       },
     )
       .then((res) => {
-        alert.info("Натальная карта обновленна");
+        if (!bool) {
+          alert.info("Натальная карта обновленна");
+        }
         Fetch_notal_card(res.data.obj_type, res.data.obj_id);
         dispatch({
           type: UPDATE_PERSONS,
@@ -728,7 +737,6 @@ export const ReducerState = ({ children }) => {
   //Онлайн натальная карта
   let cancel;
   const online_card = (int_d, int_type, int, refresh, isc) => {
-    console.log(isc);
     cancel && cancel();
 
     Axios.get(
@@ -758,11 +766,173 @@ export const ReducerState = ({ children }) => {
           : console.log(error);
       });
   };
+  //Получить список избранных
+  const Fetch_favorite_list = async (obj_type) => {
+    isLoading(false);
+    await Axios.get(manifest.URL + `/api/favorites?obj_type=${obj_type}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("users")}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data).map((key, i) => {
+          return {
+            ...res.data[key],
+            id_title: i,
+            title:
+              res.data[key].firstname !== undefined
+                ? res.data[key].firstname + " " + (res.data[key].lastname!==null?res.data[key].lastname:"")
+                : res.data[key].name,
+          };
+        });
+        isLoading(true);
+        dispatch({
+          type: FETCH_FAVORITE_LIST,
+          payload,
+        });
+      })
+      .catch((error) => {
+        if (error.response !== undefined) {
+          error.response.status === 401 ? LogOut() : console.log(error);
+        }
+      });
+  };
 
+  //Сортировка в избранных
+  const Fetch_favorite_order = (bool, data) => {
+    isLoading(false);
+    const payload = bool
+      ? data.sort((a, b) =>
+          a.firstname !== undefined
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US"),
+        )
+      : data.sort((a, b) =>
+          b.firstname !== undefined
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US"),
+        );
+    setTimeout(() => {
+      isLoading(true);
+    }, 500);
+    dispatch({ type: FETCH_FAVORITE_ORDER, payload });
+  };
+  //Избранные поиск
+  const search_favorite_list = async (value, data, bool, type_link) => {
+
+    if (bool) {
+      await Axios.get(
+        manifest.URL + `/api/favorites?obj_type=${type_link}&search=` + value,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("users")}`,
+          },
+        },
+      )
+        .then((res) => {
+          const payloads = Object.keys(res.data).map((key, i) => {
+            return {
+              ...res.data[key],
+              id_title: i,
+              title:
+                res.data[key].firstname !== undefined
+                  ? res.data[key].firstname + " " + (res.data[key].lastname!==null?res.data[key].lastname:"")
+                  : res.data[key].name,
+            };
+          });
+
+          const filter = payloads.filter((user) => {
+            return user.title.includes(value);
+          });
+
+          filter.sort((a, b) =>
+            a.firstname !== undefined
+              ? a.firstname.localeCompare(b.firstname, "en-US")
+              : a.name.localeCompare(b.name, "en-US"),
+          );
+          dispatch({
+            type: FETCH_FAVORITE_LIST,
+            payload: filter,
+          });
+
+          dispatch({
+            type: SEARCH_FAVORITE_LIST,
+            payload: filter,
+          });
+          isLoading(true);
+        })
+        .catch((error) => {
+          if (error.response !== undefined) {
+            error.response.status === 401 ? LogOut() : console.log(error);
+          }
+        });
+    } else {
+      Fetch_favorite_list(type_link);
+    }
+  };
+
+  const Order_all = (bool) => {
+    dispatch({
+      type: ORDER_ALL,
+      payload: bool,
+    });
+  };
+
+  const setDisplayFav = (bool) => {
+    dispatch({
+      type: SAVE_DISPLAY_FAV,
+      payload: bool,
+    });
+  };
+  const select_favorite_list = async (link_id, type_link) => {
+    dispatch({
+      type: SELECT_FAVORITE_LIST,
+      payload: {
+        link_id: link_id,
+        type_link: type_link,
+      },
+    });
+  };
+    //Удалить из избранных
+    const delete_favorite_list = async (id, type, data) => {
+      await Axios.delete(
+        manifest.URL + `/api/favorites?obj_type=${type}&obj_id=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("users")}`,
+          },
+        },
+      )
+        .then((res) => {
+          const payload = data.filter((i) => i.id !== id);
+          fetch_number();
+          dispatch({ type: DELETE_FAVORITE_LIST, payload });
+        })
+        .catch((error) => {
+          error.response.status === 401 ? LogOut() : console.log(error);
+        });
+    };
+
+
+    const saveValue = (value) => {
+      dispatch({
+        type: SAVEVALUE_FAV,
+        payload: value,
+      });
+    };
+  
   return (
     <ReduceContext.Provider
       value={{
+        saveValue,
+        delete_favorite_list,
+        select_favorite_list,
+        setDisplayFav,
+        Order_all,
         search_data_city,
+        search_favorite_list,
+        Fetch_favorite_order,
+        Fetch_favorite_list,
         width_mobile,
         createNotals,
         Fetch_one_company,
@@ -791,7 +961,6 @@ export const ReducerState = ({ children }) => {
         update_notal_card,
         fetch_number,
         pagination_number,
-        Order_by,
         isLoading,
         search_data_home,
         none: state,

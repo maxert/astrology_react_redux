@@ -12,16 +12,19 @@ import manifest from ".././manifest";
 //Страница Избранные
 function Favorite() {
   const {
-    hide,
-    display,
-    show,
-    Fetch_favorite_list,
-    Fetch_favorite_order,
+
     delete_favorite_list,
-    select_favorite_list,
   } = useContext(ShowContext);
 
-  const { none, favorite_select } = useContext(ReduceContext);
+  const {
+    none,
+    setDisplayFav,
+    favorite_select,
+    select_favorite_list,
+    Fetch_favorite_list,
+    Fetch_favorite_order,
+    Order_all
+  } = useContext(ReduceContext);
   const location = useLocation();
 
   function onChangeElement(event, data) {
@@ -31,14 +34,12 @@ function Favorite() {
     Fetch_favorite_list(key[0].key);
   }
 
-  const [isOrder, setOrder] = useState(true);
-  useEffect(() => {
-    Fetch_favorite_list("");
-  }, []);
+
+
 
   return (
     <div className="container_list">
-      <div className="search_container_home">
+      <div className="search_container_home favorive_search">
         <SearchFav />
       </div>
       <h2>Избранное</h2>
@@ -56,14 +57,14 @@ function Favorite() {
                   data.value !== 0
                     ? (Fetch_favorite_order(
                         false,
-                        display.data_favorite && display.data_favorite,
+                        none.data_favorite && none.data_favorite,
                       ),
-                      setOrder(false))
+                      Order_all(false))
                     : (Fetch_favorite_order(
                         true,
-                        display.data_favorite && display.data_favorite,
+                        none.data_favorite && none.data_favorite,
                       ),
-                      setOrder(true))
+                      Order_all(true))
                 }
                 defaultValue={0}
                 options={[
@@ -76,28 +77,28 @@ function Favorite() {
                 <button
                   className={
                     "text_head_persons abs_to_A_and_Y button_select" +
-                    (isOrder === true ? " active" : "")
+                    (none.isOrder === true ? " active" : "")
                   }
                   onClick={() => {
                     Fetch_favorite_order(
                       true,
-                      display.data_favorite && display.data_favorite,
+                      none.data_favorite && none.data_favorite,
                     );
-                    setOrder(true);
+                    Order_all(true);
                   }}>
                   По алфавиту А-Я
                 </button>
                 <button
                   className={
                     "text_head_persons abs_to_A_and_Y button_select" +
-                    (isOrder === false ? " active" : "")
+                    (none.isOrder === false ? " active" : "")
                   }
                   onClick={() => {
                     Fetch_favorite_order(
                       false,
-                      display.data_favorite && display.data_favorite,
+                      none.data_favorite && none.data_favorite,
                     );
-                    setOrder(false);
+                    Order_all(false);
                   }}>
                   По алфавиту Я-А
                 </button>
@@ -107,33 +108,31 @@ function Favorite() {
             <div className="row_and_column">
               <SvgLoader
                 path="../../img/Group3.svg"
-                className={display.visible ? " " : "active"}
-                onClick={display.visible ? show : show}>
+                className={none.isDisplayFav ? " " : "active"}
+                onClick={()=>setDisplayFav(false)}>
                 <SvgProxy selector="#co" />
               </SvgLoader>
 
               <SvgLoader
                 path="../../img/Group4.svg"
-                className={display.visible ? "active" : " "}
-                onClick={display.visible ? hide : hide}>
+                className={none.isDisplayFav ? "active" : " "}
+                onClick={()=>setDisplayFav(true)}>
                 <SvgProxy selector="#co" />
               </SvgLoader>
             </div>
           </div>
         </div>
 
-        {display.visible === false &&
+        {none.isDisplayFav === false &&
           (none.isLoading === false ? (
             <Dimmer className="invert_none" active inverted>
               <Loader size="massive">Загрузка</Loader>
             </Dimmer>
           ) : (
             <div className="persons_list_grid">
-              {display.data_favorite !== undefined &&
-                display.data_favorite.map((items, i) => (
-                  <div
-                    className="persons_items"
-                    key={items.id_title.toString()}>
+              {none.data_favorite&&
+                none.data_favorite.map((items, i) => (
+                  <div className="persons_items" key={items.id_title}>
                     <div className="persons_items_head d_flex_center">
                       <div className="container_info_persons d_flex_center">
                         <div className={"icon_image  active"}>
@@ -178,7 +177,7 @@ function Favorite() {
                           key={items.id_title}
                           ID={items.id}
                           Type={items.obj_type}
-                          Data={display.data_favorite}
+                          Data={none.data_favorite}
                           Favorite={1}></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
                           <SvgProxy selector="#co" />
@@ -187,9 +186,9 @@ function Favorite() {
                     </div>
                     <div className="d_flex_center date_persons">
                       <div className="persons_text_left">
-                        {none.data_link_favorite.type_id === "company"
+                        {items.obj_type === "company"
                           ? `Дата основания:`
-                          : none.data_link_favorite.type_id === "event"
+                          : items.obj_type === "event"
                           ? `Дата:`
                           : `День рождения:`}
                       </div>
@@ -223,15 +222,11 @@ function Favorite() {
                 ))}
             </div>
           ))}
-        {display.visible === true && (
+        {none.isDisplayFav === true && (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
               <div className="header_persons_list_name">Имя</div>
-              {none.data_link_favorite.type_id === "company"
-                ? `Дата основания`
-                : none.data_link_favorite.type_id === "event"
-                ? `Дата`
-                : `День рождения`}
+              <div className="header_persons_list_date">Дата</div>
               <div className="header_persons_list_city">Город</div>
             </div>
             {none.isLoading === false ? (
@@ -240,8 +235,8 @@ function Favorite() {
               </Dimmer>
             ) : (
               <div className="persons_list_column">
-                {display.data_favorite !== undefined &&
-                  display.data_favorite.map((items, i) =>
+                {none.data_favorite !== undefined &&
+                  none.data_favorite.map((items, i) =>
                     none.width_mob <= 1280 ? (
                       <div className="persons_items" key={items.id_title}>
                         <div className="persons_items_head ">
@@ -311,7 +306,7 @@ function Favorite() {
                             key={items.id_title}
                             ID={items.id}
                             Type={items.obj_type}
-                            Data={display.data_favorite}
+                            Data={none.data_favorite}
                             Favorite={1}></EditDrop>
                           <SvgLoader path="../../img/Group5.svg">
                             <SvgProxy selector="#co" />
@@ -404,7 +399,7 @@ function Favorite() {
                             delete_favorite_list(
                               items.id,
                               items.obj_type,
-                              display.data_favorite,
+                              none.data_favorite,
                             )
                           }>
                           <SvgLoader path="../../img/Delete1.svg">

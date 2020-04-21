@@ -4,15 +4,17 @@ import moment from "moment";
 
 import { ReduceContext } from "../context/reducerContext";
 import { EventContext } from "../context/eventReducer/eventContext";
+import { ShowContext } from "../context/show/showContext";
 
 //Блок большого календаря
 function CalendarNew({ NewDefault, onAllChange, ValueSmall, DateSet }) {
   const { none } = useContext(ReduceContext);
+  const { display } = useContext(ShowContext);
   const { sort_data_events } = useContext(EventContext);
   function onPanelChange(date) {
     sort_data_events(
       none.pagination !== 1 ? none.pagination : 1,
-      none.sorted,
+      display.sorted,
       moment(date._d).format("YYYY-MM-DD")
     );
   }

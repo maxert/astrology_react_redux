@@ -32,6 +32,14 @@ import {
   SHOW_NOTAL_CARD,
   FETCH_DATA_FAVORITE_ORDER,
   WIDTH,
+  FETCH_FAVORITE_ORDER,
+  SEARCH_FAVORITE_LIST,
+  FETCH_FAVORITE_LIST,
+  ORDER_ALL,
+  SAVE_DISPLAY_FAV,
+  SELECT_FAVORITE_LIST,
+  DELETE_FAVORITE_LIST,
+  SAVEVALUE_FAV
 } from "./types";
 
 //Все состояния с переменными для обращения к ним
@@ -155,17 +163,49 @@ const handlers = {
     ...state,
     geolocation: payload,
   }),
-  [SORTED]: (state, { payload }) => ({
-    ...state,
-    sorted: payload,
-  }),
   [LOADING]: (state, { payload }) => ({
     ...state,
     isLoading: payload,
   }),
+  [SORTED]: (state, { payload }) => ({
+    ...state,
+    sorted: payload,
+  }),
   [WIDTH]: (state, { payload }) => ({
     ...state,
     width_mob: payload,
+  }),
+  [FETCH_FAVORITE_ORDER]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
+  [FETCH_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
+  [SEARCH_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite_search: payload
+  }),
+  [ORDER_ALL]: (state, { payload }) => ({
+    ...state,
+    isOrder: payload
+  }),
+  [SAVE_DISPLAY_FAV]: (state, { payload }) => ({
+    ...state,
+    isDisplayFav: payload,
+  }),
+  [SELECT_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    select_fav: payload
+  }),
+  [DELETE_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
+  [SAVEVALUE_FAV]: (state, { payload }) => ({
+    ...state,
+    value: payload,
   }),
   DEFAULT: (state) => state,
 };

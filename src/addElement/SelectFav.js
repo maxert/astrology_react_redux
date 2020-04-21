@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Select } from "semantic-ui-react";
 import { ShowContext } from "../context/show/showContext";
+import { ReduceContext } from "../context/reducerContext";
 
 //Блок с выбором сущностей на избранных
 const countryOptions = [
@@ -11,11 +12,11 @@ const countryOptions = [
 ];
 
 function SelectExample({ onChangeElement }) {
-  const {display}= useContext(ShowContext)
+  const {none}= useContext(ReduceContext)
 
   return (
     <Select
-      value={display.select_fav.link_id===""?"default":display.select_fav.link_id}
+      value={none.select_fav.link_id===""?"default":none.select_fav.link_id}
       options={countryOptions}
       onChange={(event, data) => {onChangeElement(event, data)}}
     />

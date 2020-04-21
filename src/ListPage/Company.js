@@ -17,42 +17,40 @@ import { GeoState } from "../context/geolocation/GeoState";
 import manifest from ".././manifest";
 //Страница списка компаний
 function CompanyHome() {
-  const { hide, display, show } = useContext(ShowContext);
+  const { hide, display, show, Order_by,setFavorite } = useContext(ShowContext);
   const {
     Add_favorite,
     delete_favorite,
     none,
     pagination_number,
-    Order_by,
     delete_all,
     Fetch_data_favorite,
     Fetch_data_favorite_order,
     isLoading,
   } = useContext(ReduceContext);
-  const [isFavorite, setFavorite] = useState(false);
   const [clickFavorite, setClickFav] = useState(true);
   const { state_company, Fetch_data_сompany, delete_company } = useContext(
     CompanyContext,
   );
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
-    Fetch_data_сompany(Value._targetInst.pendingProps.value, none.sorted);
+    Fetch_data_сompany(Value._targetInst.pendingProps.value, display.sorted);
     isLoading(false);
   }
   function FavoriteClick() {
-    isFavorite ? setFavorite(false) : setFavorite(true);
+    display.isFavorite ? setFavorite(false) : setFavorite(true);
     Fetch_data_favorite(none.data_link_favorite.type_id);
   }
 
   useEffect(() => {
-    if (none.data_number !== undefined) {
+    if (none.data_number !== undefined&&display.sorted!==undefined) {
       none.pagination = 1;
       Fetch_data_сompany(
         none.pagination !== 1 ? none.pagination : 1,
-        none.sorted,
+        display.sorted,
       );
     }
-  }, [none.data_number, none.sorted]);
+  }, [none.data_number, display.sorted]);
 
   const { url } = useRouteMatch();
   return (
@@ -76,7 +74,7 @@ function CompanyHome() {
         <div className="container_persons">
           <div className="container_persons_head">
             <div className="container_persons_head_right">
-              {isFavorite === true ? (
+              {display.isFavorite === true ? (
                 none.width_mob <= 767 ? (
                   <Select
                     className="sort_all_mob"
@@ -136,7 +134,7 @@ function CompanyHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (none.sorted === "asc" ? " active" : "")
+                      (display.sorted === "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("asc")}>
                     По алфавиту А-Я
@@ -144,7 +142,7 @@ function CompanyHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (none.sorted !== "asc" ? " active" : "")
+                      (display.sorted !== "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("desc")}>
                     По алфавиту Я-А
@@ -157,7 +155,7 @@ function CompanyHome() {
                 onClick={() => {
                   FavoriteClick();
                 }}>
-                {isFavorite === false ? (
+                {display.isFavorite === false ? (
                   <SvgLoader path="../../img/favorites.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
@@ -187,7 +185,7 @@ function CompanyHome() {
             </div>
           </div>
           {display.visible === false ? (
-            isFavorite === false ? (
+            display.isFavorite === false ? (
               none.isLoading === false ? (
                 <Dimmer className="invert_none" active inverted>
                   <Loader size="massive">Загрузка</Loader>
@@ -237,7 +235,7 @@ function CompanyHome() {
                                 delete_company(
                                   company.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  none.sorted,
+                                  display.sorted,
                                 )
                               }></EditDrop>
                             <SvgLoader path="../../img/Group5.svg">
@@ -333,7 +331,7 @@ function CompanyHome() {
                               delete_company(
                                 favorite.id,
                                 none.pagination !== 1 ? none.pagination : 1,
-                                none.sorted,
+                                display.sorted,
                               )
                             }></EditDrop>
                           <SvgLoader path="../../img/Group5.svg">
@@ -384,7 +382,7 @@ function CompanyHome() {
                 <div className="header_persons_list_city">Город</div>
               </div>
 
-              {!isFavorite ? (
+              {!display.isFavorite ? (
                 none.isLoading === false ? (
                   <Dimmer className="invert_none" active inverted>
                     <Loader size="massive">Загрузка</Loader>
@@ -460,7 +458,7 @@ function CompanyHome() {
                                   delete_company(
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    none.sorted,
+                                    display.sorted,
                                   )
                                 }></EditDrop>
                               <SvgLoader path="../../img/Group5.svg">
@@ -536,7 +534,7 @@ function CompanyHome() {
                                       ? none.data_link_favorite.type_id
                                       : "person",
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    none.sorted,
+                                    display.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites_21.svg">
@@ -556,7 +554,7 @@ function CompanyHome() {
                                       : "person",
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    none.sorted,
+                                    display.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites.svg">
@@ -588,7 +586,7 @@ function CompanyHome() {
                                   delete_company(
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    none.sorted,
+                                    display.sorted,
                                   )
                                 }>
                                 Удалить
@@ -674,7 +672,7 @@ function CompanyHome() {
                                 delete_company(
                                   favorite.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  none.sorted,
+                                  display.sorted,
                                 )
                               }></EditDrop>
                             <SvgLoader path="../../img/Group5.svg">
@@ -752,7 +750,7 @@ function CompanyHome() {
                                   ? none.data_link_favorite.type_id
                                   : "person",
                                 none.pagination !== 1 ? none.pagination : 1,
-                                none.sorted,
+                                display.sorted,
                               )
                             }>
                             <SvgLoader path="../../img/favorites_21.svg">
@@ -795,7 +793,7 @@ function CompanyHome() {
               )}
             </div>
           )}
-          {isFavorite === false && state_company.data_company.count !== 0 ? (
+          {display.isFavorite === false && state_company.data_company.count !== 0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={

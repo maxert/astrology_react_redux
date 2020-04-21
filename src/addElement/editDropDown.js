@@ -8,9 +8,8 @@ import { ShowContext } from "../context/show/showContext";
 //Функциональный Блок изменений карточки
 function DropdownExampleInline({ ID, Type, Favorite, ClickDelete, Data }) {
   const { url } = useRouteMatch();
-  const { delete_favorite_list } = useContext(ShowContext);
-  const { none, delete_favorite, Add_favorite } = useContext(ReduceContext);
-
+  const { none, delete_favorite, Add_favorite ,delete_favorite_list} = useContext(ReduceContext);
+  const { display} = useContext(ShowContext);
   return (
     <Dropdown className={"edit_drop"} inline floating labeled button>
       <Dropdown.Menu>
@@ -22,7 +21,7 @@ function DropdownExampleInline({ ID, Type, Favorite, ClickDelete, Data }) {
                 ID,
                 Type,
                 none.pagination !== 1 ? none.pagination : 1,
-                none.sorted
+                display.sorted
               )
             }
           >
@@ -41,7 +40,7 @@ function DropdownExampleInline({ ID, Type, Favorite, ClickDelete, Data }) {
                 Type,
                 ID,
                 none.pagination !== 1 ? none.pagination : 1,
-                none.sorted
+                display.sorted
               )
             }
           >
