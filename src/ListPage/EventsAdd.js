@@ -38,7 +38,7 @@ function EventsAdd() {
       "YYYY-MM-DD",
     );
     values["city"] =
-      geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
+    geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Add_events(values);
@@ -48,7 +48,7 @@ function EventsAdd() {
     if (geoGet.geolocation !== undefined) {
       setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [localStorage.getItem("city").city]);
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
   useEffect(() => {
     if (errors.event_date !== undefined) {

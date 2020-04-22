@@ -35,10 +35,10 @@ function CompanyAdd() {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if (geoGet.geolocation) {
+    if (geoGet.geolocation!==undefined) {
       setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [localStorage.getItem("city")]);
+  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
 
 
   const alert = useAlert();

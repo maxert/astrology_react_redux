@@ -44,6 +44,7 @@ function PersonsHome() {
   }
 
   useEffect(() => {
+    none.data_favorite=undefined;
     if (none.data_number !== undefined&&display.sorted !== undefined) {
       none.pagination = 1;
       Fetch_data_persons(

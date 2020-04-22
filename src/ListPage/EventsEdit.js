@@ -68,6 +68,7 @@ function EventsEdit() {
       alert.error("Введите корректно email");
     }
   }, [errors]);
+  
   useEffect(() => {
     if (geoGet.geolocation) {
       setValue("longtitude", geoGet.geolocation.location.lng);
