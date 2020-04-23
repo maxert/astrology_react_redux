@@ -20,7 +20,7 @@ export const CompanyState = ({ children }) => {
   };
   const alert = useAlert();
   const history = useHistory();
-  const { isLoading, LogOut } = useContext(ReduceContext);
+  const { isLoading, LogOut ,Fetch_data_favorite} = useContext(ReduceContext);
   const [state, dispatch] = useReducer(CompanyReducer, initialState);
 
   //Получить список компаний

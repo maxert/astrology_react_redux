@@ -44,7 +44,7 @@ function EventsEdit() {
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_events(values, none.one_event.id);
-    update_notal_card(none.one_company.natal_id, true);
+    update_notal_card(none.one_event.natal_id, true);
   }
   const history = useHistory();
   useEffect(() => {

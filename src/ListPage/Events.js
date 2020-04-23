@@ -49,8 +49,8 @@ function EventsHome() {
     search_sort_fav_data(true, display.data_value, true);
     display.isSearch=false;
   }, []);
+
   useEffect(() => {
-    none.data_favorite=undefined;
     if (none.data_number !== undefined) {
       Fetch_data_events(
         none.pagination !== 1 ? none.pagination : 1,

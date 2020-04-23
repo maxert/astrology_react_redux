@@ -67,11 +67,11 @@ const handlers = {
   }),
   [FETCH_DATA_FAVORITE_ORDER]: (state, { payload }) => ({
     ...state,
-    data_favorite: payload,
+    data_favorite_all: payload,
   }),
   [FETCH_DATA_FAVORITE]: (state, { payload }) => ({
     ...state,
-    data_favorite: payload,
+    data_favorite_all: payload,
   }),
   [ADD_FAVORITE]: (state) => ({
     ...state,

@@ -21,7 +21,7 @@ function EventsAdd() {
 
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
-      birth_date: moment(Date.now()).format("DD.MM.YYYY"),
+      event_date: moment(Date.now()).format("DD.MM.YYYY"),
       event_time: moment(Date.now()).format("HH:mm"),
     },
     reValidateMode: onSubmit,
@@ -38,7 +38,7 @@ function EventsAdd() {
       "YYYY-MM-DD",
     );
     values["city"] =
-    geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
+      geoGet.geolocation !== undefined ? geoGet.geolocation.city : "";
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Add_events(values);
@@ -133,8 +133,8 @@ function EventsAdd() {
                     <Icon className="icon_date">
                       <DatePicker
                         format={"DD.MM.YYYY"}
-                        disabledDate={d => !d || d.isBefore("1000-01-01")}
-                        onChange={(dataString) =>
+                        disabledDate={(d) => !d || d.isBefore("1000-01-01")}
+                        onChange={(data, dataString) =>
                           setValue("event_date", dataString)
                         }></DatePicker>
                     </Icon>
@@ -144,8 +144,8 @@ function EventsAdd() {
                         <Cleave
                           options={{
                             date: true,
-                            dateMin: '1000-01-01',
-                            dateMax: '3000-12-31',
+                            dateMin: "1000-01-01",
+                            dateMax: "3000-12-31",
                             delimiter: ".",
                             datePattern: ["d", "m", "Y"],
                           }}

@@ -513,13 +513,14 @@ export const ReducerState = ({ children }) => {
   };
 
   //Получить боковые номера
-  const fetch_number = async () => {
+  const fetch_number = async (type) => {
     await Axios.get(manifest.URL + `/api/custom/objcount`, {
       headers: {
         Authorization: `Bearer ${initialState.token}`,
       },
     })
       .then((res) => {
+      
         dispatch({
           type: FETCH_NUMBER,
           payload: res.data,

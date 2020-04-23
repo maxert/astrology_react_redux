@@ -5,20 +5,17 @@ import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ReduceContext } from "../context/reducerContext";
 import SelectExample from "../addElement/SelectFav";
 import EditDrop from "../addElement/editDropDown";
-import { ShowContext } from "../context/show/showContext";
 import { Dimmer, Loader, Select } from "semantic-ui-react";
 import SearchFav from "../addElement/SearchFav";
 import manifest from ".././manifest";
 //Страница Избранные
 function Favorite() {
-  const {
 
-    delete_favorite_list,
-  } = useContext(ShowContext);
 
   const {
     none,
     setDisplayFav,
+    delete_favorite_list,
     favorite_select,
     select_favorite_list,
     Fetch_favorite_list,

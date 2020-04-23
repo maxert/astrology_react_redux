@@ -34,6 +34,7 @@ function Astrology() {
     favorite_select,
     search_select,
     width_mobile,
+    Fetch_data_favorite
   } = useContext(ReduceContext);
   const { state_persons } = useContext(PersonsContext);
   const { state_company } = useContext(CompanyContext);
@@ -77,6 +78,7 @@ function Astrology() {
 
   useEffect(() => {
     fetch_number();
+    Fetch_data_favorite(none.data_link.type_id);
   }, [
     state_persons.data_persons !== undefined
       ? state_persons.data_persons.count

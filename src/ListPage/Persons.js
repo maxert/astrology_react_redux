@@ -43,8 +43,8 @@ function PersonsHome() {
     Fetch_data_favorite(none.data_link_favorite.type_id);
   }
 
+  
   useEffect(() => {
-    none.data_favorite=undefined;
     if (none.data_number !== undefined&&display.sorted !== undefined) {
       none.pagination = 1;
       Fetch_data_persons(
@@ -84,9 +84,9 @@ function PersonsHome() {
                     className="sort_all_mob"
                     onChange={(e, data) =>
                       data.value !== 0
-                        ? (Fetch_data_favorite_order(false, none.data_favorite),
+                        ? (Fetch_data_favorite_order(false, none.data_favorite_all),
                           setClickFav(false))
-                        : (Fetch_data_favorite_order(true, none.data_favorite),
+                        : (Fetch_data_favorite_order(true, none.data_favorite_all),
                           setClickFav(true))
                     }
                     defaultValue={0}
@@ -103,7 +103,7 @@ function PersonsHome() {
                         (display.clickFavorite === true ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(true, none.data_favorite);
+                        Fetch_data_favorite_order(true, none.data_favorite_all);
                         setClickFav(true);
                       }}>
                       По алфавиту А-Я
@@ -114,7 +114,7 @@ function PersonsHome() {
                         (display.clickFavorite === false ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(false, none.data_favorite);
+                        Fetch_data_favorite_order(false, none.data_favorite_all);
                         setClickFav(false);
                       }}>
                       По алфавиту Я-А
@@ -293,8 +293,8 @@ function PersonsHome() {
               </Dimmer>
             ) : (
               <div className="persons_list_grid">
-                {none.data_favorite &&
-                  none.data_favorite.map((favorite) => (
+                {none.data_favorite_all &&
+                  none.data_favorite_all.map((favorite) => (
                     <div className="persons_items" key={favorite.id}>
                       <div className="persons_items_head d_flex_center">
                         <div className="container_info_persons d_flex_center">
@@ -606,8 +606,8 @@ function PersonsHome() {
                 )
               ) : (
                 <div className="persons_list_column">
-                  {none.data_favorite !== null &&
-                    none.data_favorite.map((favorite, i) =>
+                  {none.data_favorite_all !== null &&
+                    none.data_favorite_all.map((favorite, i) =>
                       none.width_mob <= 1280 ? (
                         <div className="persons_items" key={i}>
                           <div className="persons_items_head ">
