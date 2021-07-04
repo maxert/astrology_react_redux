@@ -11,7 +11,8 @@ import { AlertReducer } from "./context/reducer";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import "antd/dist/antd.css";
 import ru from "antd/es/locale/ru_RU";

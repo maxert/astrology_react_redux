@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import { ShowContext } from "../context/show/showContext";
+import { useState } from "react";
 import { ReduceContext } from "../context/reducerContext";
 import EditDrop from "../addElement/editDropSearch";
 import { Select } from "semantic-ui-react";
@@ -9,33 +10,37 @@ import manifest from ".././manifest";
 
 //Блок поиска
 function SearchAll({ NameButton, URL, NameCategory, isAll }) {
-  const { none, delete_all } = useContext(ReduceContext);
+  const { none, delete_all } = useContext(
+    ReduceContext,
+  );
+  const [isFavorite, setFavorite] = useState(true);
 
   function FavoriteClick() {
-    display.isSearchFav ? searchFavorite(false) : searchFavorite(true);
-    search_sort_favorite(display.isSearchFav, display.data_value);
+    isFavorite ? setFavorite(false) : setFavorite(true);
+    search_sort_favorite(isFavorite, display.data_value);
   }
 
+  const [displaySet, setDisplay] = useState(false);
+
+  const [isSort, setSort] = useState(true);
   const {
     display,
-    setSort,
-    setDisplay,
     search_sort,
     search_sort_favorite,
     search_delete_favorite,
     search_add_favorite,
     search_sort_fav_data,
-    searchFavorite,
   } = useContext(ShowContext);
   useEffect(() => {
-    search_sort(display.isSort, display.data_value);
+    search_sort_favorite(true, display.data_value);
+    debugger;
   }, [display.data_value]);
   return (
     <div className="container_persons">
       <div className="container_persons_head">
         <div className="container_persons_head_right">
           {isAll === false ? (
-            display.isSearchFav === false ? (
+            isFavorite === false ? (
               none.width_mob <= 768 ? (
                 <Select
                   className="sort_all_mob"
@@ -55,7 +60,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.isSort === true ? " active" : "")
+                      (isSort === true ? " active" : "")
                     }
                     onClick={() => {
                       search_sort(true, display.data_value);
@@ -66,7 +71,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.isSort !== true ? " active" : "")
+                      (isSort !== true ? " active" : "")
                     }
                     onClick={() => {
                       search_sort(false, display.data_value);
@@ -97,7 +102,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                 <div
                   className={
                     "text_head_persons abs_to_A_and_Y button_select" +
-                    (display.isSort === true ? " active" : "")
+                    (isSort === true ? " active" : "")
                   }
                   onClick={() => {
                     search_sort_fav_data(true, display.data_value);
@@ -108,7 +113,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                 <div
                   className={
                     "text_head_persons abs_to_A_and_Y button_select" +
-                    (display.isSort !== true ? " active" : "")
+                    (isSort !== true ? " active" : "")
                   }
                   onClick={() => {
                     search_sort_fav_data(false, display.data_value);
@@ -139,7 +144,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
               <div
                 className={
                   "text_head_persons abs_to_A_and_Y button_select" +
-                  (display.isSort === true ? " active" : "")
+                  (isSort === true ? " active" : "")
                 }
                 onClick={() => {
                   search_sort_fav_data(true, display.data_value, true);
@@ -150,7 +155,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
               <div
                 className={
                   "text_head_persons abs_to_A_and_Y button_select" +
-                  (display.isSort !== true ? " active" : "")
+                  (isSort !== true ? " active" : "")
                 }
                 onClick={() => {
                   search_sort_fav_data(false, display.data_value, true);
@@ -166,7 +171,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
             onClick={() => {
               FavoriteClick();
             }}>
-            {display.isSearchFav === true ? (
+            {isFavorite === true ? (
               <SvgLoader path="../../img/favorites.svg">
                 <SvgProxy selector="#co" />
               </SvgLoader>
@@ -181,18 +186,18 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
             <div className="row_and_column">
               <SvgLoader
                 path="../../img/Group3.svg"
-                className={display.isDisplay ? " " : "active"}
+                className={displaySet ? " " : "active"}
                 onClick={() =>
-                  display.isDisplay ? setDisplay(false) : setDisplay(false)
+                  displaySet ? setDisplay(false) : setDisplay(false)
                 }>
                 <SvgProxy selector="#co" />
               </SvgLoader>
 
               <SvgLoader
                 path="../../img/Group4.svg"
-                className={display.isDisplay ? "active" : " "}
+                className={displaySet ? "active" : " "}
                 onClick={() =>
-                  display.isDisplay ? setDisplay(true) : setDisplay(true)
+                  displaySet ? setDisplay(true) : setDisplay(true)
                 }>
                 <SvgProxy selector="#co" />
               </SvgLoader>
@@ -200,8 +205,8 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
           )}
         </div>
       </div>
-      {display.isDisplay === false &&
-        (display.isSearchFav === true ? (
+      {displaySet === false &&
+        (isFavorite === true ? (
           !isAll || none.width_mob <= 768 ? (
             <div className="persons_list_grid">
               {display.data_value !== undefined &&
@@ -278,7 +283,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                       <div className="persons_text_right">
                         {person.birth_date !== undefined
                           ? person.birth_date
-                          : person.event_date + " " + person.event_time}
+                          : person.event_date+" "+person.event_time}
                       </div>
                     </div>
 
@@ -308,7 +313,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
         ) : (
           !isAll && (
             <div className="persons_list_grid">
-              {display.data_value_favorite !== undefined &&
+              {display.data_value_favorite !== null &&
                 display.data_value_favorite.map((favorite) => (
                   <div className="persons_items" key={favorite.id}>
                     <div className="persons_items_head d_flex_center">
@@ -407,7 +412,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
             </div>
           )
         ))}
-      {isAll === true || display.isDisplay === true ? (
+      {isAll === true || displaySet === true ? (
         none.width_mob <= 767 ? null : (
           <div className="persons_list_grid persons_list_column">
             <div className="header_persons_list">
@@ -423,7 +428,7 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
               <div className="header_persons_list_city">Город</div>
             </div>
 
-            {display.isSearchFav ? (
+            {isFavorite ? (
               <div className="persons_list_column">
                 {display.data_value !== undefined &&
                   display.data_value.map((person, i) =>
@@ -881,6 +886,8 @@ function SearchAll({ NameButton, URL, NameCategory, isAll }) {
                           <div
                             className="persons_text_right"
                             onClick={() =>
+
+                            
                               delete_all(
                                 none.data_link_favorite.type_link,
                                 favorite.id,

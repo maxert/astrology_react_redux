@@ -15,7 +15,7 @@ export const FormsPosition = () => {
   const [select, setSelect] = useState("0");
   const [int_d, setint_d] = useState(1);
   const [selectData, setselectData] = useState("hour");
-  const { online_card, none } = useContext(ReduceContext);
+  const { online_card, none, isLoading } = useContext(ReduceContext);
   const { hide, display, show } = useContext(ShowContext);
   const { handleSubmit, control, setValue } = useForm({
     reValidateMode: onSubmit,

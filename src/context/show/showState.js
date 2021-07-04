@@ -9,14 +9,12 @@ import {
   SEARCH_DELETE_FAVORITE,
   SEARCH_SORT,
   SEARCH_SORT_FAVORITE,
+  FETCH_FAVORITE_LIST,
+  FETCH_FAVORITE_ORDER,
+  DELETE_FAVORITE_LIST,
   SEARCH_SORT_FAV_DATE,
-  SORTED,
-  SAVEVALUE,
-  SETFAVORITE,
-  SEARCH_FAVORITE,
-  SORTED_SAVE_SEARCH,
-  SORTED_SAVE,
-  SETCLICKFAV,
+  SEARCH_FAVORITE_LIST,
+  SELECT_FAVORITE_LIST,
 } from "../types";
 import { ShowContext } from "./showContext";
 import { ShowReducer } from "./showReducer";
@@ -28,18 +26,13 @@ export const ShowState = ({ children }) => {
   const initialState = {
     visible: false,
     isSearch: false,
-    sorted: "asc",
-    data_value:[],
-    isSearchFav: true,
-    isDisplay: false,
-    value: "",
-    isSort: true,
-    isFavorite: false,
-    clickFavorite:true
+    data_value: [],
+    data_favorite_search: [],
+    select_fav: { link_id: "" },
   };
 
   const [state, dispatch] = useReducer(ShowReducer, initialState);
-  const {fetch_number, LogOut } = useContext(ReduceContext);
+  const { isLoading, fetch_number, LogOut } = useContext(ReduceContext);
 
   //Показать блок
   const show = (text, type = "warning") => {
@@ -114,7 +107,122 @@ export const ShowState = ({ children }) => {
   const search_bool = (bool) => {
     dispatch({ type: SEARCH_BOOL, payload: bool });
   };
+  const select_favorite_list = async (link_id, type_link) => {
+    dispatch({
+      type: SELECT_FAVORITE_LIST,
+      payload: {
+        link_id: link_id,
+        type_link: type_link,
+      },
+    });
+  };
 
+  //Избранные поиск
+  const search_favorite_list = async (value, data, bool, type_link) => {
+    debugger;
+
+    if (bool) {
+      await Axios.get(
+        manifest.URL + `/api/favorites?obj_type=${type_link}&search=` + value,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("users")}`,
+          },
+        },
+      )
+        .then((res) => {
+          const payloads = Object.keys(res.data).map((key, i) => {
+            return {
+              ...res.data[key],
+              id_title: i,
+              title:
+                res.data[key].firstname !== undefined
+                  ? res.data[key].firstname + " " + res.data[key].lastname
+                  : res.data[key].name,
+            };
+          });
+
+          const filter = payloads.filter((user) => {
+            return user.title.includes(value);
+          });
+
+
+          filter.sort((a, b) =>
+            a.firstname !== undefined
+              ? a.firstname.localeCompare(b.firstname, "en-US")
+              : a.name.localeCompare(b.name, "en-US"),
+          );
+
+          dispatch({
+            type: FETCH_FAVORITE_LIST,
+            payload: filter,
+          });
+          dispatch({
+            type: SEARCH_FAVORITE_LIST,
+            payload: filter,
+          });
+          isLoading(true);
+        })
+        .catch((error) => {
+          if (error.response !== undefined) {
+            error.response.status === 401 ? LogOut() : console.log(error);
+          }
+        });
+    } else {
+      debugger;
+      Fetch_favorite_list(type_link);
+    }
+  };
+
+  //Получить список избранных
+  const Fetch_favorite_list = async (obj_type) => {
+    isLoading(false);
+    await Axios.get(manifest.URL + `/api/favorites?obj_type=${obj_type}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("users")}`,
+      },
+    })
+      .then((res) => {
+        const payload = Object.keys(res.data).map((key, i) => {
+          return {
+            ...res.data[key],
+            id_title: i,
+            title:
+              res.data[key].firstname !== undefined
+                ? res.data[key].firstname + " " + res.data[key].lastname
+                : res.data[key].name,
+          };
+        });
+        isLoading(true);
+        dispatch({
+          type: FETCH_FAVORITE_LIST,
+          payload,
+        });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
+
+  //Сортировка в избранных
+  const Fetch_favorite_order = (bool, data) => {
+    isLoading(false);
+    const payload = bool
+      ? data.sort((a, b) =>
+          a.firstname !== undefined
+            ? a.firstname.localeCompare(b.firstname, "en-US")
+            : a.name.localeCompare(b.name, "en-US"),
+        )
+      : data.sort((a, b) =>
+          b.firstname !== undefined
+            ? b.firstname.localeCompare(a.firstname, "en-US")
+            : b.name.localeCompare(a.name, "en-US"),
+        );
+    setTimeout(() => {
+      isLoading(true);
+    }, 500);
+    dispatch({ type: FETCH_FAVORITE_ORDER, payload });
+  };
 
   //Поиск(Добавить в избранное)
   const search_add_favorite = async (id, type, data) => {
@@ -145,7 +253,25 @@ export const ShowState = ({ children }) => {
       });
   };
 
-
+  //Удалить из избранных
+  const delete_favorite_list = async (id, type, data) => {
+    await Axios.delete(
+      manifest.URL + `/api/favorites?obj_type=${type}&obj_id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("users")}`,
+        },
+      },
+    )
+      .then((res) => {
+        const payload = data.filter((i) => i.id !== id);
+        fetch_number();
+        dispatch({ type: DELETE_FAVORITE_LIST, payload });
+      })
+      .catch((error) => {
+        error.response.status === 401 ? LogOut() : console.log(error);
+      });
+  };
 
   //Поиск(Удалить из избранных)
   const search_delete_favorite = async (id, type, data, fav) => {
@@ -230,74 +356,25 @@ export const ShowState = ({ children }) => {
         error.response.status === 401 ? LogOut() : console.log(error);
       });
   };
-  //Сортировка по убыванию возрастанию
-  const Order_by = (order_by) => {
-    dispatch({
-      type: SORTED,
-      payload: order_by,
-    });
-  };
 
-  //Сортировка по избранным
-  const setFavorite = (bool) => {
-    dispatch({
-      type: SETFAVORITE,
-      payload: bool,
-    });
-  };
-  const setClickFav = (bool) => {
-    dispatch({
-      type: SETCLICKFAV,
-      payload: bool,
-    });
-  };
-  //Сортировка по избранным в поиске
-  const searchFavorite = (bool) => {
-    dispatch({
-      type: SEARCH_FAVORITE,
-      payload: bool,
-    });
-  };
-  //Сохранение значений в поиске
-  const saveValue = (value) => {
-    dispatch({
-      type: SAVEVALUE,
-      payload: value,
-    });
-  };
-
-  const setSort = (bool) => {
-    dispatch({
-      type: SORTED_SAVE_SEARCH,
-      payload: bool,
-    });
-  };
-  const setDisplay = (bool) => {
-    dispatch({
-      type: SORTED_SAVE,
-      payload: bool,
-    });
-  };
   return (
     <ShowContext.Provider
       value={{
         show,
-        setClickFav,
-        saveValue,
-        setDisplay,
-        Order_by,
-        setSort,
         search_bool,
         hide,
-        setFavorite,
-        searchFavorite,
         search_data,
         search_delete,
         search_delete_favorite,
+        search_favorite_list,
+        delete_favorite_list,
         search_add_favorite,
         search_sort,
         search_sort_fav_data,
         search_sort_favorite,
+        Fetch_favorite_order,
+        select_favorite_list,
+        Fetch_favorite_list,
         display: state,
       }}>
       {children}

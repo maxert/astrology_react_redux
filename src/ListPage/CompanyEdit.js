@@ -13,7 +13,7 @@ import SearchCity from "../addElement/searchCity";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { NavLink, useRouteMatch, useHistory } from "react-router-dom";
 import { GeoContext } from "../context/geolocation/GeoContext";
 import manifest from "../manifest";
 //Страница редактирования компаний

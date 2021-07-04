@@ -17,42 +17,42 @@ import { GeoState } from "../context/geolocation/GeoState";
 import manifest from ".././manifest";
 //Страница списка компаний
 function CompanyHome() {
-  const { hide, display, show, Order_by,setFavorite,setClickFav } = useContext(ShowContext);
+  const { hide, display, show } = useContext(ShowContext);
   const {
     Add_favorite,
     delete_favorite,
     none,
     pagination_number,
+    Order_by,
     delete_all,
     Fetch_data_favorite,
     Fetch_data_favorite_order,
     isLoading,
   } = useContext(ReduceContext);
-
+  const [isFavorite, setFavorite] = useState(false);
+  const [clickFavorite, setClickFav] = useState(true);
   const { state_company, Fetch_data_сompany, delete_company } = useContext(
     CompanyContext,
   );
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
-    Fetch_data_сompany(Value._targetInst.pendingProps.value, display.sorted);
+    Fetch_data_сompany(Value._targetInst.pendingProps.value, none.sorted);
     isLoading(false);
   }
   function FavoriteClick() {
-    display.isFavorite ? setFavorite(false) : setFavorite(true);
+    isFavorite ? setFavorite(false) : setFavorite(true);
     Fetch_data_favorite(none.data_link_favorite.type_id);
   }
 
-
-
   useEffect(() => {
-    if (none.data_number !== undefined&&display.sorted!==undefined) {
+    if (none.data_number !== undefined) {
       none.pagination = 1;
       Fetch_data_сompany(
         none.pagination !== 1 ? none.pagination : 1,
-        display.sorted,
+        none.sorted,
       );
     }
-  }, [none.data_number, display.sorted]);
+  }, [none.data_number, none.sorted]);
 
   const { url } = useRouteMatch();
   return (
@@ -76,15 +76,15 @@ function CompanyHome() {
         <div className="container_persons">
           <div className="container_persons_head">
             <div className="container_persons_head_right">
-              {display.isFavorite === true ? (
+              {isFavorite === true ? (
                 none.width_mob <= 767 ? (
                   <Select
                     className="sort_all_mob"
                     onChange={(e, data) =>
                       data.value !== 0
-                        ? (Fetch_data_favorite_order(false, none.data_favorite_all),
+                        ? (Fetch_data_favorite_order(false, none.data_favorite),
                           setClickFav(false))
-                        : (Fetch_data_favorite_order(true, none.data_favorite_all),
+                        : (Fetch_data_favorite_order(true, none.data_favorite),
                           setClickFav(true))
                     }
                     defaultValue={0}
@@ -98,10 +98,10 @@ function CompanyHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (display.clickFavorite === true ? " active" : "")
+                        (clickFavorite === true ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(true, none.data_favorite_all);
+                        Fetch_data_favorite_order(true, none.data_favorite);
                         setClickFav(true);
                       }}>
                       По алфавиту А-Я
@@ -109,10 +109,10 @@ function CompanyHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (display.clickFavorite === false ? " active" : "")
+                        (clickFavorite === false ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(false, none.data_favorite_all);
+                        Fetch_data_favorite_order(false, none.data_favorite);
                         setClickFav(false);
                       }}>
                       По алфавиту Я-А
@@ -136,7 +136,7 @@ function CompanyHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.sorted === "asc" ? " active" : "")
+                      (none.sorted === "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("asc")}>
                     По алфавиту А-Я
@@ -144,7 +144,7 @@ function CompanyHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.sorted !== "asc" ? " active" : "")
+                      (none.sorted !== "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("desc")}>
                     По алфавиту Я-А
@@ -157,7 +157,7 @@ function CompanyHome() {
                 onClick={() => {
                   FavoriteClick();
                 }}>
-                {display.isFavorite === false ? (
+                {isFavorite === false ? (
                   <SvgLoader path="../../img/favorites.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
@@ -187,7 +187,7 @@ function CompanyHome() {
             </div>
           </div>
           {display.visible === false ? (
-            display.isFavorite === false ? (
+            isFavorite === false ? (
               none.isLoading === false ? (
                 <Dimmer className="invert_none" active inverted>
                   <Loader size="massive">Загрузка</Loader>
@@ -237,7 +237,7 @@ function CompanyHome() {
                                 delete_company(
                                   company.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  display.sorted,
+                                  none.sorted,
                                 )
                               }></EditDrop>
                             <SvgLoader path="../../img/Group5.svg">
@@ -287,8 +287,8 @@ function CompanyHome() {
               </Dimmer>
             ) : (
               <div className="persons_list_grid">
-                {none.data_favorite_all &&
-                  none.data_favorite_all.map((favorite) => (
+                {none.data_favorite &&
+                  none.data_favorite.map((favorite) => (
                     <div className="persons_items" key={favorite.id}>
                       <div className="persons_items_head d_flex_center">
                         <div className="container_info_persons d_flex_center">
@@ -333,7 +333,7 @@ function CompanyHome() {
                               delete_company(
                                 favorite.id,
                                 none.pagination !== 1 ? none.pagination : 1,
-                                display.sorted,
+                                none.sorted,
                               )
                             }></EditDrop>
                           <SvgLoader path="../../img/Group5.svg">
@@ -384,7 +384,7 @@ function CompanyHome() {
                 <div className="header_persons_list_city">Город</div>
               </div>
 
-              {!display.isFavorite ? (
+              {!isFavorite ? (
                 none.isLoading === false ? (
                   <Dimmer className="invert_none" active inverted>
                     <Loader size="massive">Загрузка</Loader>
@@ -460,7 +460,7 @@ function CompanyHome() {
                                   delete_company(
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }></EditDrop>
                               <SvgLoader path="../../img/Group5.svg">
@@ -536,7 +536,7 @@ function CompanyHome() {
                                       ? none.data_link_favorite.type_id
                                       : "person",
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites_21.svg">
@@ -556,7 +556,7 @@ function CompanyHome() {
                                       : "person",
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites.svg">
@@ -588,7 +588,7 @@ function CompanyHome() {
                                   delete_company(
                                     company.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 Удалить
@@ -601,8 +601,8 @@ function CompanyHome() {
                 )
               ) : (
                 <div className="persons_list_column">
-                  {none.data_favorite_all !== null &&
-                    none.data_favorite_all.map((favorite, i) =>
+                  {none.data_favorite !== null &&
+                    none.data_favorite.map((favorite, i) =>
                       none.width_mob <= 1280 ? (
                         <div className="persons_items" key={i}>
                           <div className="persons_items_head ">
@@ -674,7 +674,7 @@ function CompanyHome() {
                                 delete_company(
                                   favorite.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  display.sorted,
+                                  none.sorted,
                                 )
                               }></EditDrop>
                             <SvgLoader path="../../img/Group5.svg">
@@ -752,7 +752,7 @@ function CompanyHome() {
                                   ? none.data_link_favorite.type_id
                                   : "person",
                                 none.pagination !== 1 ? none.pagination : 1,
-                                display.sorted,
+                                none.sorted,
                               )
                             }>
                             <SvgLoader path="../../img/favorites_21.svg">
@@ -795,7 +795,7 @@ function CompanyHome() {
               )}
             </div>
           )}
-          {display.isFavorite === false && state_company.data_company.count !== 0 ? (
+          {isFavorite === false && state_company.data_company.count !== 0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={

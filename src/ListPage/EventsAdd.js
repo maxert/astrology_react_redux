@@ -21,7 +21,7 @@ function EventsAdd() {
 
   const { handleSubmit, register, errors, control, setValue } = useForm({
     defaultValues: {
-      event_date: moment(Date.now()).format("DD.MM.YYYY"),
+      birth_date: moment(Date.now()).format("DD.MM.YYYY"),
       event_time: moment(Date.now()).format("HH:mm"),
     },
     reValidateMode: onSubmit,
@@ -48,7 +48,7 @@ function EventsAdd() {
     if (geoGet.geolocation !== undefined) {
       setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
+  }, [localStorage.getItem("city").city]);
 
   useEffect(() => {
     if (errors.event_date !== undefined) {
@@ -133,8 +133,8 @@ function EventsAdd() {
                     <Icon className="icon_date">
                       <DatePicker
                         format={"DD.MM.YYYY"}
-                        disabledDate={(d) => !d || d.isBefore("1000-01-01")}
-                        onChange={(data, dataString) =>
+                        disabledDate={d => !d || d.isBefore("1000-01-01")}
+                        onChange={(dataString) =>
                           setValue("event_date", dataString)
                         }></DatePicker>
                     </Icon>
@@ -144,8 +144,8 @@ function EventsAdd() {
                         <Cleave
                           options={{
                             date: true,
-                            dateMin: "1000-01-01",
-                            dateMax: "3000-12-31",
+                            dateMin: '1000-01-01',
+                            dateMax: '3000-12-31',
                             delimiter: ".",
                             datePattern: ["d", "m", "Y"],
                           }}

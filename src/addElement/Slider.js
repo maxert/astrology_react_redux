@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Slider from "infinite-react-carousel";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import DropdownSlider from "./dropdownslider";
@@ -39,9 +39,9 @@ function ModalExampleSize() {
   }
   const onSubmit = (values) => {
     if (result !== undefined) {
-  
+      debugger
       if( result.id!==Number(url.replace(/\D+/g, ""))){
-    
+        debugger
         values["obj_type"] = none.data_id.type_link;
         values["obj_id"] = none.data_id.type_id;
         values["link_obj_type"] = none.data_link.type_id;

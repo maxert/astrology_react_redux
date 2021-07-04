@@ -49,12 +49,11 @@ function EventsHome() {
     search_sort_fav_data(true, display.data_value, true);
     display.isSearch=false;
   }, []);
-
   useEffect(() => {
     if (none.data_number !== undefined) {
       Fetch_data_events(
         none.pagination !== 1 ? none.pagination : 1,
-        display.sorted,
+        none.sorted,
         localStorage.getItem("date_event") !== null
           ? localStorage.getItem("date_event")
           : moment(dateSmall).format("YYYY-MM-DD"),
@@ -70,7 +69,7 @@ function EventsHome() {
   function onChangeSmall(date, id) {
     sort_data_events(
       none.pagination !== 1 ? none.pagination : 1,
-      display.sorted,
+      none.sorted,
       moment(date._d).format("YYYY-MM-DD"),
     );
 
@@ -166,7 +165,7 @@ function EventsHome() {
                             delete_events(
                               events.id,
                               none.pagination !== 1 ? none.pagination : 1,
-                              display.sorted,
+                              none.sorted,
                             )
                           }></EditDrop>
                         <SvgLoader path="../../img/Group5.svg">
@@ -284,7 +283,7 @@ function EventsHome() {
                                   delete_events(
                                     event.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }></EditDrop>
                               <SvgLoader path="../../img/Group5.svg">
@@ -356,7 +355,7 @@ function EventsHome() {
                                       ? none.data_link_favorite.type_id
                                       : "person",
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites_21.svg">
@@ -406,7 +405,7 @@ function EventsHome() {
                                   delete_events(
                                     event.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 Удалить

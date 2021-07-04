@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Icon, Button, Form } from "semantic-ui-react";
 import { DatePicker } from "antd";
 import { SvgLoader, SvgProxy } from "react-svgmt";
@@ -10,7 +10,9 @@ import SelectLocation from "../addElement/SelectLocation";
 import { Controller } from "react-hook-form";
 import Cleave from "cleave.js/react";
 import SearchCity from "../addElement/searchCity";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { PersonsContext } from "../context/personReducer/personContext";
+import { useHistory, useRouteMatch, NavLink } from "react-router-dom";
+import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { EventContext } from "../context/eventReducer/eventContext";
 import { GeoContext } from "../context/geolocation/GeoContext";
@@ -44,7 +46,7 @@ function EventsEdit() {
     values["timezone"] = none.option_value;
     values["letnee"] = values.checkbox === true ? 1 : 0;
     Update_events(values, none.one_event.id);
-    update_notal_card(none.one_event.natal_id, true);
+    update_notal_card(none.one_company.natal_id,true);
   }
   const history = useHistory();
   useEffect(() => {
@@ -68,7 +70,6 @@ function EventsEdit() {
       alert.error("Введите корректно email");
     }
   }, [errors]);
-  
   useEffect(() => {
     if (geoGet.geolocation) {
       setValue("longtitude", geoGet.geolocation.location.lng);
@@ -140,7 +141,7 @@ function EventsEdit() {
                       <Icon className="icon_date">
                         <DatePicker
                           format={"DD.MM.YYYY"}
-                          disabledDate={(d) => !d || d.isBefore("1000-01-01")}
+                          disabledDate={d => !d || d.isBefore("1000-01-01")}
                           onChange={(data, dataString) =>
                             setValue("event_date", dataString)
                           }></DatePicker>
@@ -151,8 +152,8 @@ function EventsEdit() {
                           <Cleave
                             options={{
                               date: true,
-                              dateMin: "1000-01-01",
-                              dateMax: "3000-12-31",
+                              dateMin: '1000-01-01',
+                              dateMax: '3000-12-31',
                               delimiter: ".",
                               datePattern: ["d", "m", "Y"],
                             }}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Search from "../addElement/search";
-import { Button, Dimmer, Loader, Select } from "semantic-ui-react";
+import { Button, Dimmer, Loader, Dropdown, Select } from "semantic-ui-react";
 import { NavLink, useRouteMatch, Switch, Route } from "react-router-dom";
 import { SvgLoader, SvgProxy } from "react-svgmt";
 import EditDrop from "../addElement/editDropDown";
@@ -18,41 +18,41 @@ import manifest from ".././manifest";
 import NoErorrs from "./404";
 //Cтраница списка персон
 function PersonsHome() {
-  const { hide, display, show, Order_by,setFavorite,setClickFav } = useContext(ShowContext);
+  const { hide, display, show } = useContext(ShowContext);
   const {
     Add_favorite,
     delete_favorite,
     none,
     pagination_number,
+    Order_by,
     Fetch_data_favorite_order,
     Fetch_data_favorite,
     isLoading,
   } = useContext(ReduceContext);
-
-
+  const [isFavorite, setFavorite] = useState(false);
+  const [clickFavorite, setClickFav] = useState(true);
   const { state_persons, Fetch_data_persons, delete_persons } = useContext(
     PersonsContext,
   );
   function pagination(Value) {
     pagination_number(Value._targetInst.pendingProps.value);
-    Fetch_data_persons(Value._targetInst.pendingProps.value, display.sorted);
+    Fetch_data_persons(Value._targetInst.pendingProps.value, none.sorted);
     isLoading(false);
   }
   function FavoriteClick() {
-    display.isFavorite ? setFavorite(false) : setFavorite(true);
+    isFavorite ? setFavorite(false) : setFavorite(true);
     Fetch_data_favorite(none.data_link_favorite.type_id);
   }
 
-  
   useEffect(() => {
-    if (none.data_number !== undefined&&display.sorted !== undefined) {
+    if (none.data_number !== undefined) {
       none.pagination = 1;
       Fetch_data_persons(
         none.pagination !== 1 ? none.pagination : 1,
-        display.sorted,
+        none.sorted,
       );
     }
-  }, [none.data_number, display.sorted]);
+  }, [none.data_number, none.sorted]);
 
   let { url } = useRouteMatch();
   return (
@@ -78,15 +78,15 @@ function PersonsHome() {
         <div className="container_persons">
           <div className="container_persons_head">
             <div className="container_persons_head_right">
-              {display.isFavorite === true ? (
+              {isFavorite === true ? (
                 none.width_mob <= 767 ? (
                   <Select
                     className="sort_all_mob"
                     onChange={(e, data) =>
                       data.value !== 0
-                        ? (Fetch_data_favorite_order(false, none.data_favorite_all),
+                        ? (Fetch_data_favorite_order(false, none.data_favorite),
                           setClickFav(false))
-                        : (Fetch_data_favorite_order(true, none.data_favorite_all),
+                        : (Fetch_data_favorite_order(true, none.data_favorite),
                           setClickFav(true))
                     }
                     defaultValue={0}
@@ -100,10 +100,10 @@ function PersonsHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (display.clickFavorite === true ? " active" : "")
+                        (clickFavorite === true ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(true, none.data_favorite_all);
+                        Fetch_data_favorite_order(true, none.data_favorite);
                         setClickFav(true);
                       }}>
                       По алфавиту А-Я
@@ -111,10 +111,10 @@ function PersonsHome() {
                     <div
                       className={
                         "text_head_persons abs_to_A_and_Y button_select" +
-                        (display.clickFavorite === false ? " active" : "")
+                        (clickFavorite === false ? " active" : "")
                       }
                       onClick={() => {
-                        Fetch_data_favorite_order(false, none.data_favorite_all);
+                        Fetch_data_favorite_order(false, none.data_favorite);
                         setClickFav(false);
                       }}>
                       По алфавиту Я-А
@@ -138,7 +138,7 @@ function PersonsHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.sorted === "asc" ? " active" : "")
+                      (none.sorted === "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("asc")}>
                     По алфавиту А-Я
@@ -146,7 +146,7 @@ function PersonsHome() {
                   <div
                     className={
                       "text_head_persons abs_to_A_and_Y button_select" +
-                      (display.sorted !== "asc" ? " active" : "")
+                      (none.sorted !== "asc" ? " active" : "")
                     }
                     onClick={() => Order_by("desc")}>
                     По алфавиту Я-А
@@ -159,7 +159,7 @@ function PersonsHome() {
                 onClick={() => {
                   FavoriteClick();
                 }}>
-                {display.isFavorite === false ? (
+                {isFavorite === false ? (
                   <SvgLoader path="../../img/favorites.svg">
                     <SvgProxy selector="#co" />
                   </SvgLoader>
@@ -189,7 +189,7 @@ function PersonsHome() {
             </div>
           </div>
           {display.visible === false ? (
-            display.isFavorite === false ? (
+            isFavorite === false ? (
               none.isLoading === false ? (
                 <Dimmer className="invert_none" active inverted>
                   <Loader size="massive">Загрузка</Loader>
@@ -243,7 +243,7 @@ function PersonsHome() {
                                 delete_persons(
                                   person.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  display.sorted,
+                                  none.sorted,
                                 )
                               }></EditDrop>
                             <SvgLoader path="../../img/Group5.svg">
@@ -293,8 +293,8 @@ function PersonsHome() {
               </Dimmer>
             ) : (
               <div className="persons_list_grid">
-                {none.data_favorite_all &&
-                  none.data_favorite_all.map((favorite) => (
+                {none.data_favorite &&
+                  none.data_favorite.map((favorite) => (
                     <div className="persons_items" key={favorite.id}>
                       <div className="persons_items_head d_flex_center">
                         <div className="container_info_persons d_flex_center">
@@ -381,7 +381,7 @@ function PersonsHome() {
                 <div className="header_persons_list_city">Город</div>
               </div>
 
-              {!display.isFavorite ? (
+              {!isFavorite ? (
                 none.isLoading === false ? (
                   <Dimmer className="invert_none" active inverted>
                     <Loader size="massive">Загрузка</Loader>
@@ -461,7 +461,7 @@ function PersonsHome() {
                                   delete_persons(
                                     person.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }></EditDrop>
                               <SvgLoader path="../../img/Group5.svg">
@@ -541,7 +541,7 @@ function PersonsHome() {
                                       ? none.data_link_favorite.type_id
                                       : "person",
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites_21.svg">
@@ -561,7 +561,7 @@ function PersonsHome() {
                                       : "person",
                                     person.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 <SvgLoader path="../../img/favorites.svg">
@@ -593,7 +593,7 @@ function PersonsHome() {
                                   delete_persons(
                                     person.id,
                                     none.pagination !== 1 ? none.pagination : 1,
-                                    display.sorted,
+                                    none.sorted,
                                   )
                                 }>
                                 Удалить
@@ -606,8 +606,8 @@ function PersonsHome() {
                 )
               ) : (
                 <div className="persons_list_column">
-                  {none.data_favorite_all !== null &&
-                    none.data_favorite_all.map((favorite, i) =>
+                  {none.data_favorite !== null &&
+                    none.data_favorite.map((favorite, i) =>
                       none.width_mob <= 1280 ? (
                         <div className="persons_items" key={i}>
                           <div className="persons_items_head ">
@@ -741,7 +741,7 @@ function PersonsHome() {
                                   ? none.data_link_favorite.type_id
                                   : "person",
                                 none.pagination !== 1 ? none.pagination : 1,
-                                display.sorted,
+                                none.sorted,
                               )
                             }>
                             <SvgLoader path="../../img/favorites_21.svg">
@@ -772,7 +772,7 @@ function PersonsHome() {
                                 delete_persons(
                                   favorite.id,
                                   none.pagination !== 1 ? none.pagination : 1,
-                                  display.sorted,
+                                  none.sorted,
                                 )
                               }>
                               Удалить
@@ -785,7 +785,7 @@ function PersonsHome() {
               )}
             </div>
           )}
-          {display.isFavorite === false && state_persons.data_persons.count !== 0 ? (
+          {isFavorite === false && state_persons.data_persons.count !== 0 ? (
             <div className="d_flex_center pagination">
               <PaginationExamplePagination
                 listPageAll={

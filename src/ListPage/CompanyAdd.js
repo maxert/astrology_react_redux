@@ -14,7 +14,7 @@ import SearchCity from "../addElement/searchCity";
 import NumberFormat from "react-number-format";
 import { Checkbox as AntCheckbox } from "antd";
 import { CompanyContext } from "../context/companyReducer/companyContext";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { GeoContext } from "../context/geolocation/GeoContext";
 
 
@@ -31,17 +31,19 @@ function CompanyAdd() {
     },
     reValidateMode: onSubmit
   });
-  const { latitude, longitude } = usePosition(false, {
+  const { latitude, longitude, error } = usePosition(false, {
     enableHighAccuracy: true
   });
   useEffect(() => {
-    if (geoGet.geolocation!==undefined) {
+    if (geoGet.geolocation) {
       setValue("checkbox", geoGet.geolocation.letnee === 0 ? true : false);
     }
-  }, [geoGet.geolocation ? geoGet.geolocation.city : false]);
+  }, [localStorage.getItem("city")]);
 
 
   const alert = useAlert();
+
+  const d = new Date();
   useEffect(() => {
     if (errors.birth_date !== undefined) {
       alert.error("Введите корректно дату");

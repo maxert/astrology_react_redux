@@ -10,15 +10,9 @@ import {
   SEARCH_SORT_FAVORITE,
   FETCH_FAVORITE_LIST,
   FETCH_FAVORITE_ORDER,
+  DELETE_FAVORITE_LIST,
   SELECT_FAVORITE_LIST,
-  SEARCH_FAVORITE_LIST,
-  SORTED,
-  SETFAVORITE,
-  SAVEVALUE,
-  SEARCH_FAVORITE,
-  SORTED_SAVE,
-  SETCLICKFAV,
-  SORTED_SAVE_SEARCH,
+  SEARCH_FAVORITE_LIST
 } from "../types";
 
 //Все состояния с переменными для обращения к ним
@@ -60,7 +54,10 @@ const handlers = {
     data_value_favorite: payload
   }),
 
-
+  [DELETE_FAVORITE_LIST]: (state, { payload }) => ({
+    ...state,
+    data_favorite: payload
+  }),
   [FETCH_FAVORITE_LIST]: (state, { payload }) => ({
     ...state,
     data_favorite: payload
@@ -77,35 +74,6 @@ const handlers = {
     ...state,
     data_favorite_search: payload
   }),
-  [SORTED]: (state, { payload }) => ({
-    ...state,
-    sorted: payload,
-  }),
-  [SETFAVORITE]: (state, { payload }) => ({
-    ...state,
-    isFavorite: payload,
-  }),
-  [SETCLICKFAV]: (state, { payload }) => ({
-    ...state,
-    clickFavorite: payload,
-  }),
-  [SEARCH_FAVORITE]: (state, { payload }) => ({
-    ...state,
-    isSearchFav: payload,
-  }),
-  [SAVEVALUE]: (state, { payload }) => ({
-    ...state,
-    value: payload,
-  }),
-  [SORTED_SAVE]: (state, { payload }) => ({
-    ...state,
-    isDisplay: payload,
-  }),
-  [SORTED_SAVE_SEARCH]: (state, { payload }) => ({
-    ...state,
-    isSort: payload,
-  }),
-
   DEFAULT: state => state
 };
 export const ShowReducer = (state, action) => {

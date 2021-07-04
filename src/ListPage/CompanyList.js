@@ -15,6 +15,7 @@ function CompanyList() {
   const { url, path } = useRouteMatch();
 
   const {
+    number_all,
     Fetch_one_company,
     none,
     add_type_links,

@@ -8,16 +8,16 @@ function CalendarSmall({ NewDefault, ValueSet, onPanelChangeSmall, DateSet }) {
     let listData;
 
     if (DateSet !== 0) {
-      DateSet.map((item) =>
-        moment(value._d).format("DD.MM.YYYY") === item.event_date
-          ? (listData = [
-              {
-                type: "events",
-                content: moment(item.event_date, "DD.MM.YYYY").format("DD"),
-              },
-            ])
-          : false,
-      );
+      DateSet.map(item => {
+        if (moment(value._d).format("DD.MM.YYYY") === item.event_date) {
+          listData = [
+            {
+              type: "events",
+              content: moment(item.event_date, "DD.MM.YYYY").format("DD")
+            }
+          ];
+        }
+      });
     }
     return listData || [];
   }
@@ -27,7 +27,7 @@ function CalendarSmall({ NewDefault, ValueSet, onPanelChangeSmall, DateSet }) {
 
     return (
       <ul className="events">
-        {listData.map((item) => (
+        {listData.map(item => (
           <li key={item.content}>
             <Badge status={item.type} text={item.content} />
           </li>
@@ -42,7 +42,7 @@ function CalendarSmall({ NewDefault, ValueSet, onPanelChangeSmall, DateSet }) {
       fullscreen={false}
       dateCellRender={dateCellRender}
       showToday={false}
-      onChange={(date) => {
+      onChange={date => {
         onPanelChangeSmall(date);
       }}
     />
